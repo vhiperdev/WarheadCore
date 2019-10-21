@@ -55,6 +55,7 @@ endif()
 
 target_link_libraries(authserver
   PRIVATE
+    acore-core-interface
     authserver-interface
   PUBLIC
     common)

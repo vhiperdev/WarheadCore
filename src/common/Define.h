@@ -16,8 +16,6 @@
 
 #include "CompilerDefs.h"
 
-
-
 #if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__BORLANDC__)
 #define OS_WIN
 #endif
@@ -65,6 +63,27 @@
 #  define ATTR_PRINTF(F, V)
 #  define ATTR_DEPRECATED
 #endif //COMPILER == COMPILER_GNU
+
+#ifdef ACORE_API_USE_DYNAMIC_LINKING
+#  if COMPILER == COMPILER_MICROSOFT
+#    define AC_API_EXPORT __declspec(dllexport)
+#    define AC_API_IMPORT __declspec(dllimport)
+#  elif COMPILER == COMPILER_GNU
+#    define AC_API_EXPORT __attribute__((visibility("default")))
+#    define AC_API_IMPORT
+#  else
+#    error compiler not supported!
+#  endif
+#else
+#  define AC_API_EXPORT
+#  define AC_API_IMPORT
+#endif
+
+#ifdef ACORE_API_EXPORT_COMMON
+#  define AC_COMMON_API AC_API_EXPORT
+#else
+#  define AC_COMMON_API AC_API_IMPORT
+#endif
 
 #define UI64FMTD ACE_UINT64_FORMAT_SPECIFIER
 #define UI64LIT(N) ACE_UINT64_LITERAL(N)

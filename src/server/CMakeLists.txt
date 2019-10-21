@@ -9,9 +9,11 @@
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 if( SERVERS )
-set(sources_windows_Debugging
+set(sources_windows
   ${CMAKE_SOURCE_DIR}/src/common/Debugging/WheatyExceptionReport.cpp
   ${CMAKE_SOURCE_DIR}/src/common/Debugging/WheatyExceptionReport.h
+  ${CMAKE_SOURCE_DIR}/src/common/Platform/ServiceWin32.cpp
+  ${CMAKE_SOURCE_DIR}/src/common/Platform/ServiceWin32.h
 )
 
 add_subdirectory(game)

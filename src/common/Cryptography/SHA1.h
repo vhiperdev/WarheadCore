@@ -13,7 +13,7 @@
 
 class BigNumber;
 
-class SHA1Hash
+class AC_COMMON_API SHA1Hash
 {
     public:
         SHA1Hash();

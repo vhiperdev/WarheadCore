@@ -13,7 +13,7 @@
 class PreparedStatement;
 
 /*! Transactions, high level class. */
-class Transaction
+class AC_COMMON_API Transaction
 {
     friend class TransactionTask;
     friend class MySQLConnection;
@@ -39,10 +39,11 @@ class Transaction
         bool _cleanedUp;
 
 };
+
 typedef Trinity::AutoPtr<Transaction, ACE_Thread_Mutex> SQLTransaction;
 
 /*! Low level class*/
-class TransactionTask : public SQLOperation
+class AC_COMMON_API TransactionTask : public SQLOperation
 {
     template <class T> friend class DatabaseWorkerPool;
     friend class DatabaseWorker;

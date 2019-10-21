@@ -8,8 +8,9 @@
 #define _QUERYHOLDER_H
 
 #include <ace/Future.h>
+#include "Define.h"
 
-class SQLQueryHolder
+class AC_COMMON_API SQLQueryHolder
 {
     friend class SQLQueryHolderTask;
     private:
@@ -30,7 +31,7 @@ class SQLQueryHolder
 
 typedef ACE_Future<SQLQueryHolder*> QueryResultHolderFuture;
 
-class SQLQueryHolderTask : public SQLOperation
+class AC_COMMON_API SQLQueryHolderTask : public SQLOperation
 {
     private:
         SQLQueryHolder * m_holder;

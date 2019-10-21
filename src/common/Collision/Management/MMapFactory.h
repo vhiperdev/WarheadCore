@@ -11,7 +11,6 @@
 #include "DetourAlloc.h"
 #include "DetourNavMesh.h"
 #include "DetourNavMeshQuery.h"
-#include "Map.h"
 #include <unordered_map>
 
 namespace MMAP
@@ -26,12 +25,11 @@ namespace MMAP
     // static class
     // holds all mmap global data
     // access point to MMapManager singleton
-    class MMapFactory
+    class AC_COMMON_API MMapFactory
     {
         public:
             static MMapManager* createOrGetMMapManager();
             static void clear();
-            static bool IsPathfindingEnabled(const Map* map);
             static void InitializeDisabledMaps();
             static bool forbiddenMaps[1000];
     };

@@ -8,6 +8,12 @@
 #include "Errors.h"
 #include "Log.h"
 
+ConfigMgr* ConfigMgr::instance()
+{
+    static ConfigMgr instance;
+    return &instance;
+}
+
 // Defined here as it must not be exposed to end-users.
 bool ConfigMgr::GetValueHelper(const char* name, ACE_TString &result)
 {
@@ -94,6 +100,7 @@ std::string ConfigMgr::GetStringDefault(const char* name, const std::string &def
     {
         if (logUnused)
             sLog->outError("-> Not found option '%s'. The default value is used (%s)", name, def.c_str());
+
         return def;
     }
 }

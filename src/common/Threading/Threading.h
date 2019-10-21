@@ -15,7 +15,7 @@
 
 namespace ACORE
 {
-    class Runnable
+    class AC_COMMON_API Runnable
     {
         public:
             virtual ~Runnable() {}
@@ -42,7 +42,7 @@ namespace ACORE
         Priority_Realtime,
     };
 
-    class Thread
+    class AC_COMMON_API Thread
     {
         public:
             Thread();

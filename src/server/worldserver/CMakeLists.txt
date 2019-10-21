@@ -63,6 +63,7 @@ target_include_directories(worldserver
 
 target_link_libraries(worldserver
   PRIVATE
+    acore-core-interface
     worldserver-interface
     authserver-interface
     game-interface

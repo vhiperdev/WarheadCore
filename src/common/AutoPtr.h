@@ -8,6 +8,7 @@
 #define _TRINITY_AUTO_PTR_H
 
 #include <ace/Bound_Ptr.h>
+#include "Define.h"
 
 namespace Trinity
 {

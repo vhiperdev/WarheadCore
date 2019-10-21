@@ -36,9 +36,8 @@ namespace VMAP
     //==============================================================
     //==============================================================
 
-    class MyCollisionDetection
+    class AC_COMMON_API MyCollisionDetection
     {
-    private:
     public:
 
         static bool collisionLocationForMovingPointFixedAABox(

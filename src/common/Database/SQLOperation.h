@@ -30,7 +30,7 @@ enum SQLElementDataType
 };
 
 //- The element
-struct SQLElementData
+struct AC_COMMON_API SQLElementData
 {
     SQLElementUnion element;
     SQLElementDataType type;
@@ -45,7 +45,7 @@ union SQLResultSetUnion
 
 class MySQLConnection;
 
-class SQLOperation : public ACE_Method_Request
+class AC_COMMON_API SQLOperation : public ACE_Method_Request
 {
     public:
         SQLOperation(): m_conn(NULL) { }

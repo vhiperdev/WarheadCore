@@ -13,6 +13,8 @@ CollectSourceFiles(
   PRIVATE_SOURCES
   # Exclude
   ${CMAKE_CURRENT_SOURCE_DIR}/Debugging
+  # ${CMAKE_CURRENT_SOURCE_DIR}/Collision
+  ${CMAKE_CURRENT_SOURCE_DIR}/Platform
   ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders)
 
 # Manually set sources for Debugging directory as we don't want to include WheatyExceptionReport in common project
@@ -28,6 +30,8 @@ endif()
 
 # Group sources
 GroupSources(${CMAKE_CURRENT_SOURCE_DIR})
+
+add_definitions(-DACORE_API_EXPORT_COMMON)
 
 add_library(common
   ${PRIVATE_SOURCES})
@@ -48,9 +52,8 @@ target_include_directories(common
 
 target_link_libraries(common
   PRIVATE
-    game-interface
-  PUBLIC
     acore-core-interface
+  PUBLIC
     ace
     mysql
     g3dlib
@@ -66,6 +69,18 @@ set_target_properties(common
   PROPERTIES
     FOLDER
       "server")
+
+if( BUILD_SHARED_LIBS )
+  if( UNIX )
+    install(TARGETS common
+      LIBRARY
+        DESTINATION lib)
+  elseif( WIN32 )
+    install(TARGETS common
+      RUNTIME
+        DESTINATION "${CMAKE_INSTALL_PREFIX}")
+  endif()
+endif()
 
 # Generate precompiled header
 if (USE_COREPCH)

@@ -94,7 +94,7 @@ enum ColorTypes
 
 const int Colors = int(WHITE)+1;
 
-class Log
+class AC_COMMON_API Log
 {
     friend class ACE_Singleton<Log, ACE_Thread_Mutex>;
 

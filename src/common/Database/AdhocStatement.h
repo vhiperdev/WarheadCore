@@ -9,10 +9,11 @@
 
 #include <ace/Future.h>
 #include "SQLOperation.h"
+#include "Define.h"
 
 typedef ACE_Future<QueryResult> QueryResultFuture;
 /*! Raw, ad-hoc query. */
-class BasicStatementTask : public SQLOperation
+class AC_COMMON_API BasicStatementTask : public SQLOperation
 {
     public:
         BasicStatementTask(const char* sql);

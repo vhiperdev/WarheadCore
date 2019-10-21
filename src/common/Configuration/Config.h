@@ -7,25 +7,26 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include "Define.h"
 #include <string>
 #include <list>
 #include <vector>
 #include <ace/Singleton.h>
 #include <ace/Configuration_Import_Export.h>
 #include <ace/Thread_Mutex.h>
-#include <AutoPtr.h>
 
-typedef Trinity::AutoPtr<ACE_Configuration_Heap, ACE_Null_Mutex> Config;
+typedef std::shared_ptr<ACE_Configuration_Heap> Config;
 
-class ConfigMgr
+class AC_COMMON_API ConfigMgr
 {
-    friend class ACE_Singleton<ConfigMgr, ACE_Null_Mutex>;
     friend class ConfigLoader;
 
     ConfigMgr() { }
     ~ConfigMgr() { }
 
 public:
+    static ConfigMgr* instance();
+
     /// Method used only for loading main configuration files (authserver.conf and worldserver.conf)
     bool LoadInitial(char const* file);
 
@@ -66,6 +67,6 @@ private:
     ConfigMgr& operator=(ConfigMgr const&);
 };
 
-#define sConfigMgr ACE_Singleton<ConfigMgr, ACE_Null_Mutex>::instance()
+#define sConfigMgr ConfigMgr::instance()
 
 #endif
