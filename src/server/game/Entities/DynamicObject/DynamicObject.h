@@ -20,7 +20,7 @@ enum DynamicObjectType
     DYNAMIC_OBJECT_FARSIGHT_FOCUS   = 0x2,
 };
 
-class DynamicObject : public WorldObject, public GridObject<DynamicObject>, public MovableMapObject
+class AC_GAME_API DynamicObject : public WorldObject, public GridObject<DynamicObject>, public MovableMapObject
 {
     public:
         DynamicObject(bool isWorldObject);
@@ -56,4 +56,5 @@ class DynamicObject : public WorldObject, public GridObject<DynamicObject>, publ
         int32 _duration; // for non-aura dynobjects
         bool _isViewpoint;
 };
+
 #endif

@@ -70,7 +70,7 @@ enum AccountDataType
 #define GLOBAL_CACHE_MASK           0x15
 #define PER_CHARACTER_CACHE_MASK    0xEA
 
-struct AccountData
+struct AC_GAME_API AccountData
 {
     AccountData() : Time(0), Data("") {}
 
@@ -113,7 +113,7 @@ enum CharterTypes
 
 //class to deal with packet processing
 //allows to determine if next packet is safe to be processed
-class PacketFilter
+class AC_GAME_API PacketFilter
 {
 public:
     explicit PacketFilter(WorldSession* pSession) : m_pSession(pSession) {}
@@ -125,8 +125,9 @@ public:
 protected:
     WorldSession* const m_pSession;
 };
+
 //process only thread-safe packets in Map::Update()
-class MapSessionFilter : public PacketFilter
+class AC_GAME_API MapSessionFilter : public PacketFilter
 {
 public:
     explicit MapSessionFilter(WorldSession* pSession) : PacketFilter(pSession) {}
@@ -139,7 +140,7 @@ public:
 
 //class used to filer only thread-unsafe packets from queue
 //in order to update only be used in World::UpdateSessions()
-class WorldSessionFilter : public PacketFilter
+class AC_GAME_API WorldSessionFilter : public PacketFilter
 {
 public:
     explicit WorldSessionFilter(WorldSession* pSession) : PacketFilter(pSession) {}
@@ -150,7 +151,7 @@ public:
 
 // Proxy structure to contain data passed to callback function,
 // only to prevent bloating the parameter list
-class CharacterCreateInfo
+class AC_GAME_API CharacterCreateInfo
 {
     friend class WorldSession;
     friend class Player;
@@ -182,7 +183,7 @@ class CharacterCreateInfo
 };
 
 /// Player session in the World
-class WorldSession
+class AC_GAME_API WorldSession
 {
     public:
         WorldSession(uint32 id, WorldSocket* sock, AccountTypes sec, uint8 expansion, time_t mute_time, LocaleConstant locale, uint32 recruiter, bool isARecruiter, bool skipQueue, uint32 TotalTime);

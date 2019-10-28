@@ -13,12 +13,12 @@
 #include "GameObject.h"
 #include "QuestDef.h"
 
-struct PoolTemplateData
+struct AC_GAME_API PoolTemplateData
 {
     uint32  MaxLimit;
 };
 
-struct PoolObject
+struct AC_GAME_API PoolObject
 {
     uint32  guid;
     float   chance;
@@ -32,7 +32,7 @@ class Pool                                                  // for Pool of Pool 
 typedef std::unordered_set<uint32> ActivePoolObjects;
 typedef std::map<uint32, uint32> ActivePoolPools;
 
-class ActivePoolData
+class AC_GAME_API ActivePoolData
 {
     public:
         template<typename T>
@@ -90,15 +90,15 @@ typedef std::multimap<uint32, uint32> PooledQuestRelation;
 typedef std::pair<PooledQuestRelation::const_iterator, PooledQuestRelation::const_iterator> PooledQuestRelationBounds;
 typedef std::pair<PooledQuestRelation::iterator, PooledQuestRelation::iterator> PooledQuestRelationBoundsNC;
 
-class PoolMgr
+class AC_GAME_API PoolMgr
 {
-    friend class ACE_Singleton<PoolMgr, ACE_Null_Mutex>;
-
     private:
         PoolMgr();
         ~PoolMgr() {};
 
     public:
+        static PoolMgr* instance();
+
         void LoadFromDB();
         void LoadQuestPools();
         void SaveQuestsToDB(bool daily, bool weekly, bool other);
@@ -151,7 +151,7 @@ class PoolMgr
         ActivePoolData mSpawnedData;
 };
 
-#define sPoolMgr ACE_Singleton<PoolMgr, ACE_Null_Mutex>::instance()
+#define sPoolMgr PoolMgr::instance()
 
 // Method that tell if the creature is part of a pool and return the pool id if yes
 template<>

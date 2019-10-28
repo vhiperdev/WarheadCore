@@ -17,7 +17,7 @@ class SpellInfo;
 
 //=================================================
 
-class HostileRefManager : public RefManager<Unit, ThreatManager>
+class AC_GAME_API HostileRefManager : public RefManager<Unit, ThreatManager>
 {
     private:
         Unit* iOwner;

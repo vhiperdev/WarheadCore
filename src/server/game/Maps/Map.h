@@ -51,6 +51,7 @@ class BattlegroundMap;
 class Transport;
 class StaticTransport;
 class MotionTransport;
+
 namespace Trinity
 {
     struct ObjectUpdater;
@@ -154,7 +155,7 @@ enum LineOfSightChecks
     LINEOFSIGHT_ALL_CHECKS      = (LINEOFSIGHT_CHECK_VMAP | LINEOFSIGHT_CHECK_GOBJECT)
 };
 
-class GridMap
+class AC_GAME_API GridMap
 {
     uint32  _flags;
     union{
@@ -268,7 +269,7 @@ enum EncounterCreditType
     ENCOUNTER_CREDIT_CAST_SPELL     = 1,
 };
 
-class Map : public GridRefManager<NGridType>
+class AC_GAME_API Map : public GridRefManager<NGridType>
 {
     friend class MapReference;
     public:
@@ -653,7 +654,6 @@ class Map : public GridRefManager<NGridType>
         uint32 _defaultLight;
 };
 
-
 enum InstanceResetMethod
 {
     INSTANCE_RESET_ALL,                 // reset all option under portrait, resets only normal 5-mans
@@ -663,7 +663,7 @@ enum InstanceResetMethod
     INSTANCE_RESET_GROUP_LEAVE          // on leaving group
 };
 
-class InstanceMap : public Map
+class AC_GAME_API InstanceMap : public Map
 {
     public:
         InstanceMap(uint32 id, uint32 InstanceId, uint8 SpawnMode, Map* _parent);
@@ -692,7 +692,7 @@ class InstanceMap : public Map
         uint32 i_script_id;
 };
 
-class BattlegroundMap : public Map
+class AC_GAME_API BattlegroundMap : public Map
 {
     public:
         BattlegroundMap(uint32 id, uint32 InstanceId, Map* _parent, uint8 spawnMode);
@@ -778,4 +778,5 @@ inline void Map::VisitGrid(const float &x, const float &y, float radius, NOTIFIE
     TypeContainerVisitor<NOTIFIER, GridTypeMapContainer >  grid_object_notifier(notifier);
     cell.Visit(p, grid_object_notifier, *this, radius, x, y);
 }
+
 #endif

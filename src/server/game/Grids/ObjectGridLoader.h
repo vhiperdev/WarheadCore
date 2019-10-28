@@ -15,7 +15,7 @@
 
 class ObjectWorldLoader;
 
-class ObjectGridLoader
+class AC_GAME_API ObjectGridLoader
 {
     friend class ObjectWorldLoader;
 
@@ -43,14 +43,14 @@ class ObjectGridLoader
 };
 
 //Clean up and remove from world
-class ObjectGridCleaner
+class AC_GAME_API ObjectGridCleaner
 {
     public:
         template<class T> void Visit(GridRefManager<T> &);
 };
 
 //Delete objects before deleting NGrid
-class ObjectGridUnloader
+class AC_GAME_API ObjectGridUnloader
 {
     public:
         template<class T> void Visit(GridRefManager<T> &m);

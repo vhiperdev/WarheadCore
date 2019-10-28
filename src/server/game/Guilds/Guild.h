@@ -211,7 +211,7 @@ enum GuildMemberFlags
 };
 
 // Emblem info
-class EmblemInfo
+class AC_GAME_API EmblemInfo
 {
 public:
     EmblemInfo() : m_style(0), m_color(0), m_borderStyle(0), m_borderColor(0), m_backgroundColor(0) { }
@@ -236,7 +236,7 @@ private:
 };
 
 // Structure for storing guild bank rights and remaining slots together.
-class GuildBankRightsAndSlots
+class AC_GAME_API GuildBankRightsAndSlots
 {
 public:
     GuildBankRightsAndSlots() : tabId(TAB_UNDEFINED), rights(0), slots(0) { }
@@ -267,11 +267,11 @@ typedef std::vector <GuildBankRightsAndSlots> GuildBankRightsAndSlotsVec;
 
 typedef std::set <uint8> SlotIds;
 
-class Guild
+class AC_GAME_API Guild
 {
 public: // pussywizard: public class Member
     // Class representing guild member
-    class Member
+    class AC_GAME_API Member
     {
     public:
         Member(uint32 guildId, uint64 guid, uint8 rankId):
@@ -372,7 +372,7 @@ public: // pussywizard: public class Member
 
 private:
     // Base class for event entries
-    class LogEntry
+    class AC_GAME_API LogEntry
     {
     public:
         LogEntry(uint32 guildId, uint32 guid) : m_guildId(guildId), m_guid(guid), m_timestamp(::time(NULL)) { }
@@ -392,7 +392,7 @@ private:
     };
 
     // Event log entry
-    class EventLogEntry : public LogEntry
+    class AC_GAME_API EventLogEntry : public LogEntry
     {
     public:
         EventLogEntry(uint32 guildId, uint32 guid, GuildEventLogTypes eventType, uint32 playerGuid1, uint32 playerGuid2, uint8 newRank) :
@@ -414,7 +414,7 @@ private:
     };
 
     // Bank event log entry
-    class BankEventLogEntry : public LogEntry
+    class AC_GAME_API BankEventLogEntry : public LogEntry
     {
     public:
         static bool IsMoneyEvent(GuildBankEventLogTypes eventType)
@@ -450,7 +450,7 @@ private:
     // Class encapsulating work with events collection
     typedef std::list<LogEntry*> GuildLog;
 
-    class LogHolder
+    class AC_GAME_API LogHolder
     {
     public:
         LogHolder(uint32 guildId, uint32 maxRecords) : m_guildId(guildId), m_maxRecords(maxRecords), m_nextGUID(uint32(GUILD_EVENT_LOG_GUID_UNDEFINED)) { }
@@ -476,7 +476,7 @@ private:
     };
 
     // Class encapsulating guild rank data
-    class RankInfo
+    class AC_GAME_API RankInfo
     {
     public:
         RankInfo(): m_guildId(0), m_rankId(GUILD_RANK_NONE), m_rights(GR_RIGHT_EMPTY), m_bankMoneyPerDay(0) { }
@@ -524,7 +524,7 @@ private:
         GuildBankRightsAndSlots m_bankTabRightsAndSlots[GUILD_BANK_MAX_TABS];
     };
 
-    class BankTab
+    class AC_GAME_API BankTab
     {
     public:
         BankTab(uint32 guildId, uint8 tabId) : m_guildId(guildId), m_tabId(tabId)
@@ -562,7 +562,7 @@ private:
     };
 
     // Movement data
-    class MoveItemData
+    class AC_GAME_API MoveItemData
     {
     public:
         MoveItemData(Guild* guild, Player* player, uint8 container, uint8 slotId) : m_pGuild(guild), m_pPlayer(player),
@@ -609,7 +609,7 @@ private:
         ItemPosCountVec m_vec;
     };
 
-    class PlayerMoveItemData : public MoveItemData
+    class AC_GAME_API PlayerMoveItemData : public MoveItemData
     {
     public:
         PlayerMoveItemData(Guild* guild, Player* player, uint8 container, uint8 slotId) :
@@ -624,7 +624,7 @@ private:
         InventoryResult CanStore(Item* pItem, bool swap);
     };
 
-    class BankMoveItemData : public MoveItemData
+    class AC_GAME_API BankMoveItemData : public MoveItemData
     {
     public:
         BankMoveItemData(Guild* guild, Player* player, uint8 container, uint8 slotId) :
@@ -843,4 +843,5 @@ private:
 
     void _BroadcastEvent(GuildEvents guildEvent, uint64 guid, const char* param1 = NULL, const char* param2 = NULL, const char* param3 = NULL) const;
 };
+
 #endif

@@ -7,18 +7,17 @@
 #ifndef _OBJECT_POS_SELECTOR_H
 #define _OBJECT_POS_SELECTOR_H
 
-#include<Common.h>
-
-#include<map>
+#include "Common.h"
+#include <map>
 
 enum UsedPosType { USED_POS_PLUS, USED_POS_MINUS };
 
-inline UsedPosType operator ~(UsedPosType uptype)
+AC_GAME_API inline UsedPosType operator ~(UsedPosType uptype)
 {
     return uptype==USED_POS_PLUS ? USED_POS_MINUS : USED_POS_PLUS;
 }
 
-struct ObjectPosSelector
+struct AC_GAME_API ObjectPosSelector
 {
     struct UsedPos
     {
@@ -140,4 +139,5 @@ struct ObjectPosSelector
     bool  m_smallStepOk[2];
     UsedPosList::value_type const* m_smallStepNextUsedPos[2];
 };
+
 #endif

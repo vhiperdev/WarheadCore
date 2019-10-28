@@ -18,7 +18,7 @@ class Group;
 namespace lfg
 {
 
-class LFGPlayerScript : public PlayerScript
+class AC_GAME_API LFGPlayerScript : public PlayerScript
 {
     public:
         LFGPlayerScript();
@@ -31,7 +31,7 @@ class LFGPlayerScript : public PlayerScript
         void OnMapChanged(Player* player);
 };
 
-class LFGGroupScript : public GroupScript
+class AC_GAME_API LFGGroupScript : public GroupScript
 {
     public:
         LFGGroupScript();

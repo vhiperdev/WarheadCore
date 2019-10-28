@@ -29,7 +29,6 @@ MACRO(AC_ADD_SCRIPT_LOADER script_dec include)
         CU_ADD_GLOBAL("AC_ADD_SCRIPTS_LIST" "Add${script_dec}Scripts()\;")
     endif()
 
-
     if (NOT ${include} STREQUAL "")
         CU_GET_GLOBAL("AC_ADD_SCRIPTS_INCLUDE")
         if (NOT ";${AC_ADD_SCRIPTS_INCLUDE};" MATCHES ";${include};")
@@ -39,7 +38,7 @@ MACRO(AC_ADD_SCRIPT_LOADER script_dec include)
 ENDMACRO()
 
 #
-#AC_ADD_CONFIG_FILE
+# AC_ADD_CONFIG_FILE
 #
 MACRO(AC_ADD_CONFIG_FILE configFilePath)
     CU_GET_GLOBAL("MODULE_CONFIG_FILE_LIST")

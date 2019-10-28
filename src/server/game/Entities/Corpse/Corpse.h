@@ -18,6 +18,7 @@ enum CorpseType
     CORPSE_RESURRECTABLE_PVE = 1,
     CORPSE_RESURRECTABLE_PVP = 2
 };
+
 #define MAX_CORPSE_TYPE        3
 
 // Value equal client resurrection dialog show radius.
@@ -34,7 +35,7 @@ enum CorpseFlags
     CORPSE_FLAG_LOOTABLE    = 0x20
 };
 
-class Corpse : public WorldObject, public GridObject<Corpse>
+class AC_GAME_API Corpse : public WorldObject, public GridObject<Corpse>
 {
     public:
         explicit Corpse(CorpseType type = CORPSE_BONES);
@@ -70,4 +71,5 @@ class Corpse : public WorldObject, public GridObject<Corpse>
         time_t m_time;
         GridCoord _gridCoord;                                    // gride for corpse position for fast search
 };
+
 #endif

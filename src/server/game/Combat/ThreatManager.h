@@ -26,14 +26,14 @@ class SpellInfo;
 //==============================================================
 // Class to calculate the real threat based
 
-struct ThreatCalcHelper
+struct AC_GAME_API ThreatCalcHelper
 {
     static float calcThreat(Unit* hatedUnit, Unit* hatingUnit, float threat, SpellSchoolMask schoolMask = SPELL_SCHOOL_MASK_NORMAL, SpellInfo const* threatSpell = NULL);
     static bool isValidProcess(Unit* hatedUnit, Unit* hatingUnit, SpellInfo const* threatSpell = NULL);
 };
 
 //==============================================================
-class HostileReference : public Reference<Unit, ThreatManager>
+class AC_GAME_API HostileReference : public Reference<Unit, ThreatManager>
 {
     public:
         HostileReference(Unit* refUnit, ThreatManager* threatManager, float threat);
@@ -121,7 +121,7 @@ class HostileReference : public Reference<Unit, ThreatManager>
 //==============================================================
 class ThreatManager;
 
-class ThreatContainer
+class AC_GAME_API ThreatContainer
 {
         friend class ThreatManager;
 
@@ -178,7 +178,7 @@ class ThreatContainer
 
 //=================================================
 
-class ThreatManager
+class AC_GAME_API ThreatManager
 {
     public:
         friend class HostileReference;
@@ -262,7 +262,7 @@ class ThreatManager
 namespace Trinity
 {
     // Binary predicate for sorting HostileReferences based on threat value
-    class ThreatOrderPred
+    class AC_GAME_API ThreatOrderPred
     {
         public:
             ThreatOrderPred(bool ascending = false) : m_ascending(ascending) {}

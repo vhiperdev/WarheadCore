@@ -35,7 +35,7 @@ enum eEscortFaction
     FACTION_ESCORT_H_ACTIVE             = 2046
 };
 
-struct ScriptPointMove
+struct AC_GAME_API ScriptPointMove
 {
     uint32 uiCreatureEntry;
     uint32 uiPointId;
@@ -47,13 +47,14 @@ struct ScriptPointMove
 
 typedef std::vector<ScriptPointMove> ScriptPointVector;
 
-class SystemMgr
+class AC_GAME_API SystemMgr
 {
-        friend class ACE_Singleton<SystemMgr, ACE_Null_Mutex>;
         SystemMgr() {}
         ~SystemMgr() {}
 
     public:
+        static SystemMgr* instance();
+
         typedef std::unordered_map<uint32, ScriptPointVector> PointMoveMap;
 
         //Database
@@ -76,6 +77,6 @@ class SystemMgr
         static ScriptPointVector const _empty;
 };
 
-#define sScriptSystemMgr ACE_Singleton<SystemMgr, ACE_Null_Mutex>::instance()
+#define sScriptSystemMgr SystemMgr::instance()
 
 #endif

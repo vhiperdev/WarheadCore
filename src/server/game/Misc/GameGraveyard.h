@@ -5,7 +5,7 @@
 #include "SharedDefines.h"
 #include <ace/Singleton.h>
 
-struct GraveyardStruct
+struct AC_GAME_API GraveyardStruct
 {
     uint32 ID;
     uint32 Map;
@@ -16,7 +16,7 @@ struct GraveyardStruct
     std::wstring wnameLow;
 };
 
-struct GraveyardData
+struct AC_GAME_API GraveyardData
 {
     uint32 safeLocId;
     TeamId teamId;
@@ -26,11 +26,10 @@ typedef std::multimap<uint32, GraveyardData> WGGraveyardContainer;
 typedef std::pair<WGGraveyardContainer::const_iterator, WGGraveyardContainer::const_iterator> GraveyardMapBounds;
 typedef std::pair<WGGraveyardContainer::iterator, WGGraveyardContainer::iterator> GraveyardMapBoundsNonConst;
 
-class Graveyard
+class AC_GAME_API Graveyard
 {
-    friend class ACE_Singleton<Graveyard, ACE_Null_Mutex>;
-
 public:
+    static Graveyard* instance();
 
     typedef std::unordered_map<uint32, GraveyardStruct> GraveyardContainer;    
 
@@ -53,6 +52,6 @@ private:
     WGGraveyardContainer GraveyardStore;
 };
 
-#define sGraveyard ACE_Singleton<Graveyard, ACE_Null_Mutex>::instance()
+#define sGraveyard Graveyard::instance()
 
 #endif // _GAMEGRAVEYARD_H_

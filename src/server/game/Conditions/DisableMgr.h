@@ -42,11 +42,11 @@ enum SpellDisableTypes
 
 namespace DisableMgr
 {
-    void LoadDisables();
-    bool IsDisabledFor(DisableType type, uint32 entry, Unit const* unit, uint8 flags = 0);
-    void CheckQuestDisables();
-    bool IsVMAPDisabledFor(uint32 entry, uint8 flags);
-    bool IsPathfindingEnabled(const Map* map);
+    AC_GAME_API void LoadDisables();
+    AC_GAME_API bool IsDisabledFor(DisableType type, uint32 entry, Unit const* unit, uint8 flags = 0);
+    AC_GAME_API void CheckQuestDisables();
+    AC_GAME_API bool IsVMAPDisabledFor(uint32 entry, uint8 flags);
+    AC_GAME_API bool IsPathfindingEnabled(const Map* map);
 }
 
 #endif //TRINITY_DISABLEMGR_H

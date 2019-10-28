@@ -9,7 +9,8 @@
 
 namespace AIRegistry
 {
-    void Initialize(void);
+    AC_GAME_API void Initialize(void);
 }
+
 #endif
 

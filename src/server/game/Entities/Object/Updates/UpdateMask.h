@@ -11,7 +11,7 @@
 #include "Errors.h"
 #include "ByteBuffer.h"
 
-class UpdateMask
+class AC_GAME_API UpdateMask
 {
     public:
         /// Type representing how client reads update mask

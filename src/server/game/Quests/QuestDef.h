@@ -162,7 +162,7 @@ enum QuestSpecialFlags
     QUEST_SPECIAL_FLAGS_PLAYER_KILL          = 0x800    // Internal flag computed only
 };
 
-struct QuestLocale
+struct AC_GAME_API QuestLocale
 {
     QuestLocale() { ObjectiveText.resize(QUEST_OBJECTIVES_COUNT); }
 
@@ -176,12 +176,12 @@ struct QuestLocale
     std::vector< StringVector > ObjectiveText;
 };
 
-struct QuestRequestItemsLocale
+struct AC_GAME_API QuestRequestItemsLocale
 {
     std::vector<std::string> CompletionText;
 };
 
-struct QuestOfferRewardLocale
+struct AC_GAME_API QuestOfferRewardLocale
 {
     std::vector<std::string> RewardText;
 };
@@ -189,7 +189,7 @@ struct QuestOfferRewardLocale
 // This Quest class provides a convenient way to access a few pretotaled (cached) quest details,
 // all base quest information, and any utility functions such as generating the amount of
 // xp to give
-class Quest
+class AC_GAME_API Quest
 {
     friend class ObjectMgr;
     public:
@@ -386,7 +386,7 @@ class Quest
         uint32 SpecialFlags           = 0; // custom flags, not sniffed/WDB
 };
 
-struct QuestStatusData
+struct AC_GAME_API QuestStatusData
 {
     QuestStatusData(): Status(QUEST_STATUS_NONE), Timer(0), PlayerCount(0), Explored(false)
     {

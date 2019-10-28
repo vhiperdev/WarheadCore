@@ -50,6 +50,8 @@ public:
     RealmList();
     ~RealmList() { }
 
+    static RealmList* instance();
+
     void Initialize(uint32 updateInterval);
 
     void UpdateIfNeed();
@@ -69,5 +71,6 @@ private:
     time_t   m_NextUpdateTime;
 };
 
-#define sRealmList ACE_Singleton<RealmList, ACE_Null_Mutex>::instance()
+#define sRealmList RealmList::instance()
+
 #endif

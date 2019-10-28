@@ -16,6 +16,12 @@ OutdoorPvPMgr::OutdoorPvPMgr()
     //sLog->outDebug(LOG_FILTER_OUTDOORPVP, "Instantiating OutdoorPvPMgr");
 }
 
+OutdoorPvPMgr* OutdoorPvPMgr::instance()
+{
+    static OutdoorPvPMgr instance;
+    return &instance;
+}
+
 void OutdoorPvPMgr::Die()
 {
     //sLog->outDebug(LOG_FILTER_OUTDOORPVP, "Deleting OutdoorPvPMgr");
@@ -61,7 +67,7 @@ void OutdoorPvPMgr::InitOutdoorPvP()
         OutdoorPvPData* data = new OutdoorPvPData();
         OutdoorPvPTypes realTypeId = OutdoorPvPTypes(typeId);
         data->TypeId = realTypeId;
-        data->ScriptId = sObjectMgr->GetScriptId(fields[1].GetCString());
+        data->ScriptId = sObjectMgr->GetScriptId(fields[1].GetString());
         m_OutdoorPvPDatas[realTypeId] = data;
 
         ++count;

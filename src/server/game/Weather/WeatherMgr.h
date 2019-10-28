@@ -18,15 +18,15 @@ class Player;
 
 namespace WeatherMgr
 {
-    void LoadWeatherData();
+    AC_GAME_API void LoadWeatherData();
 
-    Weather* FindWeather(uint32 id);
-    Weather* AddWeather(uint32 zone_id);
-    void RemoveWeather(uint32 zone_id);
+    AC_GAME_API Weather* FindWeather(uint32 id);
+    AC_GAME_API Weather* AddWeather(uint32 zone_id);
+    AC_GAME_API void RemoveWeather(uint32 zone_id);
 
-    void SendFineWeatherUpdateToPlayer(Player* player);
+    AC_GAME_API void SendFineWeatherUpdateToPlayer(Player* player);
 
-    void Update(uint32 diff);
+    AC_GAME_API void Update(uint32 diff);
 }
 
 #endif

@@ -18,15 +18,15 @@ enum Direction
 
 class WorldPacket;
 
-class PacketLog
+class AC_GAME_API PacketLog
 {
-    friend class ACE_Singleton<PacketLog, ACE_Thread_Mutex>;
-
     private:
         PacketLog();
         ~PacketLog();
 
     public:
+        static PacketLog* instance();
+
         void Initialize();
         bool CanLogPacket() const { return (_file != NULL); }
         void LogPacket(WorldPacket const& packet, Direction direction);
@@ -35,5 +35,6 @@ class PacketLog
         FILE* _file;
 };
 
-#define sPacketLog ACE_Singleton<PacketLog, ACE_Thread_Mutex>::instance()
+#define sPacketLog PacketLog::instance()
+
 #endif

@@ -29,6 +29,12 @@ class ObjectRegistry
             return( iter == i_registeredObjects.end() ? NULL : iter->second );
         }
 
+        static ObjectRegistry<T, Key>* instance()
+        {
+            static ObjectRegistry<T, Key>* instance = new ObjectRegistry<T, Key>();
+            return instance;
+        }
+
         /// Inserts a registry item
         bool InsertItem(T *obj, Key key, bool override = false)
         {

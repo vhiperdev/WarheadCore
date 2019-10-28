@@ -27,7 +27,7 @@ enum BattlegroundRLObjects
     BG_RL_OBJECT_TYPE_BUFF_2    = 184664
 };
 
-class BattlegroundRL : public Battleground
+class AC_GAME_API BattlegroundRL : public Battleground
 {
     public:
         BattlegroundRL();
@@ -46,4 +46,5 @@ class BattlegroundRL : public Battleground
         void HandleKillPlayer(Player* player, Player* killer);
         bool HandlePlayerUnderMap(Player* player);
 };
+
 #endif

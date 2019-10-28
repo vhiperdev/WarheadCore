@@ -58,6 +58,12 @@ BattlegroundMgr::~BattlegroundMgr()
     DeleteAllBattlegrounds();
 }
 
+BattlegroundMgr* BattlegroundMgr::instance()
+{
+    static BattlegroundMgr instance;
+    return &instance;
+}
+
 void BattlegroundMgr::DeleteAllBattlegrounds()
 {
     while (!m_Battlegrounds.empty())
@@ -544,7 +550,7 @@ void BattlegroundMgr::CreateInitialBattlegrounds()
         float dist = fields[9].GetFloat();
         data.StartMaxDist = dist * dist;
 
-        data.scriptId = sObjectMgr->GetScriptId(fields[11].GetCString());
+        data.scriptId = sObjectMgr->GetScriptId(fields[11].GetString());
         data.BattlegroundName = bl->name[sWorld->GetDefaultDbcLocale()];
         data.MapID = bl->mapid[0];
 

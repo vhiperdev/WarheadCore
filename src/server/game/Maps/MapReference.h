@@ -10,7 +10,7 @@
 #include "Reference.h"
 #include "Map.h"
 
-class MapReference : public Reference<Map, Player>
+class AC_GAME_API MapReference : public Reference<Map, Player>
 {
     protected:
         void targetObjectBuildLink()

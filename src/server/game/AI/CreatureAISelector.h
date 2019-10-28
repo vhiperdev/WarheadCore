@@ -7,6 +7,8 @@
 #ifndef TRINITY_CREATUREAISELECTOR_H
 #define TRINITY_CREATUREAISELECTOR_H
 
+#include "Define.h"
+
 class CreatureAI;
 class Creature;
 class MovementGenerator;
@@ -15,9 +17,9 @@ class GameObject;
 
 namespace FactorySelector
 {
-    CreatureAI* selectAI(Creature*);
-    MovementGenerator* selectMovementGenerator(Creature*);
-    GameObjectAI* SelectGameObjectAI(GameObject*);
+    AC_GAME_API CreatureAI* selectAI(Creature*);
+    AC_GAME_API MovementGenerator* selectMovementGenerator(Creature*);
+    AC_GAME_API GameObjectAI* SelectGameObjectAI(GameObject*);
 }
 #endif
 

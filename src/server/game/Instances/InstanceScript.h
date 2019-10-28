@@ -77,19 +77,19 @@ enum BoundaryType
 
 typedef std::map<BoundaryType, float> BossBoundaryMap;
 
-struct DoorData
+struct AC_GAME_API DoorData
 {
     uint32 entry, bossId;
     DoorType type;
     uint32 boundary;
 };
 
-struct MinionData
+struct AC_GAME_API MinionData
 {
     uint32 entry, bossId;
 };
 
-struct BossInfo
+struct AC_GAME_API BossInfo
 {
     BossInfo() : state(TO_BE_DECIDED) {}
     EncounterState state;
@@ -98,7 +98,7 @@ struct BossInfo
     BossBoundaryMap boundary;
 };
 
-struct DoorInfo
+struct AC_GAME_API DoorInfo
 {
     explicit DoorInfo(BossInfo* _bossInfo, DoorType _type, BoundaryType _boundary)
         : bossInfo(_bossInfo), type(_type), boundary(_boundary) {}
@@ -107,7 +107,7 @@ struct DoorInfo
     BoundaryType boundary;
 };
 
-struct MinionInfo
+struct AC_GAME_API MinionInfo
 {
     explicit MinionInfo(BossInfo* _bossInfo) : bossInfo(_bossInfo) {}
     BossInfo* bossInfo;
@@ -118,7 +118,7 @@ typedef std::pair<DoorInfoMap::const_iterator, DoorInfoMap::const_iterator> Door
 
 typedef std::map<uint32 /*entry*/, MinionInfo> MinionInfoMap;
 
-class InstanceScript : public ZoneScript
+class AC_GAME_API InstanceScript : public ZoneScript
 {
     public:
 

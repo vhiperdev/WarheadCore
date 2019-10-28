@@ -16,7 +16,7 @@
 
 class Unit;
 
-class MovementGenerator
+class AC_GAME_API MovementGenerator
 {
     public:
         virtual ~MovementGenerator();
@@ -82,5 +82,4 @@ struct MovementGeneratorFactory : public SelectableMovement
 
 typedef FactoryHolder<MovementGenerator, MovementGeneratorType> MovementGeneratorCreator;
 typedef FactoryHolder<MovementGenerator, MovementGeneratorType>::FactoryHolderRegistry MovementGeneratorRegistry;
-typedef FactoryHolder<MovementGenerator, MovementGeneratorType>::FactoryHolderRepository MovementGeneratorRepository;
 #endif

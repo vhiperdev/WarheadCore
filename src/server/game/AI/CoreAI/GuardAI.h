@@ -11,7 +11,7 @@
 
 class Creature;
 
-class GuardAI : public ScriptedAI
+class AC_GAME_API GuardAI : public ScriptedAI
 {
     public:
         explicit GuardAI(Creature* creature);
@@ -22,4 +22,5 @@ class GuardAI : public ScriptedAI
         void EnterEvadeMode();
         void JustDied(Unit* killer);
 };
+
 #endif

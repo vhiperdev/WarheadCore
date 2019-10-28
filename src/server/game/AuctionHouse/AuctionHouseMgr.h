@@ -52,7 +52,7 @@ enum MailAuctionAnswers
     AUCTION_SALE_PENDING        = 6
 };
 
-struct AuctionEntry
+struct AC_GAME_API AuctionEntry
 {
     uint32 Id;
     uint32 auctioneer;                                      // creature low guid
@@ -85,7 +85,7 @@ struct AuctionEntry
 };
 
 //this class is used as auctionhouse instance
-class AuctionHouseObject
+class AC_GAME_API AuctionHouseObject
 {
   public:
     // Initialize storage
@@ -129,10 +129,8 @@ class AuctionHouseObject
     AuctionEntryMap::const_iterator next;
 };
 
-class AuctionHouseMgr
+class AC_GAME_API AuctionHouseMgr
 {
-    friend class ACE_Singleton<AuctionHouseMgr, ACE_Null_Mutex>;
-
     private:
         AuctionHouseMgr();
         ~AuctionHouseMgr();
@@ -140,6 +138,8 @@ class AuctionHouseMgr
     public:
 
         typedef std::unordered_map<uint32, Item*> ItemMap;
+
+        static AuctionHouseMgr* instance();
 
         AuctionHouseObject* GetAuctionsMap(uint32 factionTemplateId);
         AuctionHouseObject* GetBidsMap(uint32 factionTemplateId);
@@ -184,6 +184,6 @@ class AuctionHouseMgr
         ItemMap mAitems;
 };
 
-#define sAuctionMgr ACE_Singleton<AuctionHouseMgr, ACE_Null_Mutex>::instance()
+#define sAuctionMgr AuctionHouseMgr::instance()
 
 #endif

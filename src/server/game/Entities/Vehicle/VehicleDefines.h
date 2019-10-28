@@ -52,7 +52,7 @@ enum VehicleNPCs
     NPC_LITHE_STALKER                           = 30895
 };
 
-struct PassengerInfo
+struct AC_GAME_API PassengerInfo
 {
     uint64 Guid;
     bool IsUnselectable;
@@ -64,7 +64,7 @@ struct PassengerInfo
     }
 };
 
-struct VehicleSeat
+struct AC_GAME_API VehicleSeat
 {
     explicit VehicleSeat(VehicleSeatEntry const* seatInfo) : SeatInfo(seatInfo)
     {
@@ -77,7 +77,7 @@ struct VehicleSeat
     PassengerInfo Passenger;
 };
 
-struct VehicleAccessory
+struct AC_GAME_API VehicleAccessory
 {
     VehicleAccessory(uint32 entry, int8 seatId, bool isMinion, uint8 summonType, uint32 summonTime) :
         AccessoryEntry(entry), IsMinion(isMinion), SummonTime(summonTime), SeatId(seatId), SummonedType(summonType) {}
@@ -92,7 +92,7 @@ typedef std::vector<VehicleAccessory> VehicleAccessoryList;
 typedef std::map<uint32, VehicleAccessoryList> VehicleAccessoryContainer;
 typedef std::map<int8, VehicleSeat> SeatMap;
 
-class TransportBase
+class AC_GAME_API TransportBase
 {
 protected:
     TransportBase() { }

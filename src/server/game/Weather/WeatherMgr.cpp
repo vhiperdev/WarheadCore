@@ -122,7 +122,7 @@ void LoadWeatherData()
             }
         }
 
-        wzc.ScriptId = sObjectMgr->GetScriptId(fields[13].GetCString());
+        wzc.ScriptId = sObjectMgr->GetScriptId(fields[13].GetString());
 
         ++count;
     }

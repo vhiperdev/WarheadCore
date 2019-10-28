@@ -33,7 +33,7 @@ enum SocialFlag
     SOCIAL_FLAG_UNK         = 0x08                           // Unknown - does not appear to be RaF
 };
 
-struct FriendInfo
+struct AC_GAME_API FriendInfo
 {
     FriendStatus Status;
     uint8 Flags;
@@ -87,7 +87,7 @@ enum FriendsResult
 #define SOCIALMGR_FRIEND_LIMIT  50
 #define SOCIALMGR_IGNORE_LIMIT  50
 
-class PlayerSocial
+class AC_GAME_API PlayerSocial
 {
     friend class SocialMgr;
     public:
@@ -110,15 +110,15 @@ class PlayerSocial
         uint32 m_playerGUID;
 };
 
-class SocialMgr
+class AC_GAME_API SocialMgr
 {
-    friend class ACE_Singleton<SocialMgr, ACE_Null_Mutex>;
-
     private:
         SocialMgr();
         ~SocialMgr();
 
     public:
+        static SocialMgr* instance();
+
         // Misc
         void RemovePlayerSocial(uint32 guid) { m_socialMap.erase(guid); }
 
@@ -133,6 +133,6 @@ class SocialMgr
         SocialMap m_socialMap;
 };
 
-#define sSocialMgr ACE_Singleton<SocialMgr, ACE_Null_Mutex>::instance()
-#endif
+#define sSocialMgr SocialMgr::instance()
 
+#endif

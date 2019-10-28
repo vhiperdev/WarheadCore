@@ -11,7 +11,7 @@
 #include <string>
 #include <list>
 
-struct AddonInfo
+struct AC_GAME_API AddonInfo
 {
     AddonInfo(const std::string& name, uint8 enabled, uint32 crc, uint8 state, bool crcOrPubKey)
         : Name(name), Enabled(enabled), CRC(crc), State(state), UsePublicKeyOrCRC(crcOrPubKey) {}
@@ -23,7 +23,7 @@ struct AddonInfo
     bool UsePublicKeyOrCRC;
 };
 
-struct SavedAddon
+struct AC_GAME_API SavedAddon
 {
     SavedAddon(const std::string& name, uint32 crc) : Name(name)
     {
@@ -34,7 +34,7 @@ struct SavedAddon
     uint32 CRC;
 };
 
-struct BannedAddon
+struct AC_GAME_API BannedAddon
 {
     uint32 Id;
     uint8 NameMD5[16];
@@ -46,12 +46,12 @@ struct BannedAddon
 
 namespace AddonMgr
 {
-    void LoadFromDB();
-    void SaveAddon(AddonInfo const& addon);
-    SavedAddon const* GetAddonInfo(const std::string& name);
+    AC_GAME_API void LoadFromDB();
+    AC_GAME_API void SaveAddon(AddonInfo const& addon);
+    AC_GAME_API SavedAddon const* GetAddonInfo(const std::string& name);
 
     typedef std::list<BannedAddon> BannedAddonList;
-    BannedAddonList const* GetBannedAddons();
+    AC_GAME_API BannedAddonList const* GetBannedAddons();
 }
 
 #endif

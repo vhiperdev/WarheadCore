@@ -23,6 +23,8 @@ endif ()
 # Group sources
 GroupSources(${CMAKE_CURRENT_SOURCE_DIR})
 
+add_definitions(-DACORE_API_EXPORT_GAME)
+
 add_library(game-interface INTERFACE)
 
 CollectIncludeDirectories(
@@ -39,7 +41,7 @@ target_link_libraries(game-interface
   INTERFACE
     common)
 
-add_library(game STATIC
+add_library(game
   ${PRIVATE_SOURCES}
   ${ElunaLuaEngineFiles})
 
@@ -52,13 +54,26 @@ target_include_directories(game
 target_link_libraries(game
   PRIVATE
     acore-core-interface
-    game-interface
-    scripts-interface)
+    # scripts-interface
+  PUBLIC
+    game-interface)
 
 set_target_properties(game
   PROPERTIES
     FOLDER
       "server")
+
+if( BUILD_SHARED_LIBS )
+  if( UNIX )
+    install(TARGETS game
+      LIBRARY
+        DESTINATION lib)
+  elseif( WIN32 )
+    install(TARGETS game
+      RUNTIME
+        DESTINATION "${CMAKE_INSTALL_PREFIX}")
+  endif()
+endif()
 
 # Generate precompiled header
 if (USE_COREPCH)

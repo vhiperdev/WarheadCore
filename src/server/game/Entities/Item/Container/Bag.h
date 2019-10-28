@@ -13,7 +13,7 @@
 #include "Item.h"
 #include "ItemTemplate.h"
 
-class Bag : public Item
+class AC_GAME_API Bag : public Item
 {
     public:
 
@@ -54,9 +54,10 @@ class Bag : public Item
         Item* m_bagslot[MAX_BAG_SIZE];
 };
 
-inline Item* NewItemOrBag(ItemTemplate const* proto)
+AC_GAME_API inline Item* NewItemOrBag(ItemTemplate const* proto)
 {
     return (proto->InventoryType == INVTYPE_BAG) ? new Bag : new Item;
 }
+
 #endif
 

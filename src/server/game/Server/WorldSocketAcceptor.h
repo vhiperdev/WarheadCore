@@ -19,7 +19,7 @@
 
 #include "WorldSocket.h"
 
-class WorldSocketAcceptor : public ACE_Acceptor<WorldSocket, ACE_SOCK_Acceptor>
+class AC_GAME_API WorldSocketAcceptor : public ACE_Acceptor<WorldSocket, ACE_SOCK_Acceptor>
 {
 public:
     WorldSocketAcceptor(void) { }

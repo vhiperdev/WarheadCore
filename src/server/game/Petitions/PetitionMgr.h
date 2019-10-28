@@ -10,7 +10,7 @@ Xinef
 
 typedef std::map<uint32, uint32> SignatureMap;
 
-struct Petition
+struct AC_GAME_API Petition
 {
     uint32 petitionGuid;
     uint32 ownerGuid;
@@ -18,7 +18,7 @@ struct Petition
     std::string petitionName;
 };
 
-struct Signatures
+struct AC_GAME_API Signatures
 {
     uint32 petitionGuid;
     SignatureMap signatureMap;
@@ -27,15 +27,15 @@ struct Signatures
 typedef std::map<uint32, Signatures> SignatureContainer;
 typedef std::map<uint32, Petition> PetitionContainer;
 
-class PetitionMgr
+class AC_GAME_API PetitionMgr
 {
-    friend class ACE_Singleton<PetitionMgr, ACE_Thread_Mutex>;
-
     private:
         PetitionMgr();
         ~PetitionMgr();
 
     public:
+        static PetitionMgr* instance();
+
         void LoadPetitions();
         void LoadSignatures();
         
@@ -59,5 +59,5 @@ class PetitionMgr
         SignatureContainer SignatureStore;
 };
 
-#define sPetitionMgr ACE_Singleton<PetitionMgr, ACE_Thread_Mutex>::instance()
+#define sPetitionMgr PetitionMgr::instance()
 #endif

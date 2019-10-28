@@ -86,7 +86,7 @@ enum PlayerSpellState
     PLAYERSPELL_TEMPORARY = 4
 };
 
-struct PlayerSpell
+struct AC_GAME_API PlayerSpell
 {
     PlayerSpellState State : 7; // UPPER CASE TO CAUSE CONSOLE ERRORS (CHECK EVERY USAGE)!
     bool Active            : 1; // UPPER CASE TO CAUSE CONSOLE ERRORS (CHECK EVERY USAGE)! lower rank of a spell are not useable, but learnt
@@ -94,7 +94,7 @@ struct PlayerSpell
     bool IsInSpec(uint8 spec) { return (specMask & (1<<spec)); }
 };
 
-struct PlayerTalent
+struct AC_GAME_API PlayerTalent
 {
     PlayerSpellState State : 8; // UPPER CASE TO CAUSE CONSOLE ERRORS (CHECK EVERY USAGE)!
     uint8 specMask         : 8;
@@ -106,7 +106,7 @@ struct PlayerTalent
 #define SPEC_MASK_ALL 255
 
 // Spell modifier (used for modify other spells)
-struct SpellModifier
+struct AC_GAME_API SpellModifier
 {
     SpellModifier(Aura* _ownerAura = NULL) : op(SPELLMOD_DAMAGE), type(SPELLMOD_FLAT), charges(0), value(0), mask(), spellId(0), ownerAura(_ownerAura) {}
     SpellModOp   op   : 8;
@@ -124,7 +124,7 @@ typedef std::list<SpellModifier*> SpellModList;
 
 typedef std::list<uint64> WhisperListContainer;
 
-struct SpellCooldown
+struct AC_GAME_API SpellCooldown
 {
     uint32 end;
     uint32 itemid;
@@ -177,7 +177,7 @@ enum ReputationSource
 #define ACTION_BUTTON_TYPE(X)   ((uint32(X) & 0xFF000000) >> 24)
 #define MAX_ACTION_BUTTON_ACTION_VALUE (0x00FFFFFF+1)
 
-struct ActionButton
+struct AC_GAME_API ActionButton
 {
     ActionButton() : packedData(0), uState(ACTIONBUTTON_NEW) {}
 
@@ -203,7 +203,7 @@ struct ActionButton
 
 typedef std::map<uint8, ActionButton> ActionButtonList;
 
-struct PlayerCreateInfoItem
+struct AC_GAME_API PlayerCreateInfoItem
 {
     PlayerCreateInfoItem(uint32 id, uint32 amount) : item_id(id), item_amount(amount) {}
 
@@ -213,21 +213,21 @@ struct PlayerCreateInfoItem
 
 typedef std::list<PlayerCreateInfoItem> PlayerCreateInfoItems;
 
-struct PlayerClassLevelInfo
+struct AC_GAME_API PlayerClassLevelInfo
 {
     PlayerClassLevelInfo() : basehealth(0), basemana(0) {}
     uint16 basehealth;
     uint16 basemana;
 };
 
-struct PlayerClassInfo
+struct AC_GAME_API PlayerClassInfo
 {
     PlayerClassInfo() : levelInfo(NULL) { }
 
     PlayerClassLevelInfo* levelInfo;                        //[level-1] 0..MaxPlayerLevel-1
 };
 
-struct PlayerLevelInfo
+struct AC_GAME_API PlayerLevelInfo
 {
     PlayerLevelInfo() { for (uint8 i=0; i < MAX_STATS; ++i) stats[i] = 0; }
 
@@ -236,7 +236,7 @@ struct PlayerLevelInfo
 
 typedef std::list<uint32> PlayerCreateInfoSpells;
 
-struct PlayerCreateInfoAction
+struct AC_GAME_API PlayerCreateInfoAction
 {
     PlayerCreateInfoAction() : button(0), type(0), action(0) {}
     PlayerCreateInfoAction(uint8 _button, uint32 _action, uint8 _type) : button(_button), type(_type), action(_action) {}
@@ -248,7 +248,7 @@ struct PlayerCreateInfoAction
 
 typedef std::list<PlayerCreateInfoAction> PlayerCreateInfoActions;
 
-struct PlayerInfo
+struct AC_GAME_API PlayerInfo
 {
                                                             // existence checked by displayId != 0
     PlayerInfo() : mapId(0), areaId(0), positionX(0.0f), positionY(0.0f), positionZ(0.0f), orientation(0.0f), displayId_m(0), displayId_f(0), levelInfo(NULL) { }
@@ -268,7 +268,7 @@ struct PlayerInfo
     PlayerLevelInfo* levelInfo;                             //[level-1] 0..MaxPlayerLevel-1
 };
 
-struct PvPInfo
+struct AC_GAME_API PvPInfo
 {
     PvPInfo() : IsHostile(false), IsInHostileArea(false), IsInNoPvPArea(false), IsInFFAPvPArea(false), EndTimer(0) {}
 
@@ -279,7 +279,7 @@ struct PvPInfo
     time_t EndTimer;                    ///> Time when player unflags himself for PvP (flag removed after 5 minutes)
 };
 
-struct DuelInfo
+struct AC_GAME_API DuelInfo
 {
     DuelInfo() : initiator(NULL), opponent(NULL), startTimer(0), startTime(0), outOfBound(0), isMounted(false) {}
 
@@ -291,7 +291,7 @@ struct DuelInfo
     bool isMounted;
 };
 
-struct Areas
+struct AC_GAME_API Areas
 {
     uint32 areaID;
     uint32 areaFlag;
@@ -319,7 +319,7 @@ enum RuneType
     NUM_RUNE_TYPES  = 4
 };
 
-struct RuneInfo
+struct AC_GAME_API RuneInfo
 {
     uint8 BaseRune;
     uint8 CurrentRune;
@@ -328,7 +328,7 @@ struct RuneInfo
     AuraEffect const* ConvertAura;
 };
 
-struct Runes
+struct AC_GAME_API Runes
 {
     RuneInfo runes[MAX_RUNES];
     uint8 runeState;                                        // mask of available runes
@@ -343,7 +343,7 @@ struct Runes
     }
 };
 
-struct EnchantDuration
+struct AC_GAME_API EnchantDuration
 {
     EnchantDuration() : item(NULL), slot(MAX_ENCHANTMENT_SLOT), leftduration(0) {};
     EnchantDuration(Item* _item, EnchantmentSlot _slot, uint32 _leftduration) : item(_item), slot(_slot),
@@ -481,6 +481,7 @@ enum MirrorTimerType
     BREATH_TIMER       = 1,
     FIRE_TIMER         = 2
 };
+
 #define MAX_TIMERS      3
 #define DISABLED_MIRROR_TIMER   -1
 
@@ -547,7 +548,7 @@ enum SkillUpdateState
     SKILL_DELETED       = 3
 };
 
-struct SkillStatusData
+struct AC_GAME_API SkillStatusData
 {
     SkillStatusData(uint8 _pos, SkillUpdateState _uState) : pos(_pos), uState(_uState)
     {
@@ -650,7 +651,7 @@ enum EquipmentSetUpdateState
     EQUIPMENT_SET_DELETED   = 3
 };
 
-struct EquipmentSet
+struct AC_GAME_API EquipmentSet
 {
     EquipmentSet() : Guid(0), IgnoreMask(0), state(EQUIPMENT_SET_NEW)
     {
@@ -670,13 +671,14 @@ struct EquipmentSet
 
 typedef std::map<uint32, EquipmentSet> EquipmentSets;
 
-struct ItemPosCount
+struct AC_GAME_API ItemPosCount
 {
     ItemPosCount(uint16 _pos, uint32 _count) : pos(_pos), count(_count) {}
     bool isContainedIn(std::vector<ItemPosCount> const& vec) const;
     uint16 pos;
     uint32 count;
 };
+
 typedef std::vector<ItemPosCount> ItemPosCountVec;
 
 enum TradeSlots
@@ -841,7 +843,7 @@ enum PlayerCharmedAISpells
 #define MAX_PLAYER_SUMMON_DELAY                   (2*MINUTE)
 #define MAX_MONEY_AMOUNT                       (0x7FFFFFFF-1)
 
-struct AccessRequirement
+struct AC_GAME_API AccessRequirement
 {
     uint8  levelMin;
     uint8  levelMax;
@@ -919,7 +921,7 @@ enum EmoteBroadcastTextID
     EMOTE_BROADCAST_TEXT_ID_STRANGE_GESTURES = 91243
 };
 
-class PlayerTaxi
+class AC_GAME_API PlayerTaxi
 {
     public:
         PlayerTaxi();
@@ -982,7 +984,7 @@ std::ostringstream& operator<< (std::ostringstream& ss, PlayerTaxi const& taxi);
 class Player;
 
 // holder for Battleground data (pussywizard: not stored in db)
-struct BGData
+struct AC_GAME_API BGData
 {
     BGData() : bgInstanceID(0), bgTypeID(BATTLEGROUND_TYPE_NONE), bgTeamId(TEAM_NEUTRAL), bgQueueSlot(PLAYER_MAX_BATTLEGROUND_QUEUES), isInvited(false), bgIsRandom(false), bgAfkReportedCount(0), bgAfkReportedTimer(0) {}
 
@@ -999,7 +1001,7 @@ struct BGData
 };
 
 // holder for Entry Point data (pussywizard: stored in db)
-struct EntryPointData
+struct AC_GAME_API EntryPointData
 {
     EntryPointData() : mountSpell(0)
     {
@@ -1014,7 +1016,7 @@ struct EntryPointData
     bool HasTaxiPath() const { return !taxiPath.empty(); }
 };
 
-class TradeData
+class AC_GAME_API TradeData
 {
     public:                                                 // constructors
         TradeData(Player* player, Player* trader) :
@@ -1064,7 +1066,7 @@ class TradeData
         uint64     m_items[TRADE_SLOT_COUNT];               // traded itmes from m_player side including non-traded slot
 };
 
-class KillRewarder
+class AC_GAME_API KillRewarder
 {
 public:
     KillRewarder(Player* killer, Unit* victim, bool isBattleGround);
@@ -1096,7 +1098,7 @@ private:
     bool _isPvP;
 };
 
-class Player : public Unit, public GridObject<Player>
+class AC_GAME_API Player : public Unit, public GridObject<Player>
 {
     friend class WorldSession;
     friend void Item::AddToUpdateQueueOf(Player* player);
@@ -2978,8 +2980,8 @@ class Player : public Unit, public GridObject<Player>
         bool m_isInstantFlightOn;
 };
 
-void AddItemsSetItem(Player* player, Item* item);
-void RemoveItemsSetItem(Player* player, ItemTemplate const* proto);
+AC_GAME_API void AddItemsSetItem(Player* player, Item* item);
+AC_GAME_API void RemoveItemsSetItem(Player* player, ItemTemplate const* proto);
 
 // "the bodies of template functions must be made available in a header file"
 template <class T> T Player::ApplySpellMod(uint32 spellId, SpellModOp op, T &basevalue, Spell* spell, bool temporaryPet)
@@ -3050,4 +3052,5 @@ template <class T> T Player::ApplySpellMod(uint32 spellId, SpellModOp op, T &bas
     basevalue = T((float)basevalue + diff);
     return T(diff);
 }
+
 #endif

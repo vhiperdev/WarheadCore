@@ -35,6 +35,24 @@ target_compile_options(acore-compile-option-interface
     -Wno-narrowing
     -Wno-deprecated-register)
 
+if (BUILD_SHARED_LIBS)
+  # -fPIC is needed to allow static linking in shared libs.
+  # -fvisibility=hidden sets the default visibility to hidden to prevent exporting of all symbols.
+  target_compile_options(acore-compile-option-interface
+    INTERFACE
+      -fPIC)
+
+  target_compile_options(acore-hidden-symbols-interface
+    INTERFACE
+      -fvisibility=hidden)
+
+  # --no-undefined to throw errors when there are undefined symbols
+  # (caused through missing TRINITY_*_API macros).
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --no-undefined")
+
+  message(STATUS "Clang: Disallow undefined symbols")
+endif()
+
 target_compile_definitions(acore-compile-option-interface
   INTERFACE
     -DDEBUG=1)

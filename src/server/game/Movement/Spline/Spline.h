@@ -13,7 +13,7 @@
 
 namespace Movement {
 
-class SplineBase
+class AC_GAME_API SplineBase
 {
 public:
     typedef int index_type;

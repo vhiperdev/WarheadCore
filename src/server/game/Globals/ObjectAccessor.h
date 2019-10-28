@@ -75,7 +75,7 @@ template <class T> std::unordered_map< uint64, T* > HashMapHolder<T>::m_objectMa
 template <class T> typename HashMapHolder<T>::LockType HashMapHolder<T>::i_lock;
 
 // pussywizard:
-class DelayedCorpseAction
+class AC_GAME_API DelayedCorpseAction
 {
 public:
     DelayedCorpseAction(Corpse* corpse, uint8 action, uint32 mapId, uint32 instanceId) : _corpse(corpse), _action(action), _mapId(mapId), _instanceId(instanceId) {}
@@ -85,9 +85,8 @@ public:
     uint32 _instanceId;
 };
 
-class ObjectAccessor
+class AC_GAME_API ObjectAccessor
 {
-    friend class ACE_Singleton<ObjectAccessor, ACE_Null_Mutex>;
     private:
         ObjectAccessor();
         ~ObjectAccessor();
@@ -95,6 +94,7 @@ class ObjectAccessor
         ObjectAccessor& operator=(const ObjectAccessor&);
 
     public:
+        static ObjectAccessor* instance();
         // TODO: override these template functions for each holder type and add assertions
 
         template<class T> static T* GetObjectInOrOutOfWorld(uint64 guid, T* /*typeSpecifier*/)
@@ -277,5 +277,6 @@ class ObjectAccessor
         mutable ACE_Thread_Mutex DelayedCorpseLock;
 };
 
-#define sObjectAccessor ACE_Singleton<ObjectAccessor, ACE_Null_Mutex>::instance()
+#define sObjectAccessor ObjectAccessor::instance()
+
 #endif

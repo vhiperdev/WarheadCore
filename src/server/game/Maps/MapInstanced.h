@@ -11,7 +11,7 @@
 #include "InstanceSaveMgr.h"
 #include "DBCEnums.h"
 
-class MapInstanced : public Map
+class AC_GAME_API MapInstanced : public Map
 {
     friend class MapManager;
     public:

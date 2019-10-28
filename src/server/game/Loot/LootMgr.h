@@ -112,7 +112,7 @@ class LootStore;
 class ConditionMgr;
 struct Loot;
 
-struct LootStoreItem
+struct AC_GAME_API LootStoreItem
 {
     uint32  itemid;                                         // id of the item
     uint32  reference;                                      // referenced TemplateleId
@@ -138,7 +138,7 @@ struct LootStoreItem
 
 typedef std::set<uint32> AllowedLooterSet;
 
-struct LootItem
+struct AC_GAME_API LootItem
 {
     uint32  itemid;
     uint32  randomSuffix;
@@ -168,7 +168,7 @@ struct LootItem
     const AllowedLooterSet & GetAllowedLooters() const { return allowedGUIDs; }
 };
 
-struct QuestItem
+struct AC_GAME_API QuestItem
 {
     uint8   index;                                          // position in quest_items;
     bool    is_looted;
@@ -190,7 +190,7 @@ typedef std::unordered_map<uint32, LootTemplate*> LootTemplateMap;
 
 typedef std::set<uint32> LootIdSet;
 
-class LootStore
+class AC_GAME_API LootStore
 {
     public:
         explicit LootStore(char const* name, char const* entryName, bool ratesAllowed)
@@ -227,7 +227,7 @@ class LootStore
         bool m_ratesAllowed;
 };
 
-class LootTemplate
+class AC_GAME_API LootTemplate
 {
     class LootGroup;                                       // A set of loot definitions for items (refs are not allowed inside)
     typedef std::vector<LootGroup*> LootGroups;
@@ -265,7 +265,7 @@ class LootTemplate
 
 //=====================================================
 
-class LootValidatorRef :  public Reference<Loot, LootValidatorRef>
+class AC_GAME_API LootValidatorRef :  public Reference<Loot, LootValidatorRef>
 {
     public:
         LootValidatorRef() {}
@@ -275,7 +275,7 @@ class LootValidatorRef :  public Reference<Loot, LootValidatorRef>
 
 //=====================================================
 
-class LootValidatorRefManager : public RefManager<Loot, LootValidatorRef>
+class AC_GAME_API LootValidatorRefManager : public RefManager<Loot, LootValidatorRef>
 {
     public:
         typedef LinkedListHead::Iterator< LootValidatorRef > iterator;
@@ -295,7 +295,7 @@ struct LootView;
 ByteBuffer& operator<<(ByteBuffer& b, LootItem const& li);
 ByteBuffer& operator<<(ByteBuffer& b, LootView const& lv);
 
-struct Loot
+struct AC_GAME_API Loot
 {
     friend ByteBuffer& operator<<(ByteBuffer& b, LootView const& lv);
 
@@ -383,7 +383,7 @@ struct Loot
         LootValidatorRefManager i_LootValidatorRefManager;
 };
 
-struct LootView
+struct AC_GAME_API LootView
 {
     Loot &loot;
     Player* viewer;
@@ -392,48 +392,33 @@ struct LootView
         : loot(_loot), viewer(_viewer), permission(_permission) {}
 };
 
-extern LootStore LootTemplates_Creature;
-extern LootStore LootTemplates_Fishing;
-extern LootStore LootTemplates_Gameobject;
-extern LootStore LootTemplates_Item;
-extern LootStore LootTemplates_Mail;
-extern LootStore LootTemplates_Milling;
-extern LootStore LootTemplates_Pickpocketing;
-extern LootStore LootTemplates_Reference;
-extern LootStore LootTemplates_Skinning;
-extern LootStore LootTemplates_Disenchant;
-extern LootStore LootTemplates_Prospecting;
-extern LootStore LootTemplates_Spell;
+AC_GAME_API extern LootStore LootTemplates_Creature;
+AC_GAME_API extern LootStore LootTemplates_Fishing;
+AC_GAME_API extern LootStore LootTemplates_Gameobject;
+AC_GAME_API extern LootStore LootTemplates_Item;
+AC_GAME_API extern LootStore LootTemplates_Mail;
+AC_GAME_API extern LootStore LootTemplates_Milling;
+AC_GAME_API extern LootStore LootTemplates_Pickpocketing;
+AC_GAME_API extern LootStore LootTemplates_Reference;
+AC_GAME_API extern LootStore LootTemplates_Skinning;
+AC_GAME_API extern LootStore LootTemplates_Disenchant;
+AC_GAME_API extern LootStore LootTemplates_Prospecting;
+AC_GAME_API extern LootStore LootTemplates_Spell;
 
-void LoadLootTemplates_Creature();
-void LoadLootTemplates_Fishing();
-void LoadLootTemplates_Gameobject();
-void LoadLootTemplates_Item();
-void LoadLootTemplates_Mail();
-void LoadLootTemplates_Milling();
-void LoadLootTemplates_Pickpocketing();
-void LoadLootTemplates_Skinning();
-void LoadLootTemplates_Disenchant();
-void LoadLootTemplates_Prospecting();
+AC_GAME_API void LoadLootTemplates_Creature();
+AC_GAME_API void LoadLootTemplates_Fishing();
+AC_GAME_API void LoadLootTemplates_Gameobject();
+AC_GAME_API void LoadLootTemplates_Item();
+AC_GAME_API void LoadLootTemplates_Mail();
+AC_GAME_API void LoadLootTemplates_Milling();
+AC_GAME_API void LoadLootTemplates_Pickpocketing();
+AC_GAME_API void LoadLootTemplates_Skinning();
+AC_GAME_API void LoadLootTemplates_Disenchant();
+AC_GAME_API void LoadLootTemplates_Prospecting();
 
-void LoadLootTemplates_Spell();
-void LoadLootTemplates_Reference();
+AC_GAME_API void LoadLootTemplates_Spell();
+AC_GAME_API void LoadLootTemplates_Reference();
 
-inline void LoadLootTables()
-{
-    LoadLootTemplates_Creature();
-    LoadLootTemplates_Fishing();
-    LoadLootTemplates_Gameobject();
-    LoadLootTemplates_Item();
-    LoadLootTemplates_Mail();
-    LoadLootTemplates_Milling();
-    LoadLootTemplates_Pickpocketing();
-    LoadLootTemplates_Skinning();
-    LoadLootTemplates_Disenchant();
-    LoadLootTemplates_Prospecting();
-    LoadLootTemplates_Spell();
-
-    LoadLootTemplates_Reference();
-}
+AC_GAME_API void LoadLootTables();
 
 #endif

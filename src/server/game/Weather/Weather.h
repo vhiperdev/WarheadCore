@@ -18,14 +18,14 @@
 class Player;
 
 #define WEATHER_SEASONS 4
-struct WeatherSeasonChances
+struct AC_GAME_API WeatherSeasonChances
 {
     uint32 rainChance;
     uint32 snowChance;
     uint32 stormChance;
 };
 
-struct WeatherData
+struct AC_GAME_API WeatherData
 {
     WeatherSeasonChances data[WEATHER_SEASONS];
     uint32 ScriptId;
@@ -50,7 +50,7 @@ enum WeatherState
 };
 
 /// Weather for one zone
-class Weather
+class AC_GAME_API Weather
 {
     public:
 

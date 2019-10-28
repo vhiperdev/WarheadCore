@@ -23,12 +23,13 @@ class ReactorRunnable;
 class ACE_Event_Handler;
 
 /// Manages all sockets connected to peers and network threads
-class WorldSocketMgr
+class AC_GAME_API WorldSocketMgr
 {
 public:
     friend class WorldSocket;
-    friend class ACE_Singleton<WorldSocketMgr, ACE_Thread_Mutex>;
 
+    static WorldSocketMgr* instance();
+    
     /// Start network, listen at address:port .
     int StartNetwork(uint16 port, const char* address);
 
@@ -57,7 +58,7 @@ private:
     class WorldSocketAcceptor* m_Acceptor;
 };
 
-#define sWorldSocketMgr ACE_Singleton<WorldSocketMgr, ACE_Thread_Mutex>::instance()
+#define sWorldSocketMgr WorldSocketMgr::instance()
 
 #endif
 /// @}

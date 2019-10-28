@@ -16,7 +16,7 @@
 
 #define COUNT_OF_PLAYERS_TO_AVERAGE_WAIT_TIME 10
 
-struct GroupQueueInfo                                       // stores information about the group in queue (also used when joined as solo!)
+struct AC_GAME_API GroupQueueInfo                           // stores information about the group in queue (also used when joined as solo!)
 {
     std::set<uint64> Players;                               // player guid set
     TeamId  teamId;                                         // Player team (TEAM_ALLIANCE/TEAM_HORDE)
@@ -49,7 +49,8 @@ enum BattlegroundQueueGroupTypes
 };
 
 class Battleground;
-class BattlegroundQueue
+
+class AC_GAME_API BattlegroundQueue
 {
     public:
         BattlegroundQueue();
@@ -126,7 +127,7 @@ class BattlegroundQueue
     This class is used to invite player to BG again, when minute lasts from his first invitation
     it is capable to solve all possibilities
 */
-class BGQueueInviteEvent : public BasicEvent
+class AC_GAME_API BGQueueInviteEvent : public BasicEvent
 {
     public:
         BGQueueInviteEvent(uint64 pl_guid, uint32 BgInstanceGUID, BattlegroundTypeId BgTypeId, uint8 arenaType, uint32 removeTime) :
@@ -149,7 +150,7 @@ class BGQueueInviteEvent : public BasicEvent
     We must store removeInvite time in case player left queue and joined and is invited again
     We must store bgQueueTypeId, because battleground can be deleted already, when player entered it
 */
-class BGQueueRemoveEvent : public BasicEvent
+class AC_GAME_API BGQueueRemoveEvent : public BasicEvent
 {
     public:
         BGQueueRemoveEvent(uint64 pl_guid, uint32 bgInstanceGUID, BattlegroundQueueTypeId bgQueueTypeId, uint32 removeTime)

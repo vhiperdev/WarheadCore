@@ -14,7 +14,7 @@
 class Creature;
 class CreatureGroup;
 
-struct FormationInfo
+struct AC_GAME_API FormationInfo
 {
     uint32 leaderGUID;
     float follow_dist;
@@ -26,19 +26,21 @@ struct FormationInfo
 
 typedef std::unordered_map<uint32/*memberDBGUID*/, FormationInfo*>   CreatureGroupInfoType;
 
-class FormationMgr
+class AC_GAME_API FormationMgr
 {
-    friend class ACE_Singleton<FormationMgr, ACE_Null_Mutex>;
     public:
         FormationMgr() { }
         ~FormationMgr();
+        
+        static FormationMgr* instance();
+        
         void AddCreatureToGroup(uint32 group_id, Creature* creature);
         void RemoveCreatureFromGroup(CreatureGroup* group, Creature* creature);
         void LoadCreatureFormations();
         CreatureGroupInfoType CreatureGroupMap;
 };
 
-class CreatureGroup
+class AC_GAME_API CreatureGroup
 {
     public:
         // pussywizard: moved public to the top so it compiles and typedef is public
@@ -69,6 +71,6 @@ class CreatureGroup
         bool m_Formed;
 };
 
-#define sFormationMgr ACE_Singleton<FormationMgr, ACE_Null_Mutex>::instance()
+#define sFormationMgr FormationMgr::instance()
 
 #endif

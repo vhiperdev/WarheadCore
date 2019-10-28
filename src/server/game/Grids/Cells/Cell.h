@@ -15,7 +15,7 @@
 class Map;
 class WorldObject;
 
-struct CellArea
+struct AC_GAME_API CellArea
 {
     CellArea() {}
     CellArea(CellCoord low, CellCoord high) : low_bound(low), high_bound(high) {}
@@ -32,7 +32,7 @@ struct CellArea
     CellCoord high_bound;
 };
 
-struct Cell
+struct AC_GAME_API Cell
 {
     Cell() { data.All = 0; }
     Cell(Cell const& cell) { data.All = cell.data.All; }

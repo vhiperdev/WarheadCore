@@ -51,7 +51,7 @@ enum WardenCheckType
 #pragma pack(push,1)
 #endif
 
-struct WardenModuleUse
+struct AC_GAME_API WardenModuleUse
 {
     uint8 Command;
     uint8 ModuleId[16];
@@ -59,14 +59,14 @@ struct WardenModuleUse
     uint32 Size;
 };
 
-struct WardenModuleTransfer
+struct AC_GAME_API WardenModuleTransfer
 {
     uint8 Command;
     uint16 DataSize;
     uint8 Data[500];
 };
 
-struct WardenHashRequest
+struct AC_GAME_API WardenHashRequest
 {
     uint8 Command;
     uint8 Seed[16];
@@ -78,7 +78,7 @@ struct WardenHashRequest
 #pragma pack(pop)
 #endif
 
-struct ClientWardenModule
+struct AC_GAME_API ClientWardenModule
 {
     uint8 Id[16];
     uint8 Key[16];
@@ -88,7 +88,7 @@ struct ClientWardenModule
 
 class WorldSession;
 
-class Warden
+class AC_GAME_API Warden
 {
     friend class WardenWin;
     friend class WardenMac;

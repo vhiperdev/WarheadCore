@@ -228,7 +228,7 @@ enum BG_EY_FlagState
     BG_EY_FLAG_STATE_ON_GROUND    = 3
 };
 
-struct BattlegroundEYPointIconsStruct
+struct AC_GAME_API BattlegroundEYPointIconsStruct
 {
     BattlegroundEYPointIconsStruct(uint32 _WorldStateControlIndex, uint32 _WorldStateAllianceControlledIndex, uint32 _WorldStateHordeControlledIndex)
         : WorldStateControlIndex(_WorldStateControlIndex), WorldStateAllianceControlledIndex(_WorldStateAllianceControlledIndex), WorldStateHordeControlledIndex(_WorldStateHordeControlledIndex) {}
@@ -245,7 +245,7 @@ const float BG_EY_TriggerPositions[EY_POINTS_MAX][4] =
     {2284.48f, 1731.23f, 1189.99f, 2.89725f}    // MAGE_TOWER center
 };
 
-struct BattlegroundEYLosingPointStruct
+struct AC_GAME_API BattlegroundEYLosingPointStruct
 {
     BattlegroundEYLosingPointStruct(uint32 _SpawnNeutralObjectType, uint32 _DespawnObjectTypeAlliance, uint32 _MessageIdAlliance, uint32 _DespawnObjectTypeHorde, uint32 _MessageIdHorde)
         : SpawnNeutralObjectType(_SpawnNeutralObjectType),
@@ -260,7 +260,7 @@ struct BattlegroundEYLosingPointStruct
     uint32 MessageIdHorde;
 };
 
-struct BattlegroundEYCapturingPointStruct
+struct AC_GAME_API BattlegroundEYCapturingPointStruct
 {
     BattlegroundEYCapturingPointStruct(uint32 _DespawnNeutralObjectType, uint32 _SpawnObjectTypeAlliance, uint32 _MessageIdAlliance, uint32 _SpawnObjectTypeHorde, uint32 _MessageIdHorde, uint32 _GraveYardId)
         : DespawnNeutralObjectType(_DespawnNeutralObjectType),
@@ -305,7 +305,7 @@ const BattlegroundEYCapturingPointStruct m_CapturingPointTypes[EY_POINTS_MAX] =
     BattlegroundEYCapturingPointStruct(BG_EY_OBJECT_N_BANNER_MAGE_TOWER_CENTER, BG_EY_OBJECT_A_BANNER_MAGE_TOWER_CENTER, LANG_BG_EY_HAS_TAKEN_A_M_TOWER, BG_EY_OBJECT_H_BANNER_MAGE_TOWER_CENTER, LANG_BG_EY_HAS_TAKEN_H_M_TOWER, BG_EY_GRAVEYARD_MAGE_TOWER)
 };
 
-struct BattlegroundEYScore : public BattlegroundScore
+struct AC_GAME_API BattlegroundEYScore : public BattlegroundScore
 {
     BattlegroundEYScore(Player* player) : BattlegroundScore(player), FlagCaptures(0) { }
     ~BattlegroundEYScore() { }
@@ -314,7 +314,7 @@ struct BattlegroundEYScore : public BattlegroundScore
     uint32 GetAttr1() const final override { return FlagCaptures; }
 };
 
-class BattlegroundEY : public Battleground
+class AC_GAME_API BattlegroundEY : public Battleground
 {
     public:
         BattlegroundEY();
@@ -395,5 +395,6 @@ class BattlegroundEY : public Battleground
         uint8 _flagState;
         uint32 _flagCapturedObject;
 };
+
 #endif
 

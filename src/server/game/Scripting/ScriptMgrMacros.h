@@ -8,17 +8,20 @@
 #define SCR_REG_MAP(T) ScriptRegistry<T>::ScriptMap
 #define SCR_REG_ITR(T) ScriptRegistry<T>::ScriptMapIterator
 #define SCR_REG_LST(T) ScriptRegistry<T>::ScriptPointerList
+#define SCR_REG_VEC(T) ScriptRegistry<T>::Scripts
 
 // Utility macros for looping over scripts.
 #define FOR_SCRIPTS(T, C, E) \
     if (!SCR_REG_LST(T).empty()) \
         for (SCR_REG_ITR(T) C = SCR_REG_LST(T).begin(); \
             C != SCR_REG_LST(T).end(); ++C)
+
 #define FOR_SCRIPTS_RET(T, C, E, R) \
     if (SCR_REG_LST(T).empty()) \
         return R; \
     for (SCR_REG_ITR(T) C = SCR_REG_LST(T).begin(); \
         C != SCR_REG_LST(T).end(); ++C)
+
 #define FOREACH_SCRIPT(T) \
     FOR_SCRIPTS(T, itr, end) \
     itr->second
@@ -28,6 +31,7 @@
     T* V = ScriptRegistry<T>::GetScriptById(I); \
     if (!V) \
         return;
+
 #define GET_SCRIPT_RET(T, I, V, R) \
     T* V = ScriptRegistry<T>::GetScriptById(I); \
     if (!V) \

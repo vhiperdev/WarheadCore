@@ -11,7 +11,7 @@
 
 class Unit;
 
-class ReactorAI : public CreatureAI
+class AC_GAME_API ReactorAI : public CreatureAI
 {
     public:
 
@@ -22,4 +22,5 @@ class ReactorAI : public CreatureAI
 
         static int Permissible(const Creature*);
 };
+
 #endif

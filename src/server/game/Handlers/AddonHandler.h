@@ -12,17 +12,18 @@
 #include <ace/Singleton.h>
 #include "WorldPacket.h"
 
-class AddonHandler
+class AC_GAME_API AddonHandler
 {
-    /* Construction */
-    friend class ACE_Singleton<AddonHandler, ACE_Null_Mutex>;
+public:
     AddonHandler();
+    ~AddonHandler();
 
-    public:
-        ~AddonHandler();
-                                                            //build addon packet
-        bool BuildAddonPacket(WorldPacket* Source, WorldPacket* Target);
+    static AddonHandler* instance();
+    
+    //build addon packet
+    bool BuildAddonPacket(WorldPacket* Source, WorldPacket* Target);
 };
-#define sAddOnHandler ACE_Singleton<AddonHandler, ACE_Null_Mutex>::instance()
-#endif
 
+#define sAddOnHandler AddonHandler::instance()
+
+#endif

@@ -38,7 +38,7 @@ enum ObjectiveStates
 };
 
 // struct for go spawning
-struct go_type
+struct AC_GAME_API go_type
 {
     uint32 entry;
     uint32 map;
@@ -53,7 +53,7 @@ struct go_type
 };
 
 // struct for creature spawning
-struct creature_type
+struct AC_GAME_API creature_type
 {
     uint32 entry;
     uint32 map;
@@ -74,7 +74,7 @@ class OutdoorPvP;
 
 typedef std::set<uint64> PlayerSet;
 
-class OPvPCapturePoint
+class AC_GAME_API OPvPCapturePoint
 {
     public:
 
@@ -175,7 +175,7 @@ class OPvPCapturePoint
 };
 
 // base class for specific outdoor pvp handlers
-class OutdoorPvP : public ZoneScript
+class AC_GAME_API OutdoorPvP : public ZoneScript
 {
     friend class OutdoorPvPMgr;
 

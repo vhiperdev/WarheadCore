@@ -8,8 +8,6 @@
     \ingroup Trinityd
 */
 
-#include <ace/Sig_Handler.h>
-
 #include "Common.h"
 #include "GitRevision.h"
 #include "SignalHandler.h"
@@ -17,10 +15,10 @@
 #include "WorldRunnable.h"
 #include "WorldSocket.h"
 #include "WorldSocketMgr.h"
-#include "Configuration/Config.h"
-#include "Database/DatabaseEnv.h"
-#include "Database/DatabaseWorkerPool.h"
-
+#include "Config.h"
+#include "DatabaseEnv.h"
+#include "DatabaseWorkerPool.h"
+#include "ScriptLoader.h"
 #include "CliRunnable.h"
 #include "Log.h"
 #include "Master.h"
@@ -31,9 +29,9 @@
 #include "AuthSocket.h"
 #include "RealmList.h"
 #include "ScriptMgr.h"
-
 #include "BigNumber.h"
 #include "OpenSSLCrypto.h"
+#include <ace/Sig_Handler.h>
 
 #ifdef _WIN32
 #include "ServiceWin32.h"
@@ -108,6 +106,12 @@ public:
     }
 };
 
+Master* Master::instance()
+{
+    static Master instance;
+    return &instance;
+}
+
 /// Main function
 int Master::Run()
 {
@@ -157,6 +161,7 @@ int Master::Run()
     sWorld->SetConfigFileList(CONFIG_FILE_LIST);
 
     ///- Initialize the World
+    sScriptMgr->SetScriptLoader(AddScripts);
     sWorld->SetInitialWorldSettings();
 
     sScriptMgr->OnStartup();

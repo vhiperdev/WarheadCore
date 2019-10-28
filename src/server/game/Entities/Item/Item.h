@@ -17,7 +17,7 @@ class SpellInfo;
 class Bag;
 class Unit;
 
-struct ItemSetEffect
+struct AC_GAME_API ItemSetEffect
 {
     uint32 setid;
     uint32 item_count;
@@ -191,9 +191,9 @@ enum ItemUpdateState
 
 #define MAX_ITEM_SPELLS 5
 
-bool ItemCanGoIntoBag(ItemTemplate const* proto, ItemTemplate const* pBagProto);
+AC_GAME_API bool ItemCanGoIntoBag(ItemTemplate const* proto, ItemTemplate const* pBagProto);
 
-class Item : public Object
+class AC_GAME_API Item : public Object
 {
     public:
         static Item* CreateItem(uint32 item, uint32 count, Player const* player = NULL);
@@ -345,4 +345,5 @@ class Item : public Object
         uint32 m_paidExtendedCost;
         AllowedLooterSet allowedGUIDs;
 };
+
 #endif

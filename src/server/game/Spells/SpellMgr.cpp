@@ -15,7 +15,6 @@
 #include "Chat.h"
 #include "Spell.h"
 #include "BattlegroundMgr.h"
-#include "CreatureAI.h"
 #include "MapManager.h"
 #include "BattlegroundIC.h"
 #include "BattlefieldWG.h"
@@ -349,6 +348,12 @@ SpellMgr::SpellMgr()
 SpellMgr::~SpellMgr()
 {
     UnloadSpellInfoStore();
+}
+
+SpellMgr* SpellMgr::instance()
+{
+    static SpellMgr instance;
+    return &instance;
 }
 
 /// Some checks for spells, to prevent adding deprecated/broken spells for trainers, spell book, etc
@@ -2660,7 +2665,7 @@ void SpellMgr::LoadSpellInfoStore()
             mSpellInfoMap[i] = new SpellInfo(spellEntry);
     }
 
-    sLog->outString(">> Loaded spell custom attributes in %u ms", GetMSTimeDiffToNow(oldMSTime));
+    sLog->outString(">> Loaded %u spell custom attributes in %u ms", static_cast<uint32>(mSpellInfoMap.size()), GetMSTimeDiffToNow(oldMSTime));
     sLog->outString();
 }
 
@@ -3222,8 +3227,6 @@ void SpellMgr::LoadSpellCustomAttr()
         if (overrideAttr && allNonBinary)
             spellInfo->AttributesCu &= ~SPELL_ATTR0_CU_BINARY_SPELL;
     }
-
-    CreatureAI::FillAISpellInfo();
 
     sLog->outString(">> Loaded spell custom attributes in %u ms", GetMSTimeDiffToNow(oldMSTime));
     sLog->outString();

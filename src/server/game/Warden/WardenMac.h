@@ -16,7 +16,7 @@
 class WorldSession;
 class Warden;
 
-class WardenMac : public Warden
+class AC_GAME_API WardenMac : public Warden
 {
     public:
         WardenMac();

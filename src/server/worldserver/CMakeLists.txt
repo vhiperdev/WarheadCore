@@ -61,17 +61,18 @@ target_include_directories(worldserver
   PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR})
 
+target_link_libraries(worldserver-interface
+  INTERFACE
+    worldserver-interface
+    authserver-interface)
+
 target_link_libraries(worldserver
   PRIVATE
     acore-core-interface
     worldserver-interface
-    authserver-interface
-    game-interface
-    scripts-interface
   PUBLIC
-    game
-    common
     scripts
+    # game
     gsoap
     readline
     ${GPERFTOOLS_LIBRARIES})

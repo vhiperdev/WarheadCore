@@ -13,7 +13,7 @@ Xinef
 #include "LootMgr.h"
 #include "Item.h"
 
-struct StoredLootItem
+struct AC_GAME_API StoredLootItem
 {
     StoredLootItem(uint32 i, uint32 c, int32 ri, uint32 rs) : 
         itemid(i), count(c), randomPropertyId(ri), randomSuffix(rs) { }
@@ -28,15 +28,15 @@ struct StoredLootItem
 typedef std::list<StoredLootItem> StoredLootItemList;
 typedef std::unordered_map<uint32, StoredLootItemList> LootItemContainer;
 
-class LootItemStorage
+class AC_GAME_API LootItemStorage
 {
-    friend class ACE_Singleton<LootItemStorage, ACE_Thread_Mutex>;
-
     private:
         LootItemStorage();
         ~LootItemStorage();
 
     public:
+        static LootItemStorage* instance();
+
         void LoadStorageFromDB();
         void RemoveEntryFromDB(uint32 containerId, uint32 itemid, uint32 count);
 
@@ -51,5 +51,6 @@ class LootItemStorage
         LootItemContainer lootItemStore;
 };
 
-#define sLootItemStorage ACE_Singleton<LootItemStorage, ACE_Thread_Mutex>::instance()
+#define sLootItemStorage LootItemStorage::instance()
+
 #endif

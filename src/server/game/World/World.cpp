@@ -83,14 +83,14 @@
 #include "LuaEngine.h"
 #endif
 
-ACE_Atomic_Op<ACE_Thread_Mutex, bool> World::m_stopEvent = false;
-uint8 World::m_ExitCode = SHUTDOWN_EXIT_CODE;
-uint32 World::m_worldLoopCounter = 0;
-uint32 World::m_gameMSTime = 0;
+AC_GAME_API ACE_Atomic_Op<ACE_Thread_Mutex, bool> World::m_stopEvent = false;
+AC_GAME_API uint8 World::m_ExitCode = SHUTDOWN_EXIT_CODE;
+AC_GAME_API uint32 World::m_worldLoopCounter = 0;
+AC_GAME_API uint32 World::m_gameMSTime = 0;
 
-float World::m_MaxVisibleDistanceOnContinents = DEFAULT_VISIBILITY_DISTANCE;
-float World::m_MaxVisibleDistanceInInstances  = DEFAULT_VISIBILITY_INSTANCE;
-float World::m_MaxVisibleDistanceInBGArenas   = DEFAULT_VISIBILITY_BGARENAS;
+AC_GAME_API float World::m_MaxVisibleDistanceOnContinents = DEFAULT_VISIBILITY_DISTANCE;
+AC_GAME_API float World::m_MaxVisibleDistanceInInstances  = DEFAULT_VISIBILITY_INSTANCE;
+AC_GAME_API float World::m_MaxVisibleDistanceInBGArenas   = DEFAULT_VISIBILITY_BGARENAS;
 
 /// World constructor
 World::World()
@@ -158,6 +158,12 @@ World::~World()
     //TODO free addSessQueue
 }
 
+World* World::instance()
+{
+    static World instance;
+    return &instance;
+}
+
 /// Find a player in a specified zone
 Player* World::FindPlayerInZone(uint32 zone)
 {
@@ -182,7 +188,7 @@ bool World::IsClosed() const
 {
     return m_isClosed;
 }
-
+ 
 void World::SetClosed(bool val)
 {
     m_isClosed = val;
@@ -2285,6 +2291,8 @@ void World::Update(uint32 diff)
 
     SavingSystemMgr::Update(diff);
 }
+
+uint32 realmID;                                             ///< Id of the realm
 
 void World::ForceGameEventUpdate()
 {

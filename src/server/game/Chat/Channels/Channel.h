@@ -108,7 +108,7 @@ enum ChannelMemberFlags
     // 0x80
 };
 
-class ChannelRights
+class AC_GAME_API ChannelRights
 {
 public:
     ChannelRights() : flags(0), speakDelay(0) {}
@@ -133,9 +133,9 @@ enum eChannelRights
     CHANNEL_RIGHT_DONT_PRESERVE             = 0x100,
 };
 
-class Channel
+class AC_GAME_API Channel
 {
-    struct PlayerInfo
+    struct AC_GAME_API PlayerInfo
     {
         uint64 player;
         uint8 flags;

@@ -22,7 +22,7 @@ enum CreatureTextRange
     TEXT_RANGE_WORLD    = 4
 };
 
-struct CreatureTextEntry
+struct AC_GAME_API CreatureTextEntry
 {
     uint32 entry;
     uint8 group;
@@ -38,12 +38,12 @@ struct CreatureTextEntry
     uint32 BroadcastTextId;
 };
 
-struct CreatureTextLocale
+struct AC_GAME_API CreatureTextLocale
 {
     StringVector Text;
 };
 
-struct CreatureTextId
+struct AC_GAME_API CreatureTextId
 {
     CreatureTextId(uint32 e, uint32 g, uint32 i) : entry(e), textGroup(g), textId(i)
     {
@@ -70,12 +70,13 @@ typedef std::vector<uint8> CreatureTextRepeatIds;
 typedef std::unordered_map<uint8, CreatureTextRepeatIds> CreatureTextRepeatGroup;
 typedef std::unordered_map<uint64, CreatureTextRepeatGroup> CreatureTextRepeatMap;//guid based
 
-class CreatureTextMgr
+class AC_GAME_API CreatureTextMgr
 {
-    friend class ACE_Singleton<CreatureTextMgr, ACE_Null_Mutex>;
     CreatureTextMgr() { }
 
     public:
+        static CreatureTextMgr* instance();
+
         ~CreatureTextMgr() { }
         void LoadCreatureTexts();
         void LoadCreatureTextLocales();
@@ -103,7 +104,7 @@ class CreatureTextMgr
         LocaleCreatureTextMap mLocaleTextMap;
 };
 
-#define sCreatureTextMgr ACE_Singleton<CreatureTextMgr, ACE_Null_Mutex>::instance()
+#define sCreatureTextMgr CreatureTextMgr::instance()
 
 template<class Builder>
 class CreatureTextLocalizer

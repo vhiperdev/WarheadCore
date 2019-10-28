@@ -30,7 +30,7 @@ class Player;
 class WorldSocket;
 class SystemMgr;
 
-extern uint32 realmID;
+AC_GAME_API extern uint32 realmID;
 
 // ServerMessages.dbc
 enum ServerMessageType
@@ -496,7 +496,7 @@ enum WorldStates
 };
 
 /// Storage class for commands issued for delayed execution
-struct CliCommandHolder
+struct AC_GAME_API CliCommandHolder
 {
     typedef void Print(void*, const char*);
     typedef void CommandFinished(void*, bool success);
@@ -523,7 +523,7 @@ typedef std::unordered_map<uint32, WorldSession*> SessionMap;
 #define WORLD_SLEEP_CONST 10
 
 // xinef: global storage
-struct GlobalPlayerData
+struct AC_GAME_API GlobalPlayerData
 {
     uint32 guidLow;
     uint32 accountId;
@@ -556,13 +556,15 @@ struct PetitionData
 };
 
 /// The World
-class World
+class AC_GAME_API World
 {
     public:
-        static uint32 m_worldLoopCounter;
-
         World();
         ~World();
+
+        static World* instance();
+
+        static uint32 m_worldLoopCounter;
 
         WorldSession* FindSession(uint32 id) const;
         WorldSession* FindOfflineSession(uint32 id) const;
@@ -893,7 +895,7 @@ class World
 
         std::string m_configFileList;
 };
-
-#define sWorld ACE_Singleton<World, ACE_Null_Mutex>::instance()
+ 
+#define sWorld World::instance()
 #endif
 /// @}

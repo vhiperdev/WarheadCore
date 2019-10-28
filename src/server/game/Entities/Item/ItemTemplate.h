@@ -568,19 +568,20 @@ inline uint8 ItemSubClassToDurabilityMultiplierId(uint32 ItemClass, uint32 ItemS
 #pragma pack(push, 1)
 #endif
 
-struct _Damage
+struct AC_GAME_API _Damage
 {
     float   DamageMin;
     float   DamageMax;
     uint32  DamageType;                                     // id from Resistances.dbc
 };
 
-struct _ItemStat
+struct AC_GAME_API _ItemStat
 {
     uint32  ItemStatType;
     int32   ItemStatValue;
 };
-struct _Spell
+
+struct AC_GAME_API _Spell
 {
     int32 SpellId;                                         // id from Spell.dbc
     uint32 SpellTrigger;
@@ -591,7 +592,7 @@ struct _Spell
     int32  SpellCategoryCooldown;
 };
 
-struct _Socket
+struct AC_GAME_API _Socket
 {
     uint32 Color;
     uint32 Content;
@@ -609,7 +610,7 @@ struct _Socket
 #define MAX_ITEM_PROTO_SPELLS  5
 #define MAX_ITEM_PROTO_STATS  10
 
-struct ItemTemplate
+struct AC_GAME_API ItemTemplate
 {
     uint32 ItemId;
     uint32 Class;                                           // id from ItemClass.dbc
@@ -819,19 +820,19 @@ struct ItemTemplate
 // Benchmarked: Faster than std::map (insert/find)
 typedef std::unordered_map<uint32, ItemTemplate> ItemTemplateContainer;
 
-struct ItemLocale
+struct AC_GAME_API ItemLocale
 {
     StringVector Name;
     StringVector Description;
 };
 
-struct ItemSetNameEntry
+struct AC_GAME_API ItemSetNameEntry
 {
     std::string name;
     uint32 InventoryType;
 };
 
-struct ItemSetNameLocale
+struct AC_GAME_API ItemSetNameLocale
 {
     StringVector Name;
 };

@@ -261,7 +261,7 @@ enum ProcAttributes
     PROC_ATTR_REQ_EXP_OR_HONOR   = 0x0000010,
 };
 
-struct SpellProcEventEntry
+struct AC_GAME_API SpellProcEventEntry
 {
     uint32      schoolMask;                                 // if nonzero - bit mask for matching proc condition based on spell candidate's school: Fire=2, Mask=1<<(2-1)=2
     uint32      spellFamilyName;                            // if nonzero - for matching proc condition based on candidate spell's SpellFamilyNamer value
@@ -275,7 +275,7 @@ struct SpellProcEventEntry
 
 typedef std::unordered_map<uint32, SpellProcEventEntry> SpellProcEventMap;
 
-struct SpellProcEntry
+struct AC_GAME_API SpellProcEntry
 {
     uint32      schoolMask;                                 // if nonzero - bitmask for matching proc condition based on spell's school
     uint32      spellFamilyName;                            // if nonzero - for matching proc condition based on candidate spell's SpellFamilyName
@@ -293,7 +293,7 @@ struct SpellProcEntry
 
 typedef std::unordered_map<uint32, SpellProcEntry> SpellProcMap;
 
-struct SpellEnchantProcEntry
+struct AC_GAME_API SpellEnchantProcEntry
 {
     uint32      customChance;
     float       PPMChance;
@@ -302,7 +302,7 @@ struct SpellEnchantProcEntry
 
 typedef std::unordered_map<uint32, SpellEnchantProcEntry> SpellEnchantProcEventMap;
 
-struct SpellBonusEntry
+struct AC_GAME_API SpellBonusEntry
 {
     float  direct_damage;
     float  dot_damage;
@@ -345,7 +345,7 @@ enum SpellGroupStackFlags
     SPELL_GROUP_STACK_FLAG_FORCED_WEAKEST       = 0x200,
 };
 
-struct SpellStackInfo
+struct AC_GAME_API SpellStackInfo
 {
     uint32 groupId;
     SpellGroupSpecialFlags specialFlags;
@@ -354,9 +354,7 @@ struct SpellStackInfo
 typedef std::map<uint32, SpellStackInfo> SpellGroupMap;
 typedef std::map<uint32, SpellGroupStackFlags> SpellGroupStackMap;
 
-
-
-struct SpellThreatEntry
+struct AC_GAME_API SpellThreatEntry
 {
     int32       flatMod;                                    // flat threat-value for this Spell  - default: 0
     float       pctMod;                                     // threat-multiplier for this Spell  - default: 1.0f
@@ -367,7 +365,7 @@ typedef std::map<uint32, SpellThreatEntry> SpellThreatMap;
 typedef std::map<uint32, float> SpellMixologyMap;
 
 // coordinates for spells (accessed using SpellMgr functions)
-struct SpellTargetPosition
+struct AC_GAME_API SpellTargetPosition
 {
     uint32 target_mapId;
     float  target_X;
@@ -441,7 +439,7 @@ enum EffectRadiusIndex
 };
 
 // Spell pet auras
-class PetAura
+class AC_GAME_API PetAura
 {
     private:
         typedef std::unordered_map<uint32, uint32> PetAuraMap;
@@ -498,7 +496,7 @@ enum ICCBuff
     ICC_RACEMASK_ALLIANCE = 1101
 };
 
-struct SpellArea
+struct AC_GAME_API SpellArea
 {
     uint32 spellId;
     uint32 areaId;                                          // zone/subzone/or 0 is not limited to zone
@@ -525,7 +523,7 @@ typedef std::pair<SpellAreaForAuraMap::const_iterator, SpellAreaForAuraMap::cons
 typedef std::pair<SpellAreaForAreaMap::const_iterator, SpellAreaForAreaMap::const_iterator>  SpellAreaForAreaMapBounds;
 
 // Spell rank chain  (accessed using SpellMgr functions)
-struct SpellChainNode
+struct AC_GAME_API SpellChainNode
 {
     SpellInfo const* prev;
     SpellInfo const* next;
@@ -545,7 +543,7 @@ typedef std::multimap<uint32, uint32> SpellsRequiringSpellMap;
 typedef std::pair<SpellsRequiringSpellMap::const_iterator, SpellsRequiringSpellMap::const_iterator> SpellsRequiringSpellMapBounds;
 
 // Spell learning properties (accessed using SpellMgr functions)
-struct SpellLearnSkillNode
+struct AC_GAME_API SpellLearnSkillNode
 {
     uint16 skill;
     uint16 step;
@@ -563,7 +561,7 @@ typedef std::map<uint32, PetLevelupSpellSet> PetLevelupSpellMap;
 
 typedef std::map<uint32, uint32> SpellDifficultySearcherMap;
 
-struct PetDefaultSpellsEntry
+struct AC_GAME_API PetDefaultSpellsEntry
 {
     uint32 spellid[MAX_CREATURE_SPELL_DATA_SLOT];
 };
@@ -578,7 +576,7 @@ typedef std::vector<SpellInfo*> SpellInfoMap;
 
 typedef std::map<int32, std::vector<int32> > SpellLinkedMap;
 
-bool IsPrimaryProfessionSkill(uint32 skill);
+AC_GAME_API bool IsPrimaryProfessionSkill(uint32 skill);
 
 inline bool IsProfessionSkill(uint32 skill)
 {
@@ -590,20 +588,19 @@ inline bool IsProfessionOrRidingSkill(uint32 skill)
     return  IsProfessionSkill(skill) || skill == SKILL_RIDING;
 }
 
-bool IsPartOfSkillLine(uint32 skillId, uint32 spellId);
+AC_GAME_API bool IsPartOfSkillLine(uint32 skillId, uint32 spellId);
 
 // spell diminishing returns
-DiminishingGroup GetDiminishingReturnsGroupForSpell(SpellInfo const* spellproto, bool triggered);
-DiminishingReturnsType GetDiminishingReturnsGroupType(DiminishingGroup group);
-DiminishingLevels GetDiminishingReturnsMaxLevel(DiminishingGroup group);
-int32 GetDiminishingReturnsLimitDuration(DiminishingGroup group, SpellInfo const* spellproto);
-bool IsDiminishingReturnsGroupDurationLimited(DiminishingGroup group);
+AC_GAME_API DiminishingGroup GetDiminishingReturnsGroupForSpell(SpellInfo const* spellproto, bool triggered);
+AC_GAME_API DiminishingReturnsType GetDiminishingReturnsGroupType(DiminishingGroup group);
+AC_GAME_API DiminishingLevels GetDiminishingReturnsMaxLevel(DiminishingGroup group);
+AC_GAME_API int32 GetDiminishingReturnsLimitDuration(DiminishingGroup group, SpellInfo const* spellproto);
+AC_GAME_API bool IsDiminishingReturnsGroupDurationLimited(DiminishingGroup group);
 
 typedef std::set<uint32> TalentAdditionalSet;
 
-class SpellMgr
+class AC_GAME_API SpellMgr
 {
-    friend class ACE_Singleton<SpellMgr, ACE_Null_Mutex>;
     // Constructors
     private:
         SpellMgr();
@@ -611,6 +608,8 @@ class SpellMgr
 
     // Accessors (const or static functions)
     public:
+        static SpellMgr* instance();
+
         // Spell correctness for client using
         static bool ComputeIsSpellValid(SpellInfo const* spellInfo, bool msg = true);
         static bool IsSpellValid(SpellInfo const* spellInfo);
@@ -755,6 +754,6 @@ class SpellMgr
         TalentAdditionalSet        mTalentSpellAdditionalSet;
 };
 
-#define sSpellMgr ACE_Singleton<SpellMgr, ACE_Null_Mutex>::instance()
+#define sSpellMgr SpellMgr::instance()
 
 #endif

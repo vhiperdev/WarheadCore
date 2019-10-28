@@ -7,9 +7,9 @@
 #ifndef THREADING_H
 #define THREADING_H
 
+#include "Define.h"
 #include <thread>
 #include <atomic>
-
 #include <thread>
 #include <atomic>
 

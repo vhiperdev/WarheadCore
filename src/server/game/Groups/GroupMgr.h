@@ -9,14 +9,15 @@
 
 #include "Group.h"
 
-class GroupMgr
+class AC_GAME_API GroupMgr
 {
-    friend class ACE_Singleton<GroupMgr, ACE_Null_Mutex>;
 private:
     GroupMgr();
     ~GroupMgr();
 
 public:
+    static GroupMgr* instance();
+    
     typedef std::map<uint32, Group*> GroupContainer;
 
     Group* GetGroupByGUID(uint32 guid) const;
@@ -37,6 +38,6 @@ protected:
     GroupContainer   GroupStore;
 };
 
-#define sGroupMgr ACE_Singleton<GroupMgr, ACE_Null_Mutex>::instance()
+#define sGroupMgr GroupMgr::instance()
 
 #endif

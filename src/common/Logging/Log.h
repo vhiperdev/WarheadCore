@@ -96,13 +96,13 @@ const int Colors = int(WHITE)+1;
 
 class AC_COMMON_API Log
 {
-    friend class ACE_Singleton<Log, ACE_Thread_Mutex>;
-
     private:
         Log();
         ~Log();
 
     public:
+        static Log* instance();
+        
         void Initialize();
 
         void ReloadConfig();
@@ -194,7 +194,7 @@ class AC_COMMON_API Log
         DebugLogFilters m_DebugLogMask;
 };
 
-#define sLog ACE_Singleton<Log, ACE_Thread_Mutex>::instance()
+#define sLog Log::instance()
 
 #endif
 

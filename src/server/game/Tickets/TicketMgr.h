@@ -74,7 +74,7 @@ enum TicketType
     TICKET_TYPE_CHARACTER_DELETED = 2,
 };
 
-class GmTicket
+class AC_GAME_API GmTicket
 {
 public:
     GmTicket();
@@ -169,17 +169,18 @@ private:
     std::string _response;
     std::string _chatLog; // No need to store in db, will be refreshed every session client side
 };
+
 typedef std::map<uint32, GmTicket*> GmTicketList;
 
-class TicketMgr
+class AC_GAME_API TicketMgr
 {
-    friend class ACE_Singleton<TicketMgr, ACE_Null_Mutex>;
-
 private:
     TicketMgr();
     ~TicketMgr();
 
 public:
+    static TicketMgr* instance();
+    
     void LoadTickets();
     void LoadSurveys();
 
@@ -246,6 +247,6 @@ protected:
     uint64 _lastChange;
 };
 
-#define sTicketMgr ACE_Singleton<TicketMgr, ACE_Null_Mutex>::instance()
+#define sTicketMgr TicketMgr::instance()
 
 #endif // _TICKETMGR_H

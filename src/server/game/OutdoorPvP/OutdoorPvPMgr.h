@@ -18,22 +18,22 @@ class Creature;
 class ZoneScript;
 struct GossipMenuItems;
 
-struct OutdoorPvPData
+struct AC_GAME_API OutdoorPvPData
 {
     OutdoorPvPTypes TypeId;
     uint32 ScriptId;
 };
 
 // class to handle player enter / leave / areatrigger / GO use events
-class OutdoorPvPMgr
+class AC_GAME_API OutdoorPvPMgr
 {
-    friend class ACE_Singleton<OutdoorPvPMgr, ACE_Null_Mutex>;
-
     private:
         OutdoorPvPMgr();
         ~OutdoorPvPMgr() {};
 
     public:
+        static OutdoorPvPMgr* instance();
+
         // create outdoor pvp events
         void InitOutdoorPvP();
 
@@ -93,6 +93,6 @@ class OutdoorPvPMgr
         uint32 m_UpdateTimer;
 };
 
-#define sOutdoorPvPMgr ACE_Singleton<OutdoorPvPMgr, ACE_Null_Mutex>::instance()
+#define sOutdoorPvPMgr OutdoorPvPMgr::instance()
 
 #endif /*OUTDOOR_PVP_MGR_H_*/

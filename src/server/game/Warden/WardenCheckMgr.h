@@ -17,7 +17,7 @@ enum WardenActions
     WARDEN_ACTION_BAN
 };
 
-struct WardenCheck
+struct AC_GAME_API WardenCheck
 {
     uint8 Type;
     BigNumber Data;
@@ -29,18 +29,19 @@ struct WardenCheck
     enum WardenActions Action;
 };
 
-struct WardenCheckResult
+struct AC_GAME_API WardenCheckResult
 {
     BigNumber Result;                                       // MEM_CHECK
 };
 
-class WardenCheckMgr
+class AC_GAME_API WardenCheckMgr
 {
-    friend class ACE_Singleton<WardenCheckMgr, ACE_Null_Mutex>;
     WardenCheckMgr();
     ~WardenCheckMgr();
 
     public:
+        static WardenCheckMgr* instance();
+
         // We have a linear key without any gaps, so we use vector for fast access
         typedef std::vector<WardenCheck*> CheckContainer;
         typedef std::map<uint32, WardenCheckResult*> CheckResultContainer;
@@ -61,6 +62,6 @@ class WardenCheckMgr
         CheckResultContainer CheckResultStore;
 };
 
-#define sWardenCheckMgr ACE_Singleton<WardenCheckMgr, ACE_Null_Mutex>::instance()
+#define sWardenCheckMgr WardenCheckMgr::instance()
 
 #endif

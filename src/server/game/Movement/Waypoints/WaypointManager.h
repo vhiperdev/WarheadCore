@@ -21,7 +21,7 @@ enum WaypointMoveType
     WAYPOINT_MOVE_TYPE_MAX
 };
 
-struct WaypointData
+struct AC_GAME_API WaypointData
 {
     uint32 id;
     float x, y, z, orientation;
@@ -34,11 +34,11 @@ struct WaypointData
 typedef std::vector<WaypointData*> WaypointPath;
 typedef std::unordered_map<uint32, WaypointPath> WaypointPathContainer;
 
-class WaypointMgr
+class AC_GAME_API WaypointMgr
 {
-        friend class ACE_Singleton<WaypointMgr, ACE_Null_Mutex>;
-
     public:
+        static WaypointMgr* instance();
+
         // Attempts to reload a single path from database
         void ReloadPath(uint32 id);
 
@@ -63,6 +63,6 @@ class WaypointMgr
         WaypointPathContainer _waypointStore;
 };
 
-#define sWaypointMgr ACE_Singleton<WaypointMgr, ACE_Null_Mutex>::instance()
+#define sWaypointMgr WaypointMgr::instance()
 
 #endif

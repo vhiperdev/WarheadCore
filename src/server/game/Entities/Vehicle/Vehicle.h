@@ -15,7 +15,7 @@
 struct VehicleEntry;
 class Unit;
 
-class Vehicle : public TransportBase
+class AC_GAME_API Vehicle : public TransportBase
 {
     public:
         void Install();

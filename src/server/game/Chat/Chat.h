@@ -22,7 +22,7 @@ class WorldObject;
 
 struct GameTele;
 
-class ChatCommand
+class AC_GAME_API ChatCommand
 {
     typedef bool(*pHandler)(ChatHandler*, char const*);
 
@@ -38,7 +38,7 @@ class ChatCommand
         std::vector<ChatCommand> ChildCommands;
 };
 
-class ChatHandler
+class AC_GAME_API ChatHandler
 {
     public:
         WorldSession* GetSession() { return m_session; }
@@ -132,7 +132,7 @@ class ChatHandler
         bool sentErrorMessage;
 };
 
-class CliHandler : public ChatHandler
+class AC_GAME_API CliHandler : public ChatHandler
 {
     public:
         typedef void Print(void*, char const*);
