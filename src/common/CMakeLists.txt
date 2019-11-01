@@ -13,7 +13,6 @@ CollectSourceFiles(
   PRIVATE_SOURCES
   # Exclude
   ${CMAKE_CURRENT_SOURCE_DIR}/Debugging
-  # ${CMAKE_CURRENT_SOURCE_DIR}/Collision
   ${CMAKE_CURRENT_SOURCE_DIR}/Platform
   ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders)
 

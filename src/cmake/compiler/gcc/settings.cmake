@@ -49,12 +49,12 @@ if( WITH_COREDEBUG )
 endif()
 
 if (BUILD_SHARED_LIBS)
-  target_compile_options(trinity-compile-option-interface
+  target_compile_options(acore-compile-option-interface
     INTERFACE
       -fPIC
       -Wno-attributes)
 
-  target_compile_options(trinity-hidden-symbols-interface
+  target_compile_options(acore-hidden-symbols-interface
     INTERFACE
       -fvisibility=hidden)
 

@@ -296,4 +296,10 @@ void LFGGroupScript::OnInviteMember(Group* group, uint64 guid)
     }
 }
 
+void AddSC_LFGScripts()
+{
+    new LFGPlayerScript();
+    new LFGGroupScript();
+}
+
 } // namespace lfg

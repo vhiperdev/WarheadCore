@@ -12,7 +12,7 @@
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
   if(USE_MYSQL_SOURCES)
-      add_subdirectory(mysqllite)
+    add_subdirectory(mysqllite)
   endif()
 endif()
 

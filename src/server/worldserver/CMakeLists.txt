@@ -72,7 +72,7 @@ target_link_libraries(worldserver
     worldserver-interface
   PUBLIC
     scripts
-    # game
+    game
     gsoap
     readline
     ${GPERFTOOLS_LIBRARIES})

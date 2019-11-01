@@ -27,7 +27,7 @@ namespace Movement
     };
 
     // Transforms coordinates from global to transport offsets
-    class TransportPathTransform
+    class AC_GAME_API TransportPathTransform
     {
     public:
         TransportPathTransform(Unit* owner, bool transformForTransport)
@@ -40,7 +40,7 @@ namespace Movement
     };
 
     // Xinef: transforms z coordinate with hover offset
-    class HoverMovementTransform
+    class AC_GAME_API HoverMovementTransform
     {
     public:
         HoverMovementTransform(float z_offset) : _offset(z_offset) { }
@@ -56,7 +56,7 @@ namespace Movement
 
     /*  Initializes and launches spline movement
      */
-    class MoveSplineInit
+    class AC_GAME_API MoveSplineInit
     {
     public:
 

@@ -44,4 +44,6 @@ class AC_GAME_API LFGGroupScript : public GroupScript
         void OnInviteMember(Group* group, uint64 guid);
 };
 
+void AddSC_LFGScripts();
+
 } // namespace lfg

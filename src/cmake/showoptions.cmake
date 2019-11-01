@@ -76,9 +76,9 @@ endif( UNIX )
 
 if( WIN32 )
   if( USE_MYSQL_SOURCES )
-  message("* Use MySQL sourcetree            : Yes (default)")
+  message("* Use MySQL sourcetree            : Yes")
   else()
-  message("* Use MySQL sourcetree            : No")
+  message("* Use MySQL sourcetree            : No  (default)")
   endif()
 endif( WIN32 )
 

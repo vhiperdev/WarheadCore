@@ -44,7 +44,7 @@ namespace Trinity
         void SendToSelf(void);
     };
 
-    struct AC_GAME_API VisibleChangesNotifier
+    struct VisibleChangesNotifier
     {
         WorldObject &i_object;
 
@@ -137,7 +137,7 @@ namespace Trinity
         }
     };
 
-    struct AC_GAME_API ObjectUpdater
+    struct ObjectUpdater
     {
         uint32 i_timeDiff;
         explicit ObjectUpdater(const uint32 diff) : i_timeDiff(diff) {}
@@ -146,7 +146,7 @@ namespace Trinity
         void Visit(CorpseMapType &) {}
     };
 
-    struct AC_GAME_API LargeObjectUpdater
+    struct LargeObjectUpdater
     {
         uint32 i_timeDiff;
         explicit LargeObjectUpdater(const uint32 diff) : i_timeDiff(diff) {}
@@ -602,7 +602,7 @@ namespace Trinity
 
     // WorldObject do classes
 
-    class AC_GAME_API RespawnDo
+    class RespawnDo
     {
         public:
             RespawnDo() {}
@@ -614,7 +614,7 @@ namespace Trinity
 
     // GameObject checks
 
-    class AC_GAME_API GameObjectFocusCheck
+    class GameObjectFocusCheck
     {
         public:
             GameObjectFocusCheck(Unit const* unit, uint32 focusId) : i_unit(unit), i_focusId(focusId) {}
@@ -639,7 +639,7 @@ namespace Trinity
     };
 
     // Find the nearest Fishing hole and return true only if source object is in range of hole
-    class AC_GAME_API NearestGameObjectFishingHole
+    class NearestGameObjectFishingHole
     {
         public:
             NearestGameObjectFishingHole(WorldObject const& obj, float range) : i_obj(obj), i_range(range) {}
@@ -660,7 +660,7 @@ namespace Trinity
             NearestGameObjectFishingHole(NearestGameObjectFishingHole const&);
     };
 
-    class AC_GAME_API NearestGameObjectCheck
+    class NearestGameObjectCheck
     {
         public:
             NearestGameObjectCheck(WorldObject const& obj) : i_obj(obj), i_range(999) {}
@@ -682,7 +682,7 @@ namespace Trinity
     };
 
     // Success at unit in range, range update for next check (this can be use with GameobjectLastSearcher to find nearest GO)
-    class AC_GAME_API NearestGameObjectEntryInObjectRangeCheck
+    class NearestGameObjectEntryInObjectRangeCheck
     {
         public:
             NearestGameObjectEntryInObjectRangeCheck(WorldObject const& obj, uint32 entry, float range) : i_obj(obj), i_entry(entry), i_range(range) {}
@@ -705,7 +705,7 @@ namespace Trinity
     };
 
     // Success at unit in range, range update for next check (this can be use with GameobjectLastSearcher to find nearest GO with a certain type)
-    class AC_GAME_API NearestGameObjectTypeInObjectRangeCheck
+    class NearestGameObjectTypeInObjectRangeCheck
     {
     public:
         NearestGameObjectTypeInObjectRangeCheck(WorldObject const& obj, GameobjectTypes type, float range) : i_obj(obj), i_type(type), i_range(range) {}
@@ -727,7 +727,7 @@ namespace Trinity
         NearestGameObjectTypeInObjectRangeCheck(NearestGameObjectTypeInObjectRangeCheck const&);
     };
 
-    class AC_GAME_API GameObjectWithDbGUIDCheck
+    class GameObjectWithDbGUIDCheck
     {
         public:
             GameObjectWithDbGUIDCheck(uint32 db_guid) : i_db_guid(db_guid) {}
@@ -741,7 +741,7 @@ namespace Trinity
 
     // Unit checks
 
-    class AC_GAME_API MostHPMissingInRange
+    class MostHPMissingInRange
     {
         public:
             MostHPMissingInRange(Unit const* obj, float range, uint32 hp) : i_obj(obj), i_range(range), i_hp(hp) {}
@@ -760,7 +760,7 @@ namespace Trinity
             uint32 i_hp;
     };
 
-    class AC_GAME_API FriendlyCCedInRange
+    class FriendlyCCedInRange
     {
         public:
             FriendlyCCedInRange(Unit const* obj, float range) : i_obj(obj), i_range(range) {}
@@ -778,7 +778,7 @@ namespace Trinity
             float i_range;
     };
 
-    class AC_GAME_API FriendlyMissingBuffInRange
+    class FriendlyMissingBuffInRange
     {
         public:
             FriendlyMissingBuffInRange(Unit const* obj, float range, uint32 spellid) : i_obj(obj), i_range(range)
@@ -803,7 +803,7 @@ namespace Trinity
             uint32 i_spell;
     };
 
-    class AC_GAME_API AnyUnfriendlyUnitInObjectRangeCheck
+    class AnyUnfriendlyUnitInObjectRangeCheck
     {
         public:
             AnyUnfriendlyUnitInObjectRangeCheck(WorldObject const* obj, Unit const* funit, float range) : i_obj(obj), i_funit(funit), i_range(range) {}
@@ -821,7 +821,7 @@ namespace Trinity
             float i_range;
     };
 
-    class AC_GAME_API AnyUnfriendlyNoTotemUnitInObjectRangeCheck
+    class AnyUnfriendlyNoTotemUnitInObjectRangeCheck
     {
         public:
             AnyUnfriendlyNoTotemUnitInObjectRangeCheck(WorldObject const* obj, Unit const* funit, float range) : i_obj(obj), i_funit(funit), i_range(range) {}
@@ -847,7 +847,7 @@ namespace Trinity
             float i_range;
     };
 
-    class AC_GAME_API AnyUnfriendlyAttackableVisibleUnitInObjectRangeCheck
+    class AnyUnfriendlyAttackableVisibleUnitInObjectRangeCheck
     {
         public:
             AnyUnfriendlyAttackableVisibleUnitInObjectRangeCheck(Unit const* funit, float range)
@@ -868,7 +868,7 @@ namespace Trinity
             float i_range;
     };
 
-    class AC_GAME_API CreatureWithDbGUIDCheck
+    class CreatureWithDbGUIDCheck
     {
         public:
             CreatureWithDbGUIDCheck(uint32 lowguid) : i_lowguid(lowguid) {}
@@ -880,7 +880,7 @@ namespace Trinity
             uint32 i_lowguid;
     };
 
-    class AC_GAME_API AnyFriendlyUnitInObjectRangeCheck
+    class AnyFriendlyUnitInObjectRangeCheck
     {
         public:
             AnyFriendlyUnitInObjectRangeCheck(WorldObject const* obj, Unit const* funit, float range, bool playerOnly = false) : i_obj(obj), i_funit(funit), i_range(range), i_playerOnly(playerOnly) {}
@@ -898,7 +898,7 @@ namespace Trinity
             bool i_playerOnly;
     };
 
-    class AC_GAME_API AnyFriendlyNotSelfUnitInObjectRangeCheck
+    class AnyFriendlyNotSelfUnitInObjectRangeCheck
     {
         public:
             AnyFriendlyNotSelfUnitInObjectRangeCheck(WorldObject const* obj, Unit const* funit, float range, bool playerOnly = false) : i_obj(obj), i_funit(funit), i_range(range), i_playerOnly(playerOnly) {}
@@ -916,7 +916,7 @@ namespace Trinity
             bool i_playerOnly;
     };
 
-    class AC_GAME_API AnyGroupedUnitInObjectRangeCheck
+    class AnyGroupedUnitInObjectRangeCheck
     {
         public:
             AnyGroupedUnitInObjectRangeCheck(WorldObject const* obj, Unit const* funit, float range, bool raid) : _source(obj), _refUnit(funit), _range(range), _raid(raid) {}
@@ -940,7 +940,7 @@ namespace Trinity
             bool _raid;
     };
 
-    class AC_GAME_API AnyUnitInObjectRangeCheck
+    class AnyUnitInObjectRangeCheck
     {
         public:
             AnyUnitInObjectRangeCheck(WorldObject const* obj, float range) : i_obj(obj), i_range(range) {}
@@ -957,7 +957,7 @@ namespace Trinity
     };
 
     // Success at unit in range, range update for next check (this can be use with UnitLastSearcher to find nearest unit)
-    class AC_GAME_API NearestAttackableUnitInObjectRangeCheck
+    class NearestAttackableUnitInObjectRangeCheck
     {
         public:
             NearestAttackableUnitInObjectRangeCheck(WorldObject const* obj, Unit const* funit, float range) : i_obj(obj), i_funit(funit), i_range(range) {}
@@ -981,7 +981,7 @@ namespace Trinity
             NearestAttackableUnitInObjectRangeCheck(NearestAttackableUnitInObjectRangeCheck const&);
     };
 
-    class AC_GAME_API AnyAoETargetUnitInObjectRangeCheck
+    class AnyAoETargetUnitInObjectRangeCheck
     {
         public:
             AnyAoETargetUnitInObjectRangeCheck(WorldObject const* obj, Unit const* funit, float range)
@@ -1014,7 +1014,7 @@ namespace Trinity
             float i_range;
     };
 
-    class AC_GAME_API AnyAttackableUnitExceptForOriginalCasterInObjectRangeCheck
+    class AnyAttackableUnitExceptForOriginalCasterInObjectRangeCheck
     {
         public:
             AnyAttackableUnitExceptForOriginalCasterInObjectRangeCheck(WorldObject const* obj, Unit const* funit, float range)
@@ -1039,7 +1039,7 @@ namespace Trinity
     };
 
     // do attack at call of help to friendly crearture
-    class AC_GAME_API CallOfHelpCreatureInRangeDo
+    class CallOfHelpCreatureInRangeDo
     {
         public:
             CallOfHelpCreatureInRangeDo(Unit* funit, Unit* enemy, float range)
@@ -1070,7 +1070,7 @@ namespace Trinity
             float i_range;
     };
 
-    struct AC_GAME_API AnyDeadUnitCheck
+    struct AnyDeadUnitCheck
     {
         bool operator()(Unit* u) { return !u->IsAlive(); }
     };
@@ -1084,7 +1084,7 @@ namespace Trinity
 
     // Creature checks
 
-    class AC_GAME_API NearestHostileUnitCheck
+    class NearestHostileUnitCheck
     {
         public:
             explicit NearestHostileUnitCheck(Creature const* creature, float dist = 0, bool playerOnly = false) : me(creature), i_playerOnly(playerOnly)
@@ -1113,7 +1113,7 @@ namespace Trinity
             NearestHostileUnitCheck(NearestHostileUnitCheck const&);
     };
 
-    class AC_GAME_API NearestHostileUnitInAttackDistanceCheck
+    class NearestHostileUnitInAttackDistanceCheck
     {
         public:
             explicit NearestHostileUnitInAttackDistanceCheck(Creature const* creature, float dist) : me(creature), m_range(dist) {}
@@ -1134,7 +1134,7 @@ namespace Trinity
             NearestHostileUnitInAttackDistanceCheck(NearestHostileUnitInAttackDistanceCheck const&);
     };
 
-    class AC_GAME_API AnyAssistCreatureInRangeCheck
+    class AnyAssistCreatureInRangeCheck
     {
         public:
             AnyAssistCreatureInRangeCheck(Unit* funit, Unit* enemy, float range)
@@ -1165,7 +1165,7 @@ namespace Trinity
             float i_range;
     };
 
-    class AC_GAME_API NearestAssistCreatureInCreatureRangeCheck
+    class NearestAssistCreatureInCreatureRangeCheck
     {
         public:
             NearestAssistCreatureInCreatureRangeCheck(Creature* obj, Unit* enemy, float range)
@@ -1197,7 +1197,7 @@ namespace Trinity
     };
 
     // Success at unit in range, range update for next check (this can be use with CreatureLastSearcher to find nearest creature)
-    class AC_GAME_API NearestCreatureEntryWithLiveStateInObjectRangeCheck
+    class NearestCreatureEntryWithLiveStateInObjectRangeCheck
     {
         public:
             NearestCreatureEntryWithLiveStateInObjectRangeCheck(WorldObject const& obj, uint32 entry, bool alive, float range)
@@ -1256,7 +1256,7 @@ namespace Trinity
             bool _disallowGM;
     };
 
-    class AC_GAME_API NearestPlayerInObjectRangeCheck
+    class NearestPlayerInObjectRangeCheck
     {
         public:
             NearestPlayerInObjectRangeCheck(WorldObject const* obj, float range) : i_obj(obj), i_range(range)
@@ -1280,7 +1280,7 @@ namespace Trinity
             NearestPlayerInObjectRangeCheck(NearestPlayerInObjectRangeCheck const&);
     };
 
-    class AC_GAME_API AllFriendlyCreaturesInGrid
+    class AllFriendlyCreaturesInGrid
     {
     public:
         AllFriendlyCreaturesInGrid(Unit const* obj) : unit(obj) {}
@@ -1295,7 +1295,7 @@ namespace Trinity
         Unit const* unit;
     };
 
-    class AC_GAME_API AllGameObjectsWithEntryInRange
+    class AllGameObjectsWithEntryInRange
     {
     public:
         AllGameObjectsWithEntryInRange(const WorldObject* object, uint32 entry, float maxRange) : m_pObject(object), m_uiEntry(entry), m_fRange(maxRange) {}
@@ -1330,7 +1330,7 @@ namespace Trinity
             float m_fRange;
     };
 
-    class AC_GAME_API PlayerAtMinimumRangeAway
+    class PlayerAtMinimumRangeAway
     {
     public:
         PlayerAtMinimumRangeAway(Unit const* unit, float fMinRange) : unit(unit), fRange(fMinRange) {}
@@ -1348,7 +1348,7 @@ namespace Trinity
         float fRange;
     };
 
-    class AC_GAME_API GameObjectInRangeCheck
+    class GameObjectInRangeCheck
     {
     public:
         GameObjectInRangeCheck(float _x, float _y, float _z, float _range, uint32 _entry = 0) :
@@ -1364,7 +1364,7 @@ namespace Trinity
         uint32 entry;
     };
 
-    class AC_GAME_API AllWorldObjectsInRange
+    class AllWorldObjectsInRange
     {
     public:
         AllWorldObjectsInRange(const WorldObject* object, float maxRange) : m_pObject(object), m_fRange(maxRange) {}
@@ -1377,7 +1377,7 @@ namespace Trinity
         float m_fRange;
     };
 
-    class AC_GAME_API ObjectTypeIdCheck
+    class ObjectTypeIdCheck
     {
         public:
             ObjectTypeIdCheck(TypeID typeId, bool equals) : _typeId(typeId), _equals(equals) {}
@@ -1391,7 +1391,7 @@ namespace Trinity
             bool _equals;
     };
 
-    class AC_GAME_API ObjectGUIDCheck
+    class ObjectGUIDCheck
     {
         public:
             ObjectGUIDCheck(uint64 GUID, bool equals) : _GUID(GUID), _equals(equals) {}
@@ -1405,7 +1405,7 @@ namespace Trinity
             bool _equals;
     };
 
-    class AC_GAME_API UnitAuraCheck
+    class UnitAuraCheck
     {
         public:
             UnitAuraCheck(bool present, uint32 spellId, uint64 casterGUID = 0) : _present(present), _spellId(spellId), _casterGUID(casterGUID) {}
@@ -1425,7 +1425,7 @@ namespace Trinity
             uint64 _casterGUID;
     };
 
-    class AC_GAME_API AllWorldObjectsInExactRange
+    class AllWorldObjectsInExactRange
     {
         public:
             AllWorldObjectsInExactRange(const WorldObject* object, float range, bool equals) : _object(object), _range(range), _equals(equals) { }
@@ -1440,7 +1440,7 @@ namespace Trinity
             bool _equals;
     };
 
-    class AC_GAME_API RandomCheck
+    class RandomCheck
     {
         public:
             explicit RandomCheck(uint8 chance) : _chance(chance) { }
@@ -1453,7 +1453,7 @@ namespace Trinity
             uint8 const _chance;
     };
     
-    class AC_GAME_API PowerCheck
+    class PowerCheck
     {
         public:
             explicit PowerCheck(Powers const power, bool equals) : _power(power), _equals(equals) { }
@@ -1467,7 +1467,7 @@ namespace Trinity
             bool const _equals;
     };
 
-    class AC_GAME_API RaidCheck
+    class RaidCheck
     {
         public:
             explicit RaidCheck(Unit const* compare, bool equals) : _compare(compare), _equals(equals) { }

@@ -23,6 +23,9 @@
 #include "WorldPacket.h"
 #include "Chat.h"
 #include "ScriptMgrMacros.h"
+#include "MapManager.h"
+#include "LFGScripts.h"
+#include "InstanceScript.h"
 
 #ifdef ELUNA
 #include "LuaEngine.h"
@@ -53,6 +56,10 @@ struct is_script_database_bound<CreatureScript>
 
 template<>
 struct is_script_database_bound<GameObjectScript>
+    : std::true_type { };
+
+template<>
+struct is_script_database_bound<VehicleScript>
     : std::true_type { };
 
 template<>
