@@ -164,7 +164,7 @@ private:
         {
             if (itr.second == script)
             {
-                sLog->outError("Script '%s' has same memory pointer as '%s'.", script->GetName().c_str(), itr.second->GetName().c_str());
+                sLog->outError("Script '%s' has same memory pointer as '%s'", script->GetName().c_str(), itr.second->GetName().c_str());
                 return false;
             }
         }
