@@ -9,7 +9,7 @@
 
 #include "Battleground.h"
 
-struct BattlegroundSAScore : public BattlegroundScore
+struct AC_GAME_API BattlegroundSAScore : public BattlegroundScore
 {
     BattlegroundSAScore(Player* player) : BattlegroundScore(player), demolishers_destroyed(0), gates_destroyed(0) { }
     ~BattlegroundSAScore() { }
@@ -401,7 +401,7 @@ float const BG_SA_GYOrientation[BG_SA_MAX_GY] =
     6.148f, // defender last GY
 };
 
-struct BG_SA_RoundScore
+struct AC_GAME_API BG_SA_RoundScore
 {
     TeamId winner;
     uint32 time;
@@ -416,7 +416,7 @@ const float SOTADefPortalDest[5][4] = {
 };
 
 /// Class for manage Strand of Ancient battleground
-class BattlegroundSA : public Battleground
+class AC_GAME_API BattlegroundSA : public Battleground
 {
     public:
         BattlegroundSA();

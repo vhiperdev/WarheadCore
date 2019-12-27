@@ -30,6 +30,10 @@ target_compile_options(acore-warning-interface
   INTERFACE
     /W3)
 
+# set up output paths ofr static libraries etc (commented out - shown here as an example only)
+#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+#set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 if(PLATFORM EQUAL 64)
   # This definition is necessary to work around a bug with Intellisense described
   # here: http://tinyurl.com/2cb428.  Syntax highlighting is important for proper
@@ -37,12 +41,8 @@ if(PLATFORM EQUAL 64)
   target_compile_definitions(acore-compile-option-interface
     INTERFACE
       -D_WIN64)
-  
-  message(STATUS "MSVC: 64-bit platform, enforced -D_WIN64 parameter")
 
-  # Enable extended object support for debug compiles on X64 (not required on X86)
-  # set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /bigobj")
-  # message(STATUS "MSVC: Enabled extended object-support for debug-compiles")
+  message(STATUS "MSVC: 64-bit platform, enforced -D_WIN64 parameter")
 else()
   # mark 32 bit executables large address aware so they can use > 2GB address space
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LARGEADDRESSAWARE")
@@ -51,7 +51,6 @@ else()
   target_compile_options(acore-compile-option-interface
     INTERFACE
       /arch:SSE2)
-  
   message(STATUS "MSVC: Enabled SSE2 support")
 
   set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /SAFESEH:NO")
@@ -115,12 +114,6 @@ target_compile_definitions(acore-compile-option-interface
     -D_CRT_NONSTDC_NO_WARNINGS)
 message(STATUS "MSVC: Disabled POSIX warnings")
 
-# Ignore warnings about INTMAX_MAX
-target_compile_definitions(acore-compile-option-interface
-  INTERFACE
-    -D__STDC_LIMIT_MACROS)
-message(STATUS "MSVC: Disabled INTMAX_MAX warnings")
-
 # Ignore specific warnings
 # C4351: new behavior: elements of array 'x' will be default initialized
 # C4091: 'typedef ': ignored on left of '' when no variable is declared
@@ -129,7 +122,6 @@ target_compile_options(acore-compile-option-interface
     /wd4351
     /wd4091)
 
-# disable warnings in Visual Studio 8 and above if not wanted
 if(NOT WITH_WARNINGS)
   target_compile_options(acore-compile-option-interface
     INTERFACE
@@ -139,8 +131,8 @@ if(NOT WITH_WARNINGS)
       /wd4985
       /wd4267
       /wd4619
-      /wd4512)    
-    
+      /wd4512)
+
   message(STATUS "MSVC: Disabled generic compiletime warnings")
 endif()
 

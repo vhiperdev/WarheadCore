@@ -20,7 +20,7 @@ typedef Battleground*(*bgRef)(Battleground*);
 
 #define BATTLEGROUND_ARENA_POINT_DISTRIBUTION_DAY 86400 // how many seconds in day
 
-struct CreateBattlegroundData
+struct AC_GAME_API CreateBattlegroundData
 {
     BattlegroundTypeId bgTypeId;
     bool IsArena;
@@ -45,7 +45,7 @@ struct CreateBattlegroundData
 struct GroupQueueInfo;
 
 // pussywizard
-class RandomBattlegroundSystem
+class AC_GAME_API RandomBattlegroundSystem
 {
     public:
         RandomBattlegroundSystem();
@@ -58,7 +58,7 @@ class RandomBattlegroundSystem
         std::vector<BattlegroundTypeId> m_BgOrder;
 };
 
-class BattlegroundMgr
+class AC_GAME_API BattlegroundMgr
 {
     private:
         BattlegroundMgr();

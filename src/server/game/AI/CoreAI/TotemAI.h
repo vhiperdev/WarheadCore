@@ -13,7 +13,7 @@
 class Creature;
 class Totem;
 
-class TotemAI : public CreatureAI
+class AC_GAME_API TotemAI : public CreatureAI
 {
     public:
 
@@ -32,7 +32,7 @@ class TotemAI : public CreatureAI
         uint64 i_victimGuid;
 };
 
-class KillMagnetEvent : public BasicEvent
+class AC_GAME_API KillMagnetEvent : public BasicEvent
 {
     public:
         KillMagnetEvent(Unit& self) : _self(self) { }

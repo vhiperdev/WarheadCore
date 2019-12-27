@@ -136,7 +136,7 @@ enum BG_WS_Objectives
     WS_EVENT_START_BATTLE       = 8563
 };
 
-struct BattlegroundWGScore : public BattlegroundScore
+struct AC_GAME_API BattlegroundWGScore : public BattlegroundScore
 {
     BattlegroundWGScore(Player* player): BattlegroundScore(player), FlagCaptures(0), FlagReturns(0) { }
     ~BattlegroundWGScore() { }
@@ -147,7 +147,7 @@ struct BattlegroundWGScore : public BattlegroundScore
     uint32 GetAttr2() const final override { return FlagReturns; }
 };
 
-class BattlegroundWS : public Battleground
+class AC_GAME_API BattlegroundWS : public Battleground
 {
     public:
         /* Construction */

@@ -58,11 +58,10 @@ target_link_libraries(common
     ace
     boost
     Poco::Foundation
-    mysql
     g3dlib
-    Detour
     sfmt
     utf8cpp
+    Detour
     openssl
     threads
     jemalloc

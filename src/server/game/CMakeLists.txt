@@ -8,8 +8,6 @@
 # WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-CU_RUN_HOOK(BEFORE_GAME_LIBRARY)
-
 CollectSourceFiles(
   ${CMAKE_CURRENT_SOURCE_DIR}
   PRIVATE_SOURCES
@@ -23,13 +21,15 @@ endif ()
 # Group sources
 GroupSources(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_library(game-interface INTERFACE)
+add_definitions(-DACORE_API_EXPORT_GAME)
 
 CollectIncludeDirectories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   PUBLIC_INCLUDES
   # Exclude
   ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders)
+
+add_library(game-interface INTERFACE)
 
 target_include_directories(game-interface
   INTERFACE
@@ -39,11 +39,8 @@ target_link_libraries(game-interface
   INTERFACE
     shared)
 
-add_library(game STATIC
-  ${PRIVATE_SOURCES}
-  ${ElunaLuaEngineFiles})
-
-add_dependencies(game revision.h)
+add_library(game
+  ${PRIVATE_SOURCES})
 
 target_include_directories(game
   PRIVATE
@@ -60,9 +57,19 @@ set_target_properties(game
     FOLDER
       "server")
 
+if( BUILD_SHARED_LIBS )
+  if( UNIX )
+    install(TARGETS game
+      LIBRARY
+        DESTINATION lib)
+  elseif( WIN32 )
+    install(TARGETS game
+      RUNTIME
+        DESTINATION "${CMAKE_INSTALL_PREFIX}")
+  endif()
+endif()
+
 # Generate precompiled header
 if (USE_COREPCH)
   add_cxx_pch(game ${PRIVATE_PCH_HEADER})
 endif ()
-
-CU_RUN_HOOK(AFTER_GAME_LIBRARY)

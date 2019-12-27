@@ -14,7 +14,7 @@
 #include "GameObject.h"
 #include "CreatureAI.h"
 
-class GameObjectAI
+class AC_GAME_API GameObjectAI
 {
     protected:
         GameObject* const go;
@@ -52,7 +52,7 @@ class GameObjectAI
         virtual void SpellHit(Unit* /*unit*/, const SpellInfo* /*spellInfo*/) {}
 };
 
-class NullGameObjectAI : public GameObjectAI
+class AC_GAME_API NullGameObjectAI : public GameObjectAI
 {
     public:
         explicit NullGameObjectAI(GameObject* g);
@@ -61,4 +61,5 @@ class NullGameObjectAI : public GameObjectAI
 
         static int Permissible(GameObject const* /*go*/) { return PERMIT_BASE_IDLE; }
 };
+
 #endif

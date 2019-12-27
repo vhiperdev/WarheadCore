@@ -73,7 +73,7 @@ enum ArenaTeamTypes
     ARENA_TEAM_5v5      = 5
 };
 
-struct ArenaTeamMember
+struct AC_GAME_API ArenaTeamMember
 {
     uint64 Guid;
     std::string Name;
@@ -90,7 +90,7 @@ struct ArenaTeamMember
     void ModifyMatchmakerRating(int32 mod, uint32 slot);
 };
 
-struct ArenaTeamStats
+struct AC_GAME_API ArenaTeamStats
 {
     uint16 Rating;
     uint16 WeekGames;
@@ -102,7 +102,7 @@ struct ArenaTeamStats
 
 #define MAX_ARENA_SLOT 3                                    // 0..2 slots
 
-class ArenaTeam
+class AC_GAME_API ArenaTeam
 {
     public:
         ArenaTeam();

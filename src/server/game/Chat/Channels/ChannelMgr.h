@@ -14,7 +14,7 @@
 
 #define MAX_CHANNEL_PASS_STR 31
 
-class ChannelMgr
+class AC_GAME_API ChannelMgr
 {
     typedef std::unordered_map<std::wstring, Channel*> ChannelMap;
     typedef std::map<std::string, ChannelRights> ChannelRightsMap;
@@ -45,7 +45,7 @@ class ChannelMgr
         void MakeNotOnPacket(WorldPacket* data, std::string const& name);
 };
 
-class AllianceChannelMgr : public ChannelMgr { public: AllianceChannelMgr() : ChannelMgr(TEAM_ALLIANCE) {} };
-class HordeChannelMgr    : public ChannelMgr { public: HordeChannelMgr() : ChannelMgr(TEAM_HORDE) {} };
+class AC_GAME_API AllianceChannelMgr : public ChannelMgr { public: AllianceChannelMgr() : ChannelMgr(TEAM_ALLIANCE) {} };
+class AC_GAME_API HordeChannelMgr    : public ChannelMgr { public: HordeChannelMgr() : ChannelMgr(TEAM_HORDE) {} };
 
 #endif

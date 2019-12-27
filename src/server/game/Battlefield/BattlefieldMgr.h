@@ -7,6 +7,7 @@
 #ifndef BATTLEFIELD_MGR_H_
 #define BATTLEFIELD_MGR_H_
 
+#include "Define.h"
 #include "Battlefield.h"
 
 class Player;
@@ -16,7 +17,7 @@ class ZoneScript;
 struct GossipMenuItems;
 
 // class to handle player enter / leave / areatrigger / GO use events
-class BattlefieldMgr
+class AC_GAME_API BattlefieldMgr
 {
   public:
     // ctor

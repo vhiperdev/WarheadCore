@@ -9,7 +9,7 @@
 
 #include "ArenaTeam.h"
 
-class ArenaTeamMgr
+class AC_GAME_API ArenaTeamMgr
 {
     ArenaTeamMgr();
     ~ArenaTeamMgr();

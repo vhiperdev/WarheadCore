@@ -36,8 +36,8 @@ namespace ArenaSpectator
     template<class T> inline void SendCommand_Cooldown(T* o, uint64 targetGUID, const char* prefix, uint32 id, uint32 dur, uint32 maxdur);
     template<class T> inline void SendCommand_Aura(T* o, uint64 targetGUID, const char* prefix, uint64 caster, uint32 id, bool isDebuff, uint32 dispel, int32 dur, int32 maxdur, uint32 stack, bool remove);
 
-    bool HandleSpectatorSpectateCommand(ChatHandler* handler, char const* args);
-    bool HandleSpectatorWatchCommand(ChatHandler* handler, char const* args);
+    AC_GAME_API bool HandleSpectatorSpectateCommand(ChatHandler* handler, char const* args);
+    AC_GAME_API bool HandleSpectatorWatchCommand(ChatHandler* handler, char const* args);
 
     // definitions below:
 

@@ -21,7 +21,7 @@ typedef std::list<AchievementEntry const*>         AchievementEntryList;
 typedef std::unordered_map<uint32, AchievementCriteriaEntryList> AchievementCriteriaListByAchievement;
 typedef std::map<uint32, AchievementEntryList>         AchievementListByReferencedId;
 
-struct CriteriaProgress
+struct AC_GAME_API CriteriaProgress
 {
     uint32 counter;
     time_t date;                                            // latest update time.
@@ -66,7 +66,7 @@ enum AchievementCommonCategories
 class Player;
 class Unit;
 
-struct AchievementCriteriaData
+struct AC_GAME_API AchievementCriteriaData
 {
     AchievementCriteriaDataType dataType;
     union
@@ -203,7 +203,7 @@ struct AchievementCriteriaData
     bool Meets(uint32 criteria_id, Player const* source, Unit const* target, uint32 miscvalue1 = 0) const;
 };
 
-struct AchievementCriteriaDataSet
+struct AC_GAME_API AchievementCriteriaDataSet
 {
         AchievementCriteriaDataSet() : criteria_id(0) {}
         typedef std::vector<AchievementCriteriaData> Storage;
@@ -217,7 +217,7 @@ struct AchievementCriteriaDataSet
 
 typedef std::map<uint32, AchievementCriteriaDataSet> AchievementCriteriaDataMap;
 
-struct AchievementReward
+struct AC_GAME_API AchievementReward
 {
     uint32 titleId[2];
     uint32 itemId;
@@ -229,7 +229,7 @@ struct AchievementReward
 
 typedef std::map<uint32, AchievementReward> AchievementRewards;
 
-struct AchievementRewardLocale
+struct AC_GAME_API AchievementRewardLocale
 {
     StringVector Subject;
     StringVector Text;
@@ -237,7 +237,7 @@ struct AchievementRewardLocale
 
 typedef std::map<uint32, AchievementRewardLocale> AchievementRewardLocales;
 
-struct CompletedAchievementData
+struct AC_GAME_API CompletedAchievementData
 {
     time_t date;
     bool changed;
@@ -250,7 +250,7 @@ class Unit;
 class Player;
 class WorldPacket;
 
-class AchievementMgr
+class AC_GAME_API AchievementMgr
 {
     public:
         AchievementMgr(Player* player);
@@ -292,7 +292,7 @@ class AchievementMgr
         TimedAchievementMap m_timedAchievements;      // Criteria id/time left in MS
 };
 
-class AchievementGlobalMgr
+class AC_GAME_API AchievementGlobalMgr
 {
         AchievementGlobalMgr() {}
         ~AchievementGlobalMgr() {}

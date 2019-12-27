@@ -32,7 +32,7 @@ enum SpecialPets
     WATER_ELEMENTAL_WATERBOLT_2 = 72898
 };
 
-class PetAI : public CreatureAI
+class AC_GAME_API PetAI : public CreatureAI
 {
     public:
 
@@ -77,4 +77,5 @@ class PetAI : public CreatureAI
         bool CanAttack(Unit* target, const SpellInfo* spellInfo = NULL);
         void ClearCharmInfoFlags();
 };
+
 #endif

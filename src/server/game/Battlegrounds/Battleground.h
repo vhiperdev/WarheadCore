@@ -181,7 +181,7 @@ enum BattlegroundTeams
     BG_TEAMS_COUNT      = 2
 };
 
-struct BattlegroundObjectInfo
+struct AC_GAME_API BattlegroundObjectInfo
 {
     BattlegroundObjectInfo() : object(NULL), timer(0), spellid(0) {}
 
@@ -247,9 +247,10 @@ enum BattlegroundStartingEventsIds
     BG_STARTING_EVENT_THIRD     = 2,
     BG_STARTING_EVENT_FOURTH    = 3
 };
+
 #define BG_STARTING_EVENT_COUNT 4
 
-struct BattlegroundScore
+struct AC_GAME_API BattlegroundScore
 {
     BattlegroundScore(Player* player) : KillingBlows(0), Deaths(0), HonorableKills(0), BonusHonor(0),
         DamageDone(0), HealingDone(0), player(player)
@@ -279,7 +280,7 @@ struct BattlegroundScore
     virtual uint32 GetAttr5() const { return 0; }
 };
 
-class ArenaLogEntryData
+class AC_GAME_API ArenaLogEntryData
 {
     public:
         ArenaLogEntryData() : Guid(0), ArenaTeamId(0), DamageDone(0), HealingDone(0), KillingBlows(0) {}
@@ -328,7 +329,7 @@ enum BattlegroundQueueInvitationType
     BG_QUEUE_INVITATION_TYPE_EVEN       = 2  // teams even: N vs N players
 };
 
-class Battleground
+class AC_GAME_API Battleground
 {
     public:
         Battleground();

@@ -170,7 +170,7 @@ const uint8 TOTAL_LOCALES = 9;
 #define MAX_LOCALES 8
 #define MAX_ACCOUNT_TUTORIAL_VALUES 8
 
-extern AC_COMMON_API char const* localeNames[TOTAL_LOCALES];
+AC_COMMON_API extern char const* localeNames[TOTAL_LOCALES];
 
 AC_COMMON_API LocaleConstant GetLocaleByName(const std::string& name);
 AC_COMMON_API void CleanStringForMysqlQuery(std::string& str);
@@ -207,15 +207,5 @@ typedef std::vector<std::string> StringVector;
 # define ACORE_READ_GUARD(MUTEX, LOCK) \
   ACE_Read_Guard< MUTEX > ACORE_GUARD_OBJECT (LOCK); \
     if (ACORE_GUARD_OBJECT.locked() == 0) ASSERT(false);
-
-namespace acore
-{
-    template<class ArgumentType, class ResultType>
-    struct unary_function
-    {
-        typedef ArgumentType argument_type;
-        typedef ResultType result_type;
-    };
-}
 
 #endif

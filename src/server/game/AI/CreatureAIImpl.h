@@ -41,7 +41,7 @@ enum AICondition
 
 #define AI_DEFAULT_COOLDOWN 5000
 
-struct AISpellInfoType
+struct AC_GAME_API AISpellInfoType
 {
     AISpellInfoType() : target(AITARGET_SELF), condition(AICOND_COMBAT)
         , cooldown(AI_DEFAULT_COOLDOWN), realCooldown(0), maxRange(0.0f){}
@@ -52,7 +52,7 @@ struct AISpellInfoType
     float maxRange;
 };
 
-AISpellInfoType* GetAISpellInfo(uint32 i);
+AC_GAME_API AISpellInfoType* GetAISpellInfo(uint32 i);
 
 #endif
 

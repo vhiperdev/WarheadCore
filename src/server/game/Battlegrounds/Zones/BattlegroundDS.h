@@ -69,7 +69,7 @@ enum BattlegroundDSData
     BG_DS_WATERFALL_STATUS_OFF                   = 3,
 };
 
-class BattlegroundDS : public Battleground
+class AC_GAME_API BattlegroundDS : public Battleground
 {
     public:
         BattlegroundDS();

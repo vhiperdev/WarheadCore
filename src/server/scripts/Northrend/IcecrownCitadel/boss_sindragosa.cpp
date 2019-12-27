@@ -227,7 +227,7 @@ class IceTombSummonEvent : public BasicEvent
         uint64 _sindragosaGUID;
 };
 
-struct LastPhaseIceTombTargetSelector : public acore::unary_function<Unit*, bool>
+struct LastPhaseIceTombTargetSelector
 {
     public:
         LastPhaseIceTombTargetSelector(Creature* source) : _source(source) { }

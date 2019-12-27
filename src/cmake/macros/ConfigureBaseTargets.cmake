@@ -46,7 +46,7 @@ target_link_libraries(acore-default-interface
 # An interface used for silencing all warnings
 add_library(acore-no-warning-interface INTERFACE)
 
-if (MSVC)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_compile_options(acore-no-warning-interface
     INTERFACE
       /W0)
