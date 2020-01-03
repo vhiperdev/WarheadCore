@@ -156,7 +156,7 @@ void Log::InitLogsDir()
 
 void Log::ReadLoggersFromConfig()
 {
-    std::list<std::string> keys = sConfigMgr->GetKeysByString(PREFIX_LOGGER);
+    auto keys = sConfigMgr->GetKeysByString(PREFIX_LOGGER);
     if (!keys.size())
     {
         SYS_LOG_ERROR("Log::ReadLoggersFromConfig - Not found loggers, change config file!");
@@ -164,7 +164,7 @@ void Log::ReadLoggersFromConfig()
     }
 
     for (auto const& loggerName : keys)
-        CreateLoggerFromConfig(loggerName);
+        CreateLoggerFromConfig(loggerName + ".");
 
     if (!Logger::has(LOGGER_ROOT))
         SYS_LOG_ERROR("Log::ReadLoggersFromConfig - Logger '%s' not found!\nPlease change or add 'Logger.%s' option in config file!\n", LOGGER_ROOT.c_str(), LOGGER_ROOT.c_str());
@@ -172,7 +172,7 @@ void Log::ReadLoggersFromConfig()
 
 void Log::ReadChannelsFromConfig()
 {
-    std::list<std::string> keys = sConfigMgr->GetKeysByString(PREFIX_CHANNEL);
+    auto keys = sConfigMgr->GetKeysByString(PREFIX_CHANNEL);
     if (!keys.size())
     {
         SYS_LOG_ERROR("Log::ReadChannelsFromConfig - Not found channels, change config file!");

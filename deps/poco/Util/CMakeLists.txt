@@ -15,7 +15,7 @@ POCO_SOURCES_AUTO_PLAT(SRCS WIN32
   src/WinRegistryKey.cpp
   src/WinService.cpp)
 
-add_library(Util ${SRCS})
+add_library(Util STATIC ${SRCS})
 add_library(Poco::Util ALIAS Util)
 
 target_link_libraries(Util PUBLIC Poco::Foundation)
@@ -31,4 +31,4 @@ target_include_directories(Util
   PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-set_target_properties(Util PROPERTIES LINKER_LANGUAGE CXX)
+# set_target_properties(Util PROPERTIES LINKER_LANGUAGE CXX)

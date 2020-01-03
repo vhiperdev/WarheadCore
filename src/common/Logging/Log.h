@@ -232,8 +232,8 @@ private:
     std::string const LOGGER_SYSTEM = "system";
 
     // Prefix's
-    std::string const PREFIX_LOGGER = "Logger.";
-    std::string const PREFIX_CHANNEL = "LogChannel.";
+    std::string const PREFIX_LOGGER = "Logger";
+    std::string const PREFIX_CHANNEL = "LogChannel";
 
     // Console channel
     std::string _CONSOLE_CHANNEL = "";

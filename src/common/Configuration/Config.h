@@ -8,63 +8,40 @@
 #define CONFIG_H
 
 #include "Define.h"
-#include <string>
 #include <list>
-#include <vector>
-#include <ace/Configuration_Import_Export.h>
-#include <ace/Thread_Mutex.h>
-#include <AutoPtr.h>
-
-typedef acore::AutoPtr<ACE_Configuration_Heap, ACE_Null_Mutex> Config;
+#include <unordered_map>
+#include <mutex>
+#include <set>
 
 class AC_COMMON_API ConfigMgr
 {
-    friend class ConfigLoader;
-
-public:
-
-    static ConfigMgr* instance();
-    
-    /// Method used only for loading main configuration files (authserver.conf and worldserver.conf)
-    bool LoadInitial(char const* file, std::string applicationName = "worldserver");
-
-    /**
-     * This method loads additional configuration files
-     * It is recommended to use this method in WorldScript::OnConfigLoad hooks
-     *
-     * @return true if loading was successful
-     */
-    bool LoadMore(char const* file, std::string applicationName = "worldserver");
-
-    bool Reload();
-
-    std::string GetStringDefault(std::string const& name, const std::string& def, bool logUnused = true);
-    bool GetBoolDefault(std::string const& name, bool def, bool logUnused = true);
-    int GetIntDefault(std::string const& name, int def, bool logUnused = true);
-    float GetFloatDefault(std::string const& name, float def, bool logUnused = true);
-
-    std::list<std::string> GetKeysByString(std::string const& name);
-
-    bool isDryRun() { return dryRun; }
-    void setDryRun(bool mode) { dryRun = mode; }
-
-private:
-    bool dryRun = false;
-
-    bool GetValueHelper(const char* name, ACE_TString &result);
-    bool LoadData(char const* file, std::string applicationName = "worldserver");
-
-    typedef ACE_Thread_Mutex LockType;
-    typedef ACE_Guard<LockType> GuardType;
-
-    std::vector<std::string> _confFiles;
-    Config _config;
-    LockType _configLock;
-
     ConfigMgr() = default;
     ConfigMgr(ConfigMgr const&) = delete;
     ConfigMgr& operator=(ConfigMgr const&) = delete;
     ~ConfigMgr() = default;
+
+public:
+    static ConfigMgr* instance();    
+    
+    bool Load();
+    bool Reload();
+    void AddConfigFile(std::string const& file, bool enableDist = true);
+
+    std::string GetStringDefault(std::string const& name, const std::string& def) const;
+    bool GetBoolDefault(std::string const& name, bool def) const;
+    int GetIntDefault(std::string const& name, int def) const;
+    float GetFloatDefault(std::string const& name, float def) const;
+
+    std::set<std::string> GetKeysByString(std::string const& name);
+
+    bool IsDryRun() { return _DryRun; }
+    void SetDryRun(bool mode) { _DryRun = mode; }
+    
+private:
+    bool _DryRun = false;
+
+    std::unordered_map<std::string, bool> _configFiles;
+    std::mutex _configLock;
 };
 
 #define sConfigMgr ConfigMgr::instance()

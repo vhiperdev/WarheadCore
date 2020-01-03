@@ -7,6 +7,15 @@
 #include "Config.h"
 #include "Errors.h"
 #include "Log.h"
+#include <Poco/AutoPtr.h>
+#include <Poco/Util/PropertyFileConfiguration.h>
+#include <Poco/Util/LayeredConfiguration.h>
+#include <memory>
+
+using Poco::AutoPtr;
+using Poco::Util::LayeredConfiguration;
+
+AutoPtr<LayeredConfiguration> _configs;
 
 ConfigMgr* ConfigMgr::instance()
 {
@@ -14,174 +23,136 @@ ConfigMgr* ConfigMgr::instance()
     return &instance;
 }
 
-// Defined here as it must not be exposed to end-users.
-bool ConfigMgr::GetValueHelper(const char* name, ACE_TString &result)
+void ConfigMgr::AddConfigFile(std::string const& file, bool enableDist /*= true*/)
 {
-    GuardType guard(_configLock);
-
-    if (_config.get() == 0)
-        return false;
-
-    ACE_TString section_name;
-    ACE_Configuration_Section_Key section_key;
-    const ACE_Configuration_Section_Key &root_key = _config->root_section();
-
-    int i = 0;
-    while (_config->enumerate_sections(root_key, i, section_name) == 0)
+    auto const itr = _configFiles.find(file);
+    if (itr != _configFiles.end())
     {
-        _config->open_section(root_key, section_name.c_str(), 0, section_key);
-        if (_config->get_string_value(section_key, name, result) == 0)
-            return true;
-        ++i;
+        SYS_LOG_ERROR("Config file (%s) is exist", file.c_str());
+        return;
     }
 
-    return false;
+    _configFiles.insert(std::make_pair(file, enableDist));
 }
 
-bool ConfigMgr::LoadInitial(char const* file, std::string applicationName /*= "worldserver"*/)
+bool ConfigMgr::Load()
 {
-    ASSERT(file);
+    std::lock_guard<std::mutex> lock(_configLock);
 
-    GuardType guard(_configLock);
-
-    _config.reset(new ACE_Configuration_Heap());
-    if (_config->open() == 0)
-        if (LoadData(file, applicationName))
-            return true;
-
-    SYS_LOG_INFO("Initial load config error. Invalid or missing configuration file: %s\n", file);
-    SYS_LOG_INFO("Verify that the file exists and has \'[%s]' written in the top of the file!\n", applicationName.c_str());
-
-    _config.reset();
-    return false;
-}
-
-bool ConfigMgr::LoadMore(char const* file, std::string applicationName /*= "worldserver"*/)
-{
-    ASSERT(file);
-    ASSERT(_config);
-
-    GuardType guard(_configLock);
-
-    return LoadData(file, applicationName);
-}
-
-bool ConfigMgr::Reload()
-{
-    for (std::vector<std::string>::const_iterator itr = _confFiles.begin(); itr != _confFiles.end(); ++itr)
+    if (_configFiles.empty())
     {
-        if (itr == _confFiles.begin())
+        SYS_LOG_ERROR("Config files is empty");
+        return false;
+    }
+
+    _configs = new LayeredConfiguration();   
+
+    for (auto const& itr : _configFiles)
+    {
+        try
         {
-            if (!LoadInitial((*itr).c_str()))
-                return false;
+            if (itr.second)
+                _configs->addFront(new Poco::Util::PropertyFileConfiguration(itr.first + ".dist"));
+
+            _configs->addFront(new Poco::Util::PropertyFileConfiguration(itr.first));
         }
-        else
+        catch (const Poco::Exception& e)
         {
-            LoadMore((*itr).c_str());
+            SYS_LOG_ERROR("Error at loading config - %s", e.displayText().c_str());
+            return false;
         }
     }
 
     return true;
 }
 
-bool ConfigMgr::LoadData(char const* file, std::string applicationName /*= "worldserver"*/)
+bool ConfigMgr::Reload()
 {
-    if(std::find(_confFiles.begin(), _confFiles.end(), file) == _confFiles.end())
-        _confFiles.push_back(file);
+    _configs.reset();
 
-    ACE_Ini_ImpExp config_importer(*_config.get());
-    if (config_importer.import_config(file) == 0)
+    if (Load())
         return true;
-
-    SYS_LOG_INFO("Load config error. Invalid or missing configuration file: %s", file);
-    SYS_LOG_INFO("Verify that the file exists and has \'[%s]' written in the top of the file!\n", applicationName.c_str());
 
     return false;
 }
 
-std::string ConfigMgr::GetStringDefault(std::string const& name, const std::string &def, bool logUnused /*= true*/)
+std::string ConfigMgr::GetStringDefault(std::string const& name, const std::string& def) const
 {
-    ACE_TString val;
+    auto key = def;
 
-    if (GetValueHelper(name.c_str(), val))
-        return val.c_str();
-    else
+    try
     {
-        if (logUnused)
-            SYS_LOG_ERROR("-> Not found option '%s'. The default value is used (%s)", name, def.c_str());
-        return def;
+        key = _configs->getString(name);
     }
-}
-
-bool ConfigMgr::GetBoolDefault(std::string const& name, bool def, bool logUnused /*= true*/)
-{
-    ACE_TString val;
-
-    if (!GetValueHelper(name.c_str(), val))
+    catch (const Poco::Exception& e)
     {
-        if (logUnused)
-            def ? SYS_LOG_ERROR("-> Not found option '%s'. The default value is used (Yes)", name) : SYS_LOG_ERROR("-> Not found option '%s'. The default value is used (No)", name);
-        return def;
+        SYS_LOG_ERROR("Error at get config option - %s", e.displayText().c_str());
     }
 
-    return (val == "true" || val == "TRUE" || val == "yes" || val == "YES" || val == "1");
+    return key;
 }
 
-int ConfigMgr::GetIntDefault(std::string const& name, int def, bool logUnused /*= true*/)
+bool ConfigMgr::GetBoolDefault(std::string const& name, bool def) const
 {
-    ACE_TString val;
+    auto key = def;
 
-    if (GetValueHelper(name.c_str(), val))
-        return atoi(val.c_str());
-    else
+    try
     {
-        if (logUnused)
-            SYS_LOG_ERROR("-> Not found option '%s'. The default value is used (%i)", name, def);
-        return def;
+        key = _configs->getBool(name);
     }
-}
-
-float ConfigMgr::GetFloatDefault(std::string const& name, float def, bool logUnused /*= true*/)
-{
-    ACE_TString val;
-
-    if (GetValueHelper(name.c_str(), val))
-        return (float)atof(val.c_str());
-    else
+    catch (const Poco::Exception& e)
     {
-        if (logUnused)
-            SYS_LOG_ERROR("-> Not found option '%s'. The default value is used (%f)", name, def);
-        return def;
+        SYS_LOG_ERROR("Error at get config option - %s", e.displayText().c_str());
     }
+
+    return key;
 }
 
-std::list<std::string> ConfigMgr::GetKeysByString(std::string const& name)
+int ConfigMgr::GetIntDefault(std::string const& name, int def) const
 {
-    GuardType guard(_configLock);
+    auto key = def;
 
-    std::list<std::string> keys;
-    if (_config.get() == 0)
-        return keys;
-
-    ACE_TString section_name;
-    ACE_Configuration_Section_Key section_key;
-    const ACE_Configuration_Section_Key &root_key = _config->root_section();
-
-    int i = 0;
-    while (_config->enumerate_sections(root_key, i++, section_name) == 0)
+    try
     {
-        _config->open_section(root_key, section_name.c_str(), 0, section_key);
+        key = _configs->getInt(name);
+    }
+    catch (const Poco::Exception& e)
+    {
+        SYS_LOG_ERROR("Error at get config option - %s", e.displayText().c_str());
+    }
 
-        ACE_TString key_name;
-        ACE_Configuration::VALUETYPE type;
-        int j = 0;
-        while (_config->enumerate_values(section_key, j++, key_name, type) == 0)
-        {
-            std::string temp = key_name.c_str();
+    return key;
+}
 
-            if (!temp.find(name))
-                keys.push_back(temp);
-        }
+float ConfigMgr::GetFloatDefault(std::string const& name, float def) const
+{
+    auto key = def;
+
+    try
+    {
+        key = static_cast<float>(_configs->getDouble(name));
+    }
+    catch (const Poco::Exception& e)
+    {
+        SYS_LOG_ERROR("Error at get config option - %s", e.displayText().c_str());
+    }
+
+    return key;
+}
+
+std::set<std::string> ConfigMgr::GetKeysByString(std::string const& name)
+{
+    std::lock_guard<std::mutex> lock(_configLock);
+
+    std::set<std::string> keys;
+    Poco::Util::AbstractConfiguration::Keys __Range;
+
+    _configs->keys(name, __Range);
+
+    for (auto const& itr : __Range)
+    {
+        keys.insert(itr);
+        SYS_LOG_INFO("itr - %s", itr.c_str());
     }
 
     return keys;
