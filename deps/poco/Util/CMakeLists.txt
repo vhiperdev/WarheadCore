@@ -4,11 +4,11 @@
 
 # Sources
 file(GLOB SRCS_G "src/*.cpp")
-POCO_SOURCES_AUTO( SRCS ${SRCS_G})
+POCO_SOURCES_AUTO(SRCS ${SRCS_G})
 
 # Headers
 file(GLOB_RECURSE HDRS_G "include/*.h" )
-POCO_HEADERS_AUTO( SRCS ${HDRS_G})
+POCO_HEADERS_AUTO(SRCS ${HDRS_G})
 
 POCO_SOURCES_AUTO_PLAT(SRCS WIN32
   src/WinRegistryConfiguration.cpp
@@ -31,4 +31,4 @@ target_include_directories(Util
   PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-set_target_properties(Net PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(Util PROPERTIES LINKER_LANGUAGE CXX)

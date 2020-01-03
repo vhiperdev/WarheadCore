@@ -57,7 +57,7 @@ target_link_libraries(common
   PUBLIC
     ace
     boost
-    Poco::Foundation
+    Poco::Util
     mysql
     g3dlib
     Detour

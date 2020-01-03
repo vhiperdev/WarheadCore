@@ -73,12 +73,8 @@ void MapConfiguration::enumerate(const std::string& key, Keys& range) const
 	{
 		if (it->first.compare(0, psize, prefix) == 0)
 		{
-			std::string subKey;
-			std::string::size_type end = it->first.find('.', psize);
-			if (end == std::string::npos)
-				subKey = it->first.substr(psize);
-			else
-				subKey = it->first.substr(psize, end - psize);
+			std::string subKey = it->first.substr(psize);
+
 			if (keys.find(subKey) == keys.end())
 			{
 				range.push_back(subKey);
