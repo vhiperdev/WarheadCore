@@ -14,6 +14,13 @@
 #include "WorldPacket.h"
 #include "GameGraveyard.h"
 
+void BattlegroundWGScore::BuildObjectivesBlock(WorldPacket& data)
+{
+    data << uint32(2); // Objectives Count
+    data << uint32(FlagCaptures);
+    data << uint32(FlagReturns);
+}
+
 BattlegroundWS::BattlegroundWS()
 {
     BgObjects.resize(BG_WS_OBJECT_MAX);
@@ -126,7 +133,7 @@ void BattlegroundWS::StartingEventOpenDoors()
 void BattlegroundWS::AddPlayer(Player* player)
 {
     Battleground::AddPlayer(player);
-    PlayerScores[player->GetGUID()] = new BattlegroundWGScore(player);
+    PlayerScores[player->GetGUIDLow()] = new BattlegroundWGScore(player->GetGUID());
 }
 
 void BattlegroundWS::RespawnFlagAfterDrop(TeamId teamId)
@@ -478,26 +485,24 @@ void BattlegroundWS::HandleKillPlayer(Player* player, Player* killer)
     Battleground::HandleKillPlayer(player, killer);
 }
 
-void BattlegroundWS::UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor)
+bool BattlegroundWS::UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor)
 {
-    BattlegroundScoreMap::iterator itr = PlayerScores.find(player->GetGUID());
-    if (itr == PlayerScores.end())
-        return;
+    if (!Battleground::UpdatePlayerScore(player, type, value, doAddHonor))
+        return false;
 
     switch (type)
     {
         case SCORE_FLAG_CAPTURES:
-            ((BattlegroundWGScore*)itr->second)->FlagCaptures += value;
             player->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BG_OBJECTIVE_CAPTURE, WS_OBJECTIVE_CAPTURE_FLAG);
             break;
         case SCORE_FLAG_RETURNS:
-            ((BattlegroundWGScore*)itr->second)->FlagReturns += value;
             player->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BG_OBJECTIVE_CAPTURE, WS_OBJECTIVE_RETURN_FLAG);
             break;
         default:
-            Battleground::UpdatePlayerScore(player, type, value, doAddHonor);
             break;
     }
+
+    return true;
 }
 
 GraveyardStruct const* BattlegroundWS::GetClosestGraveyard(Player* player)

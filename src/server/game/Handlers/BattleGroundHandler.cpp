@@ -333,7 +333,7 @@ void WorldSession::HandlePVPLogDataOpcode(WorldPacket & /*recvData*/)
         return;
 
     WorldPacket data;
-    sBattlegroundMgr->BuildPvpLogDataPacket(&data, bg);
+    bg->BuildPvPLogDataPacket(data);
     SendPacket(&data);
 
 #if defined(ENABLE_EXTRAS) && defined(ENABLE_EXTRA_LOGS)

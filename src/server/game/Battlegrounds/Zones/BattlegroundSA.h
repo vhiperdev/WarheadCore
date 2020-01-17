@@ -8,17 +8,7 @@
 #define __BATTLEGROUNDSA_H
 
 #include "Battleground.h"
-
-struct BattlegroundSAScore : public BattlegroundScore
-{
-    BattlegroundSAScore(Player* player) : BattlegroundScore(player), demolishers_destroyed(0), gates_destroyed(0) { }
-    ~BattlegroundSAScore() { }
-    uint8 demolishers_destroyed;
-    uint8 gates_destroyed;
-
-    uint32 GetAttr1() const final override { return demolishers_destroyed; }
-    uint32 GetAttr2() const final override { return gates_destroyed; }
-};
+#include "BattlegroundScore.h"
 
 #define BG_SA_FLAG_AMOUNT           3
 #define BG_SA_DEMOLISHER_AMOUNT     4
@@ -415,6 +405,39 @@ const float SOTADefPortalDest[5][4] = {
     { 1193.857f, 69.9f, 58.046f, 5.7245f },
 };
 
+
+struct BattlegroundSAScore final : public BattlegroundScore
+{
+    friend class BattlegroundSA;
+
+protected:
+    BattlegroundSAScore(uint64 playerGuid) : BattlegroundScore(playerGuid), DemolishersDestroyed(0), GatesDestroyed(0) { }
+
+    void UpdateScore(uint32 type, uint32 value) override
+    {
+        switch (type)
+        {
+        case SCORE_DESTROYED_DEMOLISHER:
+            DemolishersDestroyed += value;
+            break;
+        case SCORE_DESTROYED_WALL:
+            GatesDestroyed += value;
+            break;
+        default:
+            BattlegroundScore::UpdateScore(type, value);
+            break;
+        }
+    }
+
+    void BuildObjectivesBlock(WorldPacket& data) final override;
+
+    uint32 GetAttr1() const final override { return DemolishersDestroyed; }
+    uint32 GetAttr2() const final override { return GatesDestroyed; }
+
+    uint32 DemolishersDestroyed;
+    uint32 GatesDestroyed;
+};
+
 /// Class for manage Strand of Ancient battleground
 class BattlegroundSA : public Battleground
 {
@@ -473,10 +496,6 @@ class BattlegroundSA : public Battleground
         /// CAlled when a player leave battleground
         void RemovePlayer(Player* player);
         void HandleAreaTrigger(Player* player, uint32 trigger);
-
-        /* Scorekeeping */
-        /// Update score board
-        void UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor = true);
 
         // Teleporters
         void DefendersPortalTeleport(GameObject* portal, Player* plr);

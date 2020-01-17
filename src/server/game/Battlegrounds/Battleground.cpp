@@ -6,8 +6,10 @@
 
 #include "ArenaTeam.h"
 #include "ArenaTeamMgr.h"
+#include "ArenaScore.h"
 #include "Battleground.h"
 #include "BattlegroundMgr.h"
+#include "BattlegroundScore.h"
 #include "Creature.h"
 #include "Chat.h"
 #include "Formulas.h"
@@ -33,9 +35,11 @@
 #include "Transport.h"
 #include "ScriptMgr.h"
 #include "GameGraveyard.h"
+
 #ifdef ELUNA
 #include "LuaEngine.h"
 #endif
+
 namespace acore
 {
     class BattlegroundChatBuilder
@@ -102,6 +106,20 @@ namespace acore
     };
 }                                                           // namespace acore
 
+void BattlegroundScore::AppendToPacket(WorldPacket& data)
+{
+    data << uint64(PlayerGuid);
+
+    data << uint32(KillingBlows);
+    data << uint32(HonorableKills);
+    data << uint32(Deaths);
+    data << uint32(BonusHonor);
+    data << uint32(DamageDone);
+    data << uint32(HealingDone);
+
+    BuildObjectivesBlock(data);
+}
+
 template<class Do>
 void Battleground::BroadcastWorker(Do& _do)
 {
@@ -157,11 +175,12 @@ Battleground::Battleground()
     m_ArenaTeamIds[TEAM_ALLIANCE]   = 0;
     m_ArenaTeamIds[TEAM_HORDE]      = 0;
 
-    m_ArenaTeamRatingChanges[TEAM_ALLIANCE]   = 0;
-    m_ArenaTeamRatingChanges[TEAM_HORDE]      = 0;
-
     m_ArenaTeamMMR[TEAM_ALLIANCE]   = 0;
     m_ArenaTeamMMR[TEAM_HORDE]      = 0;
+
+    // Iterate this way for consistency's sake - client expects it to be sent in this order
+    for (uint8 i = 0; i < BG_TEAMS_COUNT; ++i)
+        _arenaTeamScores[i] = new ArenaTeamScore();
 
     m_BgRaids[TEAM_ALLIANCE]         = NULL;
     m_BgRaids[TEAM_HORDE]            = NULL;
@@ -222,6 +241,10 @@ Battleground::~Battleground()
 
     for (BattlegroundScoreMap::const_iterator itr = PlayerScores.begin(); itr != PlayerScores.end(); ++itr)
         delete itr->second;
+
+    // Iterate this way for consistency's sake - client expects it to be sent in this order
+    for (uint8 i = 0; i < BG_TEAMS_COUNT; ++i)
+        delete _arenaTeamScores[i];
 }
 
 void Battleground::Update(uint32 diff)
@@ -801,12 +824,13 @@ void Battleground::EndBattleground(TeamId winnerTeamId)
         loserArenaTeam  = sArenaTeamMgr->GetArenaTeamById(GetArenaTeamIdForTeam(winnerTeamId == TEAM_NEUTRAL ? TEAM_ALLIANCE : GetOtherTeamId(winnerTeamId)));
         if (winnerArenaTeam && loserArenaTeam && winnerArenaTeam != loserArenaTeam)
         {
+            loserTeamRating = loserArenaTeam->GetRating();
+            loserMatchmakerRating = GetArenaMatchmakerRating(GetOtherTeamId(winnerTeamId));
+            winnerTeamRating = winnerArenaTeam->GetRating();
+            winnerMatchmakerRating = GetArenaMatchmakerRating(winnerTeamId);
+
             if (winnerTeamId != TEAM_NEUTRAL)
             {
-                loserTeamRating = loserArenaTeam->GetRating();
-                loserMatchmakerRating = GetArenaMatchmakerRating(GetOtherTeamId(winnerTeamId));
-                winnerTeamRating = winnerArenaTeam->GetRating();
-                winnerMatchmakerRating = GetArenaMatchmakerRating(winnerTeamId);
                 winnerMatchmakerChange = bValidArena ? winnerArenaTeam->WonAgainst(winnerMatchmakerRating, loserMatchmakerRating, winnerChange, GetBgMap()) : 0;
                 loserMatchmakerChange = loserArenaTeam->LostAgainst(loserMatchmakerRating, winnerMatchmakerRating, loserChange, GetBgMap());
 
@@ -814,12 +838,18 @@ void Battleground::EndBattleground(TeamId winnerTeamId)
 
                 SetArenaMatchmakerRating(winnerTeamId, winnerMatchmakerRating + winnerMatchmakerChange);
                 SetArenaMatchmakerRating(GetOtherTeamId(winnerTeamId), loserMatchmakerRating + loserMatchmakerChange);
-                SetArenaTeamRatingChangeForTeam(winnerTeamId, winnerChange);
-                SetArenaTeamRatingChangeForTeam(GetOtherTeamId(winnerTeamId), loserChange);
+
+                // bg team that the client expects is different to TeamId
+                // alliance 1, horde 0
+                TeamId winnerTeam = winnerTeamId;
+                TeamId loserTeam = GetOtherTeamId(winnerTeamId);
+
+                _arenaTeamScores[winnerTeam]->Assign(winnerChange, winnerMatchmakerRating + winnerMatchmakerChange, winnerArenaTeam->GetName());
+                _arenaTeamScores[loserTeam]->Assign(loserChange, loserMatchmakerRating + loserMatchmakerChange, loserArenaTeam->GetName());
 
                 // pussywizard: arena logs in database
                 uint32 fightId = sArenaTeamMgr->GetNextArenaLogId();
-                uint32 currOnline = (uint32)(sWorld->GetActiveSessionCount());
+                uint32 currOnline = sWorld->GetActiveSessionCount();
 
                 SQLTransaction trans = CharacterDatabase.BeginTransaction();
                 PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_ARENA_LOG_FIGHT);
@@ -838,19 +868,19 @@ void Battleground::EndBattleground(TeamId winnerTeamId)
                 trans->Append(stmt);
 
                 uint8 memberId = 0;
-                for (Battleground::ArenaLogEntryDataMap::const_iterator itr = ArenaLogEntries.begin(); itr != ArenaLogEntries.end(); ++itr)
+                for (auto const& itr : ArenaLogEntries)
                 {
                     stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_ARENA_LOG_MEMBERSTATS);
                     stmt->setUInt32(0, fightId);
                     stmt->setUInt8(1, ++memberId);
-                    stmt->setString(2, itr->second.Name);
-                    stmt->setUInt32(3, itr->second.Guid);
-                    stmt->setUInt32(4, itr->second.ArenaTeamId);
-                    stmt->setUInt32(5, itr->second.Acc);
-                    stmt->setString(6, itr->second.IP);
-                    stmt->setUInt32(7, itr->second.DamageDone);
-                    stmt->setUInt32(8, itr->second.HealingDone);
-                    stmt->setUInt32(9, itr->second.KillingBlows);
+                    stmt->setString(2, itr.second.Name);
+                    stmt->setUInt32(3, itr.second.Guid);
+                    stmt->setUInt32(4, itr.second.ArenaTeamId);
+                    stmt->setUInt32(5, itr.second.Acc);
+                    stmt->setString(6, itr.second.IP);
+                    stmt->setUInt32(7, itr.second.DamageDone);
+                    stmt->setUInt32(8, itr.second.HealingDone);
+                    stmt->setUInt32(9, itr.second.KillingBlows);
                     trans->Append(stmt);
                 }
 
@@ -868,11 +898,13 @@ void Battleground::EndBattleground(TeamId winnerTeamId)
                 loserMatchmakerRating = GetArenaMatchmakerRating(TEAM_ALLIANCE);
                 winnerMatchmakerChange = 0;
                 loserMatchmakerChange = 0;
+
                 winnerChange = ARENA_TIMELIMIT_POINTS_LOSS;
                 loserChange = ARENA_TIMELIMIT_POINTS_LOSS;
 
-                SetArenaTeamRatingChangeForTeam(TEAM_ALLIANCE, ARENA_TIMELIMIT_POINTS_LOSS);
-                SetArenaTeamRatingChangeForTeam(TEAM_HORDE, ARENA_TIMELIMIT_POINTS_LOSS);
+                _arenaTeamScores[TEAM_ALLIANCE]->Assign(ARENA_TIMELIMIT_POINTS_LOSS, winnerMatchmakerRating, winnerArenaTeam->GetName());
+                _arenaTeamScores[TEAM_HORDE]->Assign(ARENA_TIMELIMIT_POINTS_LOSS, loserMatchmakerRating, loserArenaTeam->GetName());
+
                 winnerArenaTeam->FinishGame(ARENA_TIMELIMIT_POINTS_LOSS, GetBgMap());
                 loserArenaTeam->FinishGame(ARENA_TIMELIMIT_POINTS_LOSS, GetBgMap());
 
@@ -897,34 +929,29 @@ void Battleground::EndBattleground(TeamId winnerTeamId)
                 trans->Append(stmt);
 
                 uint8 memberId = 0;
-                for (Battleground::ArenaLogEntryDataMap::const_iterator itr = ArenaLogEntries.begin(); itr != ArenaLogEntries.end(); ++itr)
+                for (auto const& itr : ArenaLogEntries)
                 {
                     stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_ARENA_LOG_MEMBERSTATS);
                     stmt->setUInt32(0, fightId);
                     stmt->setUInt8(1, ++memberId);
-                    stmt->setString(2, itr->second.Name);
-                    stmt->setUInt32(3, itr->second.Guid);
-                    stmt->setUInt32(4, itr->second.ArenaTeamId);
-                    stmt->setUInt32(5, itr->second.Acc);
-                    stmt->setString(6, itr->second.IP);
-                    stmt->setUInt32(7, itr->second.DamageDone);
-                    stmt->setUInt32(8, itr->second.HealingDone);
-                    stmt->setUInt32(9, itr->second.KillingBlows);
+                    stmt->setString(2, itr.second.Name);
+                    stmt->setUInt32(3, itr.second.Guid);
+                    stmt->setUInt32(4, itr.second.ArenaTeamId);
+                    stmt->setUInt32(5, itr.second.Acc);
+                    stmt->setString(6, itr.second.IP);
+                    stmt->setUInt32(7, itr.second.DamageDone);
+                    stmt->setUInt32(8, itr.second.HealingDone);
+                    stmt->setUInt32(9, itr.second.KillingBlows);
                     trans->Append(stmt);
                 }
 
                 CharacterDatabase.CommitTransaction(trans);
             }
         }
-        else
-        {
-            SetArenaTeamRatingChangeForTeam(TEAM_ALLIANCE, 0);
-            SetArenaTeamRatingChangeForTeam(TEAM_HORDE, 0);
-        }
     }
 
     WorldPacket pvpLogData;
-    sBattlegroundMgr->BuildPvpLogDataPacket(&pvpLogData, this);
+    BuildPvPLogDataPacket(pvpLogData);
 
     uint8 aliveWinners = GetAlivePlayersCountByTeam(winnerTeamId);
     for (BattlegroundPlayerMap::iterator itr = m_Players.begin(); itr != m_Players.end(); ++itr)
@@ -1089,7 +1116,7 @@ void Battleground::RemovePlayerAtLeave(Player* player)
     }
 
     // delete player score if exists
-    BattlegroundScoreMap::iterator itr2 = PlayerScores.find(player->GetGUID());
+    BattlegroundScoreMap::iterator itr2 = PlayerScores.find(GUID_LOPART(player->GetGUID()));
     if (itr2 != PlayerScores.end())
     {
         delete itr2->second;
@@ -1394,65 +1421,47 @@ void Battleground::ReadyMarkerClicked(Player* p)
     }
 }
 
-void Battleground::UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor)
+void Battleground::BuildPvPLogDataPacket(WorldPacket& data)
 {
-    //this procedure is called from virtual function implemented in bg subclass
-    BattlegroundScoreMap::const_iterator itr = PlayerScores.find(player->GetGUID());
-    if (itr == PlayerScores.end())                         // player not found...
-        return;
+    uint8 type = (isArena() ? 1 : 0);
 
-    switch (type)
+    data.Initialize(MSG_PVP_LOG_DATA, 1 + 1 + 4 + 40 * GetPlayerScoresSize());
+    data << uint8(type);                                // type (battleground = 0 / arena = 1)
+
+    if (type)                                           // arena
     {
-        case SCORE_KILLING_BLOWS:                           // Killing blows
-            itr->second->KillingBlows += value;
-            if (isArena() && isRated())
-            {
-                ArenaLogEntryDataMap::iterator itr2 = ArenaLogEntries.find(player->GetGUID());
-                if (itr2 != ArenaLogEntries.end())
-                    itr2->second.KillingBlows += value;
-            }
-            break;
-        case SCORE_DEATHS:                                  // Deaths
-            itr->second->Deaths += value;
-            break;
-        case SCORE_HONORABLE_KILLS:                         // Honorable kills
-            itr->second->HonorableKills += value;
-            break;
-        case SCORE_BONUS_HONOR:                             // Honor bonus
-            // do not add honor in arenas
-            if (isBattleground())
-            {
-                // reward honor instantly
-                if (doAddHonor)
-                    player->RewardHonor(NULL, 1, value);    // RewardHonor calls UpdatePlayerScore with doAddHonor = false
-                else
-                    itr->second->BonusHonor += value;
-            }
-            break;
-            // used only in EY, but in MSG_PVP_LOG_DATA opcode
-        case SCORE_DAMAGE_DONE:                             // Damage Done
-            itr->second->DamageDone += value;
-            if (isArena() && isRated() && GetStatus() == STATUS_IN_PROGRESS)
-            {
-                ArenaLogEntryDataMap::iterator itr2 = ArenaLogEntries.find(player->GetGUID());
-                if (itr2 != ArenaLogEntries.end())
-                    itr2->second.DamageDone += value;
-            }
-            break;
-        case SCORE_HEALING_DONE:                            // Healing Done
-            itr->second->HealingDone += value;
-            if (isArena() && isRated() && GetStatus() == STATUS_IN_PROGRESS)
-            {
-                ArenaLogEntryDataMap::iterator itr2 = ArenaLogEntries.find(player->GetGUID());
-                if (itr2 != ArenaLogEntries.end())
-                    itr2->second.HealingDone += value;
-            }
-            break;
-        default:
-            sLog->outError("Battleground::UpdatePlayerScore: unknown score type (%u) for BG (map: %u, instance id: %u)!",
-                type, m_MapId, m_InstanceID);
-            break;
+        for (uint8 i = 0; i < BG_TEAMS_COUNT; ++i)
+            _arenaTeamScores[i]->BuildRatingInfoBlock(data);
+
+        for (uint8 i = 0; i < BG_TEAMS_COUNT; ++i)
+            _arenaTeamScores[i]->BuildTeamInfoBlock(data);
     }
+
+    if (GetStatus() == STATUS_WAIT_LEAVE)
+    {
+        data << uint8(1);                      // bg ended
+        data << uint8(GetWinner());            // who win
+    }
+    else
+        data << uint8(0);                      // bg not ended
+
+    data << uint32(GetPlayerScoresSize());
+    for (auto const& score : PlayerScores)
+        score.second->AppendToPacket(data);
+}
+
+bool Battleground::UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor)
+{
+    BattlegroundScoreMap::const_iterator itr = PlayerScores.find(player->GetGUIDLow());
+    if (itr == PlayerScores.end()) // player not found...
+        return false;
+
+    if (type == SCORE_BONUS_HONOR && doAddHonor && isBattleground())
+        player->RewardHonor(nullptr, 1, value); // RewardHonor calls UpdatePlayerScore with doAddHonor = false
+    else
+        itr->second->UpdateScore(type, value);
+
+    return true;
 }
 
 void Battleground::AddPlayerToResurrectQueue(uint64 npc_guid, uint64 player_guid)
@@ -1897,7 +1906,7 @@ void Battleground::PlayerAddedToBGCheckIfBGIsRunning(Player* player)
     WorldPacket data;
     BlockMovement(player);
 
-    sBattlegroundMgr->BuildPvpLogDataPacket(&data, this);
+    BuildPvPLogDataPacket(data);
     player->GetSession()->SendPacket(&data);
 
     sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, this, player->GetCurrentBattlegroundQueueSlot(), STATUS_IN_PROGRESS, GetEndTime(), GetStartTime(), GetArenaType(), player->GetBgTeamId());

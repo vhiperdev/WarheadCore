@@ -6,6 +6,7 @@
 #define __BATTLEGROUNDAB_H
 
 #include "Battleground.h"
+#include "BattlegroundScore.h"
 
 enum BG_AB_Events
 {
@@ -210,15 +211,36 @@ const float BG_AB_SpiritGuidePos[BG_AB_ALL_NODES_COUNT][4] =
     {714.61f, 646.15f, -10.87f, 4.34f}                      // horde starting base
 };
 
-struct BattlegroundABScore : public BattlegroundScore
+struct BattlegroundABScore final : public BattlegroundScore
 {
-    BattlegroundABScore(Player* player) : BattlegroundScore(player), BasesAssaulted(0), BasesDefended(0) { }
-    ~BattlegroundABScore() { }
-    uint32 BasesAssaulted;
-    uint32 BasesDefended;
+    friend class BattlegroundAB;
+
+protected:
+    BattlegroundABScore(uint64 playerGuid) : BattlegroundScore(playerGuid), BasesAssaulted(0), BasesDefended(0) { }
+
+    void UpdateScore(uint32 type, uint32 value) override
+    {
+        switch (type)
+        {
+        case SCORE_BASES_ASSAULTED:
+            BasesAssaulted += value;
+            break;
+        case SCORE_BASES_DEFENDED:
+            BasesDefended += value;
+            break;
+        default:
+            BattlegroundScore::UpdateScore(type, value);
+            break;
+        }
+    }
+
+    void BuildObjectivesBlock(WorldPacket& data) final override;
 
     uint32 GetAttr1() const final override { return BasesAssaulted; }
     uint32 GetAttr2() const final override { return BasesDefended; }
+
+    uint32 BasesAssaulted;
+    uint32 BasesDefended;
 };
 
 class BattlegroundAB : public Battleground
@@ -237,7 +259,7 @@ class BattlegroundAB : public Battleground
         void EndBattleground(TeamId winnerTeamId);
         GraveyardStruct const* GetClosestGraveyard(Player* player);
 
-        void UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor = true);
+        bool UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor = true) override;
         void FillInitialWorldStates(WorldPacket& data);
         void EventPlayerClickedOnFlag(Player* source, GameObject* gameObject);
 

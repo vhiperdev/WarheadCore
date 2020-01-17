@@ -4,6 +4,7 @@
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
+#include "ArenaScore.h"
 #include "BattlegroundDS.h"
 #include "Creature.h"
 #include "GameObject.h"
@@ -141,7 +142,7 @@ void BattlegroundDS::StartingEventOpenDoors()
 void BattlegroundDS::AddPlayer(Player* player)
 {
     Battleground::AddPlayer(player);
-    PlayerScores[player->GetGUID()] = new BattlegroundScore(player);
+    PlayerScores[player->GetGUIDLow()] = new ArenaScore(player->GetGUID(), player->GetBgTeamId());
     Battleground::UpdateArenaWorldState();
 }
 

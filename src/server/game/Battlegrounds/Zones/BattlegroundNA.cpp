@@ -4,6 +4,7 @@
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
+#include "ArenaScore.h"
 #include "BattlegroundNA.h"
 #include "Language.h"
 #include "Object.h"
@@ -50,7 +51,7 @@ void BattlegroundNA::StartingEventOpenDoors()
 void BattlegroundNA::AddPlayer(Player* player)
 {
     Battleground::AddPlayer(player);
-    PlayerScores[player->GetGUID()] = new BattlegroundScore(player);
+    PlayerScores[player->GetGUIDLow()] = new ArenaScore(player->GetGUID(), player->GetBgTeamId());
     Battleground::UpdateArenaWorldState();
 }
 

@@ -16,6 +16,12 @@
 #include "GameGraveyard.h"
 #include "GameTime.h"
 
+void BattlegroundEYScore::BuildObjectivesBlock(WorldPacket& data)
+{
+    data << uint32(1); // Objectives Count
+    data << uint32(FlagCaptures);
+}
+
 BattlegroundEY::BattlegroundEY()
 {
     m_BuffChange = true;
@@ -196,7 +202,7 @@ void BattlegroundEY::UpdatePointsIcons(uint32 point)
 void BattlegroundEY::AddPlayer(Player* player)
 {
     Battleground::AddPlayer(player);
-    PlayerScores[player->GetGUID()] = new BattlegroundEYScore(player);
+    PlayerScores[player->GetGUIDLow()] = new BattlegroundEYScore(player->GetGUID());
 }
 
 void BattlegroundEY::RemovePlayer(Player* player)
@@ -527,18 +533,21 @@ void BattlegroundEY::EventPlayerCapturedFlag(Player* player, uint32 BgObjectType
         AddPoints(player->GetTeamId(), BG_EY_FlagPoints[_ownedPointsCount[player->GetTeamId()] - 1]);
 }
 
-void BattlegroundEY::UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor)
+bool BattlegroundEY::UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor)
 {
-    if (type == SCORE_FLAG_CAPTURES)
+    if (!Battleground::UpdatePlayerScore(player, type, value, doAddHonor))
+        return false;
+
+    switch (type)
     {
-        BattlegroundScoreMap::iterator itr = PlayerScores.find(player->GetGUID());
-        if (itr != PlayerScores.end())
-            ((BattlegroundEYScore*)itr->second)->FlagCaptures += value;
+    case SCORE_FLAG_CAPTURES:
         player->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BG_OBJECTIVE_CAPTURE, BG_EY_OBJECTIVE_CAPTURE_FLAG);
-        return;
+        break;
+    default:
+        break;
     }
 
-    Battleground::UpdatePlayerScore(player, type, value, doAddHonor);
+    return true;
 }
 
 void BattlegroundEY::FillInitialWorldStates(WorldPacket& data)

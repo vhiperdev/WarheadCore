@@ -6,6 +6,7 @@
 #define __BATTLEGROUNDWS_H
 
 #include "Battleground.h"
+#include "BattlegroundScore.h"
 
 enum BG_WS_Events
 {
@@ -136,15 +137,36 @@ enum BG_WS_Objectives
     WS_EVENT_START_BATTLE       = 8563
 };
 
-struct BattlegroundWGScore : public BattlegroundScore
+struct BattlegroundWGScore final : public BattlegroundScore
 {
-    BattlegroundWGScore(Player* player): BattlegroundScore(player), FlagCaptures(0), FlagReturns(0) { }
-    ~BattlegroundWGScore() { }
-    uint32 FlagCaptures;
-    uint32 FlagReturns;
+    friend class BattlegroundWS;
+
+protected:
+    BattlegroundWGScore(uint64 playerGuid) : BattlegroundScore(playerGuid), FlagCaptures(0), FlagReturns(0) { }
+
+    void UpdateScore(uint32 type, uint32 value) override
+    {
+        switch (type)
+        {
+        case SCORE_FLAG_CAPTURES:   // Flags captured
+            FlagCaptures += value;
+            break;
+        case SCORE_FLAG_RETURNS:    // Flags returned
+            FlagReturns += value;
+            break;
+        default:
+            BattlegroundScore::UpdateScore(type, value);
+            break;
+        }
+    }
+
+    void BuildObjectivesBlock(WorldPacket& data) final override;
 
     uint32 GetAttr1() const final override { return FlagCaptures; }
     uint32 GetAttr2() const final override { return FlagReturns; }
+
+    uint32 FlagCaptures;
+    uint32 FlagReturns;
 };
 
 class BattlegroundWS : public Battleground
@@ -179,7 +201,7 @@ class BattlegroundWS : public Battleground
         GraveyardStruct const* GetClosestGraveyard(Player* player);
 
         void UpdateFlagState(TeamId teamId, uint32 value);
-        void UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor = true);
+        bool UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor = true) override;
         void SetDroppedFlagGUID(uint64 guid, TeamId teamId) { _droppedFlagGUID[teamId] = guid; }
         uint64 GetDroppedFlagGUID(TeamId teamId) const { return _droppedFlagGUID[teamId];}
         void FillInitialWorldStates(WorldPacket& data);

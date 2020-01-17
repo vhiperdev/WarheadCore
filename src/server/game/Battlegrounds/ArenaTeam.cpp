@@ -4,6 +4,7 @@
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
+#include "ArenaScore.h"
 #include "ObjectMgr.h"
 #include "WorldPacket.h"
 #include "ArenaTeam.h"
@@ -15,6 +16,39 @@
 #include "Opcodes.h"
 #include "GameConfig.h"
 #include <Config.h>
+
+void ArenaScore::AppendToPacket(WorldPacket& data)
+{
+    data << uint64(PlayerGuid);
+
+    data << uint32(KillingBlows);
+    data << uint8(teamId);
+    data << uint32(DamageDone);
+    data << uint32(HealingDone);
+
+    BuildObjectivesBlock(data);
+}
+
+void ArenaScore::BuildObjectivesBlock(WorldPacket& data)
+{
+    data << uint32(0); // Objectives Count
+}
+
+void ArenaTeamScore::BuildRatingInfoBlock(WorldPacket& data)
+{
+    uint32 ratingLost = std::abs(std::min(RatingChange, 0));
+    uint32 ratingWon = std::max(RatingChange, 0);
+
+    // should be old rating, new rating, and client will calculate rating change itself
+    data << uint32(ratingLost);
+    data << uint32(ratingWon);
+    data << uint32(MatchmakerRating);
+}
+
+void ArenaTeamScore::BuildTeamInfoBlock(WorldPacket& data)
+{
+    data << TeamName;
+}
 
 ArenaTeam::ArenaTeam()
     : TeamId(0), Type(0), TeamName(), CaptainGuid(0), BackgroundColor(0), EmblemStyle(0), EmblemColor(0),

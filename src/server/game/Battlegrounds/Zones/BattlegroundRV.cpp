@@ -4,6 +4,7 @@
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
+#include "ArenaScore.h"
 #include "Battleground.h"
 #include "BattlegroundRV.h"
 #include "ObjectAccessor.h"
@@ -171,7 +172,7 @@ void BattlegroundRV::AddPlayer(Player* player)
         player->SetPhaseMask(2, true);
 
     Battleground::AddPlayer(player);
-    PlayerScores[player->GetGUID()] = new BattlegroundScore(player);
+    PlayerScores[player->GetGUIDLow()] = new ArenaScore(player->GetGUID(), player->GetBgTeamId());
     BattlegroundRV::UpdateArenaWorldState();
 }
 

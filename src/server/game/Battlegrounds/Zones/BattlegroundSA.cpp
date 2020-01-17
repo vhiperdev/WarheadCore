@@ -14,6 +14,13 @@
 #include "GameGraveyard.h"
 #include "GameTime.h"
 
+void BattlegroundSAScore::BuildObjectivesBlock(WorldPacket& data)
+{
+    data << uint32(2); // Objectives Count
+    data << uint32(DemolishersDestroyed);
+    data << uint32(GatesDestroyed);
+}
+
 BattlegroundSA::BattlegroundSA()
 {
     StartMessageIds[BG_STARTING_EVENT_FIRST]  = LANG_BG_SA_START_TWO_MINUTES;
@@ -481,11 +488,9 @@ void BattlegroundSA::FillInitialWorldStates(WorldPacket& data)
 void BattlegroundSA::AddPlayer(Player* player)
 {
     Battleground::AddPlayer(player);
-    //create score and add it to map, default values are set in constructor
-    BattlegroundSAScore* sc = new BattlegroundSAScore(player);
+    PlayerScores[player->GetGUIDLow()] = new BattlegroundSAScore(player->GetGUID());
 
     SendTransportInit(player);
-    PlayerScores[player->GetGUID()] = sc;
     TeleportToEntrancePosition(player);
 }
 
@@ -498,20 +503,6 @@ void BattlegroundSA::HandleAreaTrigger(Player* /*Source*/, uint32 /*Trigger*/)
     // this is wrong way to implement these things. On official it done by gameobject spell cast.
     if (GetStatus() != STATUS_IN_PROGRESS)
         return;
-}
-
-void BattlegroundSA::UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor)
-{
-    BattlegroundScoreMap::iterator itr = PlayerScores.find(player->GetGUID());
-    if (itr == PlayerScores.end())
-        return;
-
-    if (type == SCORE_DESTROYED_DEMOLISHER)
-        ((BattlegroundSAScore*)itr->second)->demolishers_destroyed += value;
-    else if (type == SCORE_DESTROYED_WALL)
-        ((BattlegroundSAScore*)itr->second)->gates_destroyed += value;
-    else
-        Battleground::UpdatePlayerScore(player, type, value, doAddHonor);
 }
 
 void BattlegroundSA::TeleportPlayers()

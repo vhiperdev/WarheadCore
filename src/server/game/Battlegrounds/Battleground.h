@@ -30,6 +30,8 @@ class BattlegroundDS;
 class BattlegroundRV;
 class BattlegroundIC;
 
+struct ArenaTeamScore;
+struct BattlegroundScore;
 struct PvPDifficultyEntry;
 struct GraveyardStruct;
 
@@ -190,34 +192,6 @@ struct BattlegroundObjectInfo
     uint32      spellid;
 };
 
-enum ScoreType
-{
-    SCORE_KILLING_BLOWS         = 1,
-    SCORE_DEATHS                = 2,
-    SCORE_HONORABLE_KILLS       = 3,
-    SCORE_BONUS_HONOR           = 4,
-    //EY, but in MSG_PVP_LOG_DATA opcode!
-    SCORE_DAMAGE_DONE           = 5,
-    SCORE_HEALING_DONE          = 6,
-    //WS
-    SCORE_FLAG_CAPTURES         = 7,
-    SCORE_FLAG_RETURNS          = 8,
-    //AB and IC
-    SCORE_BASES_ASSAULTED       = 9,
-    SCORE_BASES_DEFENDED        = 10,
-    //AV
-    SCORE_GRAVEYARDS_ASSAULTED  = 11,
-    SCORE_GRAVEYARDS_DEFENDED   = 12,
-    SCORE_TOWERS_ASSAULTED      = 13,
-    SCORE_TOWERS_DEFENDED       = 14,
-    SCORE_MINES_CAPTURED        = 15,
-    SCORE_LEADERS_KILLED        = 16,
-    SCORE_SECONDARY_OBJECTIVES  = 17,
-    //SOTA
-    SCORE_DESTROYED_DEMOLISHER  = 18,
-    SCORE_DESTROYED_WALL        = 19,
-};
-
 enum ArenaType
 {
     ARENA_TYPE_2v2          = 2,
@@ -247,37 +221,8 @@ enum BattlegroundStartingEventsIds
     BG_STARTING_EVENT_THIRD     = 2,
     BG_STARTING_EVENT_FOURTH    = 3
 };
+
 #define BG_STARTING_EVENT_COUNT 4
-
-struct BattlegroundScore
-{
-    BattlegroundScore(Player* player) : KillingBlows(0), Deaths(0), HonorableKills(0), BonusHonor(0),
-        DamageDone(0), HealingDone(0), player(player)
-    { }
-
-    virtual ~BattlegroundScore() { }                        //virtual destructor is used when deleting score from scores map
-
-    uint32 KillingBlows;
-    uint32 Deaths;
-    uint32 HonorableKills;
-    uint32 BonusHonor;
-    uint32 DamageDone;
-    uint32 HealingDone;
-    Player* player;
-
-    uint32 GetKillingBlows() const { return KillingBlows; }
-    uint32 GetDeaths() const { return Deaths; }
-    uint32 GetHonorableKills() const { return HonorableKills; }
-    uint32 GetBonusHonor() const { return BonusHonor; }
-    uint32 GetDamageDone() const { return DamageDone; }
-    uint32 GetHealingDone() const { return HealingDone; }
-
-    virtual uint32 GetAttr1() const { return 0; }
-    virtual uint32 GetAttr2() const { return 0; }
-    virtual uint32 GetAttr3() const { return 0; }
-    virtual uint32 GetAttr4() const { return 0; }
-    virtual uint32 GetAttr5() const { return 0; }
-};
 
 class ArenaLogEntryData
 {
@@ -429,11 +374,10 @@ class Battleground
         void ReadyMarkerClicked(Player* p); // pussywizard
         std::set<uint32> readyMarkerClickedSet; // pussywizard
 
-        typedef std::map<uint64, BattlegroundScore*> BattlegroundScoreMap;
         typedef std::map<uint64, ArenaLogEntryData> ArenaLogEntryDataMap;// pussywizard
         ArenaLogEntryDataMap ArenaLogEntries; // pussywizard
-        BattlegroundScoreMap::const_iterator GetPlayerScoresBegin() const { return PlayerScores.begin(); }
-        BattlegroundScoreMap::const_iterator GetPlayerScoresEnd() const { return PlayerScores.end(); }
+
+        typedef std::map<uint32, BattlegroundScore*> BattlegroundScoreMap;
         uint32 GetPlayerScoresSize() const { return PlayerScores.size(); }
 
         uint32 GetReviveQueueSize() const { return m_ReviveQueue.size(); }
@@ -504,7 +448,8 @@ class Battleground
         Group* GetBgRaid(TeamId teamId) const { return m_BgRaids[teamId]; }
         void SetBgRaid(TeamId teamId, Group* bg_raid);
 
-        virtual void UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor = true);
+        void BuildPvPLogDataPacket(WorldPacket& data);
+        virtual bool UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor = true);
 
         uint32 GetPlayersCountByTeam(TeamId teamId) const { return m_PlayersCount[teamId]; }
         uint32 GetAlivePlayersCountByTeam(TeamId teamId) const;   // used in arenas to correctly handle death in spirit of redemption / last stand etc. (killer = killed) cases
@@ -519,8 +464,6 @@ class Battleground
         // used for rated arena battles
         void SetArenaTeamIdForTeam(TeamId teamId, uint32 ArenaTeamId) { m_ArenaTeamIds[teamId] = ArenaTeamId; }
         uint32 GetArenaTeamIdForTeam(TeamId teamId) const             { return m_ArenaTeamIds[teamId]; }
-        void SetArenaTeamRatingChangeForTeam(TeamId teamId, int32 RatingChange) { m_ArenaTeamRatingChanges[teamId] = RatingChange; }
-        int32 GetArenaTeamRatingChangeForTeam(TeamId teamId) const    { return m_ArenaTeamRatingChanges[teamId]; }
         void SetArenaMatchmakerRating(TeamId teamId, uint32 MMR)      { m_ArenaTeamMMR[teamId] = MMR; }
         uint32 GetArenaMatchmakerRating(TeamId teamId) const          { return m_ArenaTeamMMR[teamId]; }
         void CheckArenaAfterTimerConditions();
@@ -737,8 +680,8 @@ class Battleground
         // Arena team ids by team
         uint32 m_ArenaTeamIds[BG_TEAMS_COUNT];
 
-        int32 m_ArenaTeamRatingChanges[BG_TEAMS_COUNT];
         uint32 m_ArenaTeamMMR[BG_TEAMS_COUNT];
+        ArenaTeamScore* _arenaTeamScores[BG_TEAMS_COUNT];
 
         // Limits
         uint32 m_LevelMin;

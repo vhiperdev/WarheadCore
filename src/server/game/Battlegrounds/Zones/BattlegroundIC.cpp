@@ -18,6 +18,13 @@
 #include "GameGraveyard.h"
 #include "GameTime.h"
 
+void BattlegroundICScore::BuildObjectivesBlock(WorldPacket& data)
+{
+    data << uint32(2); // Objectives Count
+    data << uint32(BasesAssaulted);
+    data << uint32(BasesDefended);
+}
+
 BattlegroundIC::BattlegroundIC()
 {
     BgObjects.resize(MAX_NORMAL_GAMEOBJECTS_SPAWNS + MAX_AIRSHIPS_SPAWNS + MAX_HANGAR_TELEPORTERS_SPAWNS + MAX_FORTRESS_TELEPORTERS_SPAWNS + MAX_HANGAR_TELEPORTER_EFFECTS_SPAWNS + MAX_FORTRESS_TELEPORTER_EFFECTS_SPAWNS);
@@ -306,7 +313,7 @@ bool BattlegroundIC::IsResourceGlutAllowed(TeamId teamId) const
 void BattlegroundIC::AddPlayer(Player* player)
 {
     Battleground::AddPlayer(player);
-    PlayerScores[player->GetGUID()] = new BattlegroundICScore(player);
+    PlayerScores[player->GetGUIDLow()] = new BattlegroundICScore(player->GetGUID());
 
     if (nodePoint[NODE_TYPE_QUARRY].nodeState == (player->GetTeamId() == TEAM_ALLIANCE ? NODE_STATE_CONTROLLED_A : NODE_STATE_CONTROLLED_H))
         player->CastSpell(player, SPELL_QUARRY, true);
@@ -349,28 +356,6 @@ void BattlegroundIC::HandleAreaTrigger(Player* player, uint32 trigger)
             break;
     }
 
-}
-
-void BattlegroundIC::UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor)
-{
-    std::map<uint64, BattlegroundScore*>::iterator itr = PlayerScores.find(player->GetGUID());
-    if (itr == PlayerScores.end())
-        return;
-
-    switch (type)
-    {
-        case SCORE_BASES_ASSAULTED:
-            ((BattlegroundICScore*)itr->second)->BasesAssaulted += value;
-            player->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BG_OBJECTIVE_CAPTURE, IC_OBJECTIVE_ASSAULT_BASE);
-            break;
-        case SCORE_BASES_DEFENDED:
-            ((BattlegroundICScore*)itr->second)->BasesDefended += value;
-            player->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BG_OBJECTIVE_CAPTURE, IC_OBJECTIVE_DEFEND_BASE);
-            break;
-        default:
-            Battleground::UpdatePlayerScore(player, type, value, doAddHonor);
-            break;
-    }
 }
 
 void BattlegroundIC::FillInitialWorldStates(WorldPacket& data)

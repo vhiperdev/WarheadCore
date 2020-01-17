@@ -4,6 +4,7 @@
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
+#include "ArenaScore.h"
 #include "BattlegroundBE.h"
 #include "Language.h"
 #include "Object.h"
@@ -53,7 +54,7 @@ void BattlegroundBE::StartingEventOpenDoors()
 void BattlegroundBE::AddPlayer(Player* player)
 {
     Battleground::AddPlayer(player);
-    PlayerScores[player->GetGUID()] = new BattlegroundScore(player);
+    PlayerScores[player->GetGUIDLow()] = new ArenaScore(player->GetGUID(), player->GetBgTeamId());
     Battleground::UpdateArenaWorldState();
 }
 
@@ -158,9 +159,4 @@ bool BattlegroundBE::SetupBattleground()
     }
 
     return true;
-}
-
-void BattlegroundBE::UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor)
-{
-    Battleground::UpdatePlayerScore(player, type, value, doAddHonor);
 }

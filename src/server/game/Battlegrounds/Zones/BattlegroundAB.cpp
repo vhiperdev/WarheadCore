@@ -15,6 +15,13 @@
 #include "WorldSession.h"
 #include "GameGraveyard.h"
 
+void BattlegroundABScore::BuildObjectivesBlock(WorldPacket& data)
+{
+    data << uint32(2);
+    data << uint32(BasesAssaulted);
+    data << uint32(BasesDefended);
+}
+
 BattlegroundAB::BattlegroundAB()
 {
     m_BuffChange = true;
@@ -148,7 +155,7 @@ void BattlegroundAB::StartingEventOpenDoors()
 void BattlegroundAB::AddPlayer(Player* player)
 {
     Battleground::AddPlayer(player);
-    PlayerScores[player->GetGUID()] = new BattlegroundABScore(player);
+    PlayerScores[player->GetGUIDLow()] = new BattlegroundABScore(player->GetGUID());
 }
 
 void BattlegroundAB::RemovePlayer(Player* player)
@@ -450,26 +457,24 @@ GraveyardStruct const* BattlegroundAB::GetClosestGraveyard(Player* player)
     return nearestEntry;
 }
 
-void BattlegroundAB::UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor)
+bool BattlegroundAB::UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor)
 {
-    BattlegroundScoreMap::iterator itr = PlayerScores.find(player->GetGUID());
-    if (itr == PlayerScores.end())
-        return;
+    if (!Battleground::UpdatePlayerScore(player, type, value, doAddHonor))
+        return false;
 
     switch (type)
     {
         case SCORE_BASES_ASSAULTED:
-            ((BattlegroundABScore*)itr->second)->BasesAssaulted += value;
             player->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BG_OBJECTIVE_CAPTURE, BG_AB_OBJECTIVE_ASSAULT_BASE);
             break;
         case SCORE_BASES_DEFENDED:
-            ((BattlegroundABScore*)itr->second)->BasesDefended += value;
             player->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BG_OBJECTIVE_CAPTURE, BG_AB_OBJECTIVE_DEFEND_BASE);
             break;
         default:
-            Battleground::UpdatePlayerScore(player, type, value, doAddHonor);
             break;
     }
+
+    return true;
 }
 
 bool BattlegroundAB::AllNodesConrolledByTeam(TeamId teamId) const

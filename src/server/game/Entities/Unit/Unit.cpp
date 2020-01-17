@@ -9,6 +9,7 @@
 #include "Battlefield.h"
 #include "BattlefieldMgr.h"
 #include "Battleground.h"
+#include "BattlegroundScore.h"
 #include "CellImpl.h"
 #include "ConditionMgr.h"
 #include "CreatureAI.h"

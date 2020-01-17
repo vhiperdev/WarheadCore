@@ -8,6 +8,7 @@
 #define __BATTLEGROUNDAV_H
 
 #include "Battleground.h"
+#include "BattlegroundScore.h"
 
 #define LANG_BG_AV_A_CAPTAIN_BUFF       "Begone. Uncouth scum! The Alliance shall prevail in Alterac Valley!"
 #define LANG_BG_AV_H_CAPTAIN_BUFF       "Now is the time to attack! For the Horde!"
@@ -1542,25 +1543,53 @@ struct BG_AV_NodeInfo
 
 inline BG_AV_Nodes &operator++(BG_AV_Nodes &i){ return i = BG_AV_Nodes(i + 1); }
 
-struct BattlegroundAVScore : public BattlegroundScore
+
+struct BattlegroundAVScore final : public BattlegroundScore
 {
-    explicit BattlegroundAVScore(Player* player) : BattlegroundScore(player), GraveyardsAssaulted(0), GraveyardsDefended(0), TowersAssaulted(0), TowersDefended(0), MinesCaptured(0), LeadersKilled(0), SecondaryObjectives(0) { }
-    ~BattlegroundAVScore() override { }
+    friend class BattlegroundAV;
+
+protected:
+    BattlegroundAVScore(uint64 playerGuid) : BattlegroundScore(playerGuid), GraveyardsAssaulted(0), GraveyardsDefended(0), TowersAssaulted(0), TowersDefended(0), MinesCaptured(0) { }
+
+    void UpdateScore(uint32 type, uint32 value) override
+    {
+        switch (type)
+        {
+        case SCORE_GRAVEYARDS_ASSAULTED:
+            GraveyardsAssaulted += value;
+            break;
+        case SCORE_GRAVEYARDS_DEFENDED:
+            GraveyardsDefended += value;
+            break;
+        case SCORE_TOWERS_ASSAULTED:
+            TowersAssaulted += value;
+            break;
+        case SCORE_TOWERS_DEFENDED:
+            TowersDefended += value;
+            break;
+        case SCORE_MINES_CAPTURED:
+            MinesCaptured += value;
+            break;
+        default:
+            BattlegroundScore::UpdateScore(type, value);
+            break;
+        }
+    }
+
+    void BuildObjectivesBlock(WorldPacket& data) final override;
+
+    uint32 GetAttr1() const final override { return GraveyardsAssaulted; }
+    uint32 GetAttr2() const final override { return GraveyardsDefended; }
+    uint32 GetAttr3() const final override { return TowersAssaulted; }
+    uint32 GetAttr4() const final override { return TowersDefended; }
+    uint32 GetAttr5() const final override { return MinesCaptured; }
+
     uint32 GraveyardsAssaulted;
     uint32 GraveyardsDefended;
     uint32 TowersAssaulted;
     uint32 TowersDefended;
     uint32 MinesCaptured;
-    uint32 LeadersKilled;
-    uint32 SecondaryObjectives;
-
-    uint32 GetAttr1() const final { return GraveyardsAssaulted; }
-    uint32 GetAttr2() const final { return GraveyardsDefended; }
-    uint32 GetAttr3() const final { return TowersAssaulted; }
-    uint32 GetAttr4() const final { return TowersDefended; }
-    uint32 GetAttr5() const final { return MinesCaptured; }
 };
-
 class BattlegroundAV : public Battleground
 {
     public:
@@ -1579,7 +1608,7 @@ class BattlegroundAV : public Battleground
 
         /*general stuff*/
         void UpdateScore(TeamId teamId, int16 points);
-        void UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor = true) override;
+        bool UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor = true) override;
 
         /*handlestuff*/ //these are functions which get called from extern
         void EventPlayerClickedOnFlag(Player* source, GameObject* gameObject) override;
