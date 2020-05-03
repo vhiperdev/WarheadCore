@@ -251,7 +251,7 @@ void InstanceSaveManager::LoadResetTimes()
     time_t today = (now / DAY) * DAY;
 
     // load the global respawn times for raid/heroic instances
-    uint32 diff = sGameConfig->GetIntConfig("Instance.ResetTimeHour") * HOUR;
+    uint32 resetHour = sGameConfig->GetIntConfig("Instance.ResetTimeHour");
     QueryResult result = CharacterDatabase.Query("SELECT mapid, difficulty, resettime FROM instance_reset");
     if (result)
     {
@@ -294,7 +294,7 @@ void InstanceSaveManager::LoadResetTimes()
         if (!t)
         {
             // initialize the reset time
-            t = today + period + diff;
+            t = GetLocalHourTimestamp(today + period, resetHour);
             SetResetTimeFor(mapid, difficulty, t);
             CharacterDatabase.DirectPExecute("INSERT INTO instance_reset VALUES ('%u', '%u', '%u')", mapid, difficulty, (uint32)t);
         }
@@ -303,8 +303,9 @@ void InstanceSaveManager::LoadResetTimes()
         {
             // assume that expired instances have already been cleaned
             // calculate the next reset time
-            t = (t * DAY) / DAY;
-            t += ((today - t) / period + 1) * period + diff;
+            time_t day = (t / DAY) * DAY;
+            t = GetLocalHourTimestamp(day + ((today - day) / period + 1) * period, resetHour);
+
             CharacterDatabase.DirectPExecute("UPDATE instance_reset SET resettime = '%u' WHERE mapid = '%u' AND difficulty = '%u'", (uint32)t, mapid, difficulty);
         }
 
@@ -523,13 +524,13 @@ void InstanceSaveManager::_ResetOrWarnAll(uint32 mapid, Difficulty difficulty, b
         }
 
         // calculate the next reset time
-        uint32 diff = sGameConfig->GetIntConfig("Instance.ResetTimeHour") * HOUR;
+        uint32 resetHour = sGameConfig->GetIntConfig("Instance.ResetTimeHour");
 
         uint32 period = uint32(((mapDiff->resetTime * sGameConfig->GetFloatConfig("Rate.InstanceResetTime"))/DAY) * DAY);
         if (period < DAY)
             period = DAY;
 
-        uint32 next_reset = uint32(((resetTime + MINUTE) / DAY * DAY) + period + diff);
+        uint32 next_reset = GetLocalHourTimestamp(((resetTime + MINUTE) / DAY * DAY) + period, resetHour);
         SetResetTimeFor(mapid, difficulty, next_reset);
         SetExtendedResetTimeFor(mapid, difficulty, next_reset + period);
         ScheduleReset(time_t(next_reset-3600), InstResetEvent(1, mapid, difficulty));
