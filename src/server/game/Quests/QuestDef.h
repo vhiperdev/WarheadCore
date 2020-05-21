@@ -178,7 +178,7 @@ enum QuestSpecialFlags
 // This Quest class provides a convenient way to access a few pretotaled (cached) quest details,
 // all base quest information, and any utility functions such as generating the amount of
 // xp to give
-class Quest
+class WH_GAME_API Quest
 {
     friend class ObjectMgr;
     public:
@@ -375,7 +375,7 @@ class Quest
         uint32 SpecialFlags           = 0; // custom flags, not sniffed/WDB
 };
 
-struct QuestStatusData
+struct WH_GAME_API QuestStatusData
 {
     QuestStatusData(): Status(QUEST_STATUS_NONE), Timer(0), PlayerCount(0), Explored(false)
     {

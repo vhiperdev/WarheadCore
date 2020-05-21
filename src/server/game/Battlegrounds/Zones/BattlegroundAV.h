@@ -1540,7 +1540,7 @@ enum BG_AV_Objectives
     AV_OBJECTIVE_DEFEND_GRAVEYARD   = 65
 };
 
-struct BG_AV_NodeInfo
+struct WH_GAME_API BG_AV_NodeInfo
 {
     BG_AV_States State;
     BG_AV_States PrevState;
@@ -1553,7 +1553,7 @@ struct BG_AV_NodeInfo
 
 inline BG_AV_Nodes &operator++(BG_AV_Nodes &i){ return i = BG_AV_Nodes(i + 1); }
 
-struct BattlegroundAVScore : public BattlegroundScore
+struct WH_GAME_API BattlegroundAVScore : public BattlegroundScore
 {
     explicit BattlegroundAVScore(Player* player) : BattlegroundScore(player), GraveyardsAssaulted(0), GraveyardsDefended(0), TowersAssaulted(0), TowersDefended(0), MinesCaptured(0), LeadersKilled(0), SecondaryObjectives(0) { }
     ~BattlegroundAVScore() override { }
@@ -1572,7 +1572,7 @@ struct BattlegroundAVScore : public BattlegroundScore
     uint32 GetAttr5() const final { return MinesCaptured; }
 };
 
-class BattlegroundAV : public Battleground
+class WH_GAME_API BattlegroundAV : public Battleground
 {
     public:
         BattlegroundAV();

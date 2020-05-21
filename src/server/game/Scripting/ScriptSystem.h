@@ -46,7 +46,7 @@ enum eEscortFaction
     FACTION_ESCORT_H_ACTIVE             = 2046
 };
 
-struct ScriptPointMove
+struct WH_GAME_API ScriptPointMove
 {
     uint32 uiCreatureEntry;
     uint32 uiPointId;
@@ -58,7 +58,7 @@ struct ScriptPointMove
 
 typedef std::vector<ScriptPointMove> ScriptPointVector;
 
-class SystemMgr
+class WH_GAME_API SystemMgr
 {
         SystemMgr() {}
         ~SystemMgr() {}

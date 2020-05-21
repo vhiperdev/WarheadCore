@@ -21,7 +21,7 @@
 #include "Common.h"
 #include "SharedDefines.h"
 
-struct WhoListPlayerInfo
+struct WH_GAME_API WhoListPlayerInfo
 {
     TeamId teamId;
     AccountTypes security;
@@ -40,7 +40,7 @@ struct WhoListPlayerInfo
     teamId(teamId), security(security), level(level), clas(clas), race(race), zoneid(zoneid), gender(gender), wpname(wpname), wgname(wgname), aname(aname), pname(pname), gname(gname) {}
 };
 
-class WhoListCacheMgr
+class WH_GAME_API WhoListCacheMgr
 {
 public:
     static void Update();

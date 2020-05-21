@@ -125,7 +125,7 @@ enum Poi_Icon
     ICON_POI_REDHORSE           =   40                      // Red Horse
 };
 
-struct GossipMenuItem
+struct WH_GAME_API GossipMenuItem
 {
     uint8       MenuItemIcon;
     bool        IsCoded;
@@ -139,7 +139,7 @@ struct GossipMenuItem
 // need an ordered container
 typedef std::map<uint32, GossipMenuItem> GossipMenuItemContainer;
 
-struct GossipMenuItemData
+struct WH_GAME_API GossipMenuItemData
 {
     uint32 GossipActionMenuId;  // MenuId of the gossip triggered by this action
     uint32 GossipActionPoi;
@@ -148,7 +148,7 @@ struct GossipMenuItemData
 // need an ordered container
 typedef std::map<uint32, GossipMenuItemData> GossipMenuItemDataContainer;
 
-struct QuestMenuItem
+struct WH_GAME_API QuestMenuItem
 {
     uint32  QuestId;
     uint8   QuestIcon;
@@ -156,7 +156,7 @@ struct QuestMenuItem
 
 typedef std::vector<QuestMenuItem> QuestMenuItemList;
 
-class GossipMenu
+class WH_GAME_API GossipMenu
 {
     public:
         GossipMenu();
@@ -218,7 +218,7 @@ class GossipMenu
         LocaleConstant _locale;
 };
 
-class QuestMenu
+class WH_GAME_API QuestMenu
 {
     public:
         QuestMenu();
@@ -248,7 +248,7 @@ class QuestMenu
         QuestMenuItemList _questMenuItems;
 };
 
-class PlayerMenu
+class WH_GAME_API PlayerMenu
 {
     public:
         explicit PlayerMenu(WorldSession* session);
@@ -286,4 +286,5 @@ class PlayerMenu
         QuestMenu  _questMenu;
         WorldSession* _session;
 };
+
 #endif

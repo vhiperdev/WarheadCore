@@ -43,7 +43,7 @@ enum BattlegroundBEObjects
     BG_BE_OBJECT_TYPE_BUFF_2    = 184664
 };
 
-class BattlegroundBE : public Battleground
+class WH_GAME_API BattlegroundBE : public Battleground
 {
     public:
         BattlegroundBE();
@@ -65,4 +65,5 @@ class BattlegroundBE : public Battleground
         /* Scorekeeping */
         void UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor = true);
 };
+
 #endif

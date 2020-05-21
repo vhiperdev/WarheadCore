@@ -34,7 +34,7 @@ typedef void(*bgTypeRef)(WorldPacket*, Battleground::BattlegroundScoreMap::const
 
 #define BATTLEGROUND_ARENA_POINT_DISTRIBUTION_DAY 86400 // how many seconds in day
 
-struct CreateBattlegroundData
+struct WH_GAME_API CreateBattlegroundData
 {
     BattlegroundTypeId bgTypeId;
     bool IsArena;
@@ -59,7 +59,7 @@ struct CreateBattlegroundData
 
 struct GroupQueueInfo;
 
-class BattlegroundMgr
+class WH_GAME_API BattlegroundMgr
 {
     private:
         BattlegroundMgr();

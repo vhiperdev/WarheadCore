@@ -20,7 +20,7 @@
 #include "DatabaseEnv.h"
 #include "ScriptMgr.h"
 
-ScriptPointVector const SystemMgr::_empty;
+WH_GAME_API ScriptPointVector const SystemMgr::_empty;
 
 SystemMgr* SystemMgr::instance()
 {

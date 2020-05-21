@@ -25,15 +25,14 @@
 #define PET_LOSE_HAPPINES_INTERVAL  7500
 #define HAPPINESS_LEVEL_SIZE        333000
 
-struct PetSpell
+struct WH_GAME_API PetSpell
 {
     ActiveStates active;
     PetSpellState state;
     PetSpellType type;
 };
 
-
-class AsynchPetSummon
+class WH_GAME_API AsynchPetSummon
 {
     public:
         AsynchPetSummon(uint32 entry, Position position, PetType petType, uint32 duration, uint32 createdBySpell, uint64 casterGUID) : 
@@ -52,7 +51,7 @@ typedef std::vector<uint32> AutoSpellList;
 
 class Player;
 
-class Pet : public Guardian
+class WH_GAME_API Pet : public Guardian
 {
     public:
         explicit Pet(Player* owner, PetType type = MAX_PET_TYPE);
@@ -198,4 +197,5 @@ class Pet : public Guardian
             ABORT();
         }
 };
+
 #endif

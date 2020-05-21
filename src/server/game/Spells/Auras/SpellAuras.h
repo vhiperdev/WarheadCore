@@ -34,7 +34,7 @@ class DynamicObject;
 class AuraScript;
 class ProcInfo;
 
-class AuraApplication
+class WH_GAME_API AuraApplication
 {
     friend void Unit::_ApplyAura(AuraApplication * aurApp, uint8 effMask);
     friend void Unit::_UnapplyAura(AuraApplicationMap::iterator &i, AuraRemoveMode removeMode);
@@ -85,7 +85,7 @@ class AuraApplication
         void RemoveDisableMask(uint8 effIdx) { _disableMask &= ~(1 << effIdx); }
 };
 
-class Aura
+class WH_GAME_API Aura
 {
     friend Aura* Unit::_TryStackingOrRefreshingExistingAura(SpellInfo const* newAura, uint8 effMask, Unit* caster, int32 *baseAmount, Item* castItem, uint64 casterGUID, bool noPeriodicReset);
     public:
@@ -267,7 +267,7 @@ class Aura
         Unit::AuraApplicationList m_removedApplications;
 };
 
-class UnitAura : public Aura
+class WH_GAME_API UnitAura : public Aura
 {
     friend Aura* Aura::Create(SpellInfo const* spellproto, uint8 effMask, WorldObject* owner, Unit* caster, int32 *baseAmount, Item* castItem, uint64 casterGUID);
     protected:
@@ -288,7 +288,7 @@ class UnitAura : public Aura
         DiminishingGroup m_AuraDRGroup:8;               // Diminishing
 };
 
-class DynObjAura : public Aura
+class WH_GAME_API DynObjAura : public Aura
 {
     friend Aura* Aura::Create(SpellInfo const* spellproto, uint8 effMask, WorldObject* owner, Unit* caster, int32 *baseAmount, Item* castItem, uint64 casterGUID);
     protected:

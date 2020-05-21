@@ -18,6 +18,7 @@
 #ifndef SCRIPTEDCREATURE_H_
 #define SCRIPTEDCREATURE_H_
 
+#include "Define.h"
 #include "Creature.h"
 #include "CreatureAI.h"
 #include "CreatureAIImpl.h"
@@ -29,7 +30,7 @@ typedef std::list<WorldObject*> ObjectList;
 
 class InstanceScript;
 
-class SummonList
+class WH_GAME_API SummonList
 {
 public:
     typedef std::list<uint64> StorageType;
@@ -144,7 +145,7 @@ private:
     StorageType storage_;
 };
 
-class EntryCheckPredicate
+class WH_GAME_API EntryCheckPredicate
 {
     public:
         EntryCheckPredicate(uint32 entry) : _entry(entry) {}
@@ -154,7 +155,7 @@ class EntryCheckPredicate
         uint32 _entry;
 };
 
-class PlayerOrPetCheck
+class WH_GAME_API PlayerOrPetCheck
 {
     public:
         bool operator() (WorldObject* unit) const
@@ -167,7 +168,7 @@ class PlayerOrPetCheck
         }
 };
 
-struct ScriptedAI : public CreatureAI
+struct WH_GAME_API ScriptedAI : public CreatureAI
 {
     explicit ScriptedAI(Creature* creature);
     virtual ~ScriptedAI() {}
@@ -371,7 +372,7 @@ struct ScriptedAI : public CreatureAI
         bool _isHeroic;
 };
 
-class BossAI : public ScriptedAI
+class WH_GAME_API BossAI : public ScriptedAI
 {
     public:
         BossAI(Creature* creature, uint32 bossId);
@@ -422,7 +423,7 @@ class BossAI : public ScriptedAI
         uint32 const _bossId;
 };
 
-class WorldBossAI : public ScriptedAI
+class WH_GAME_API WorldBossAI : public ScriptedAI
 {
     public:
         WorldBossAI(Creature* creature);
@@ -453,9 +454,9 @@ class WorldBossAI : public ScriptedAI
 };
 
 // SD2 grid searchers.
-Creature* GetClosestCreatureWithEntry(WorldObject* source, uint32 entry, float maxSearchRange, bool alive = true);
-GameObject* GetClosestGameObjectWithEntry(WorldObject* source, uint32 entry, float maxSearchRange);
-void GetCreatureListWithEntryInGrid(std::list<Creature*>& list, WorldObject* source, uint32 entry, float maxSearchRange);
-void GetGameObjectListWithEntryInGrid(std::list<GameObject*>& list, WorldObject* source, uint32 entry, float maxSearchRange);
+WH_GAME_API Creature* GetClosestCreatureWithEntry(WorldObject* source, uint32 entry, float maxSearchRange, bool alive = true);
+WH_GAME_API GameObject* GetClosestGameObjectWithEntry(WorldObject* source, uint32 entry, float maxSearchRange);
+WH_GAME_API void GetCreatureListWithEntryInGrid(std::list<Creature*>& list, WorldObject* source, uint32 entry, float maxSearchRange);
+WH_GAME_API void GetGameObjectListWithEntryInGrid(std::list<GameObject*>& list, WorldObject* source, uint32 entry, float maxSearchRange);
 
 #endif // SCRIPTEDCREATURE_H_

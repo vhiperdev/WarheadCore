@@ -27,7 +27,7 @@
 //#include "SmartScript.h"
 //#include "SmartAI.h"
 
-struct WayPoint
+struct WH_GAME_API WayPoint
 {
     WayPoint(uint32 _id, float _x, float _y, float _z)
     {
@@ -189,7 +189,7 @@ enum SMART_EVENT
     SMART_EVENT_WH_END                   = 103
 };
 
-struct SmartEvent
+struct WH_GAME_API SmartEvent
 {
     SMART_EVENT type;
     uint32 event_phase_mask;
@@ -634,7 +634,7 @@ enum SMART_ACTION
     SMART_ACTION_WH_END                             = 223,    // placeholder
 };
 
-struct SmartAction
+struct WH_GAME_API SmartAction
 {
     SMART_ACTION type;
 
@@ -1332,7 +1332,7 @@ enum SMARTAI_TARGETS
     SMART_TARGET_WH_END                         = 204   // placeholder
 };
 
-struct SmartTarget
+struct WH_GAME_API SmartTarget
 {
     SmartTarget (SMARTAI_TARGETS t = SMART_TARGET_NONE, uint32 p1 = 0, uint32 p2 = 0, uint32 p3 = 0, uint32 p4 = 0)
     {
@@ -1680,7 +1680,7 @@ enum SmartCastFlags
 };
 
 // one line in DB is one event
-struct SmartScriptHolder
+struct WH_GAME_API SmartScriptHolder
 {
     SmartScriptHolder() : entryOrGuid(0), source_type(SMART_SCRIPT_TYPE_CREATURE)
         , event_id(0), link(0), event(), action(), target(), timer(0), active(false), runOnce(false)
@@ -1713,7 +1713,7 @@ typedef std::unordered_map<uint32, WayPoint*> WPPath;
 typedef std::list<WorldObject*> ObjectList;
 typedef std::list<uint64> GuidList;
 
-class ObjectGuidList
+class WH_GAME_API ObjectGuidList
 {
     ObjectList* m_objectList;
     GuidList* m_guidList;
@@ -1766,7 +1766,7 @@ public:
 
 typedef std::unordered_map<uint32, ObjectGuidList*> ObjectListMap;
 
-class SmartWaypointMgr
+class WH_GAME_API SmartWaypointMgr
 {
     SmartWaypointMgr() {}
     public:
@@ -1794,7 +1794,7 @@ typedef std::list<SmartScriptHolder> SmartAIEventStoredList;
 // all events for all entries / guids
 typedef std::unordered_map<int32, SmartAIEventList> SmartAIEventMap;
 
-class SmartAIMgr
+class WH_GAME_API SmartAIMgr
 {
     SmartAIMgr(){};
     public:

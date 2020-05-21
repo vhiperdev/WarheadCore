@@ -77,7 +77,7 @@ enum CreatureFlagsExtra
 #define MAX_CREATURE_QUEST_ITEMS 6
 
 // from `creature_template` table
-struct CreatureTemplate
+struct WH_GAME_API CreatureTemplate
 {
     uint32  Entry;
     uint32  DifficultyEntry[MAX_DIFFICULTY - 1];
@@ -190,7 +190,7 @@ typedef std::unordered_map<uint32, CreatureTemplate> CreatureTemplateContainer;
 #endif
 
 // Defines base stats for creatures (used to calculate HP/mana/armor/attackpower/rangedattackpower/all damage).
-struct CreatureBaseStats
+struct WH_GAME_API CreatureBaseStats
 {
     uint32 BaseHealth[MAX_EXPANSIONS];
     uint32 BaseMana;
@@ -232,7 +232,7 @@ typedef std::unordered_map<uint16, CreatureBaseStats> CreatureBaseStatsContainer
 
 #define MAX_EQUIPMENT_ITEMS 3
 
-struct EquipmentInfo
+struct WH_GAME_API EquipmentInfo
 {
     uint32  ItemEntry[MAX_EQUIPMENT_ITEMS];
 };
@@ -242,7 +242,7 @@ typedef std::unordered_map<uint8, EquipmentInfo> EquipmentInfoContainerInternal;
 typedef std::unordered_map<uint32, EquipmentInfoContainerInternal> EquipmentInfoContainer;
 
 // from `creature` table
-struct CreatureData
+struct WH_GAME_API CreatureData
 {
     CreatureData() : id(0), mapid(0), phaseMask(0), displayid(0), equipmentId(0),
                      posX(0.0f), posY(0.0f), posZ(0.0f), orientation(0.0f), spawntimesecs(0),
@@ -271,7 +271,7 @@ struct CreatureData
     bool overwrittenZ;
 };
 
-struct CreatureModelInfo
+struct WH_GAME_API CreatureModelInfo
 {
     float bounding_radius;
     float combat_reach;
@@ -311,7 +311,7 @@ enum ChatType
 #endif
 
 // `creature_addon` table
-struct CreatureAddon
+struct WH_GAME_API CreatureAddon
 {
     uint32 path_id;
     uint32 mount;
@@ -325,7 +325,7 @@ struct CreatureAddon
 typedef std::unordered_map<uint32, CreatureAddon> CreatureAddonContainer;
 
 // Vendors
-struct VendorItem
+struct WH_GAME_API VendorItem
 {
     VendorItem(uint32 _item, int32 _maxcount, uint32 _incrtime, uint32 _ExtendedCost)
         : item(_item), maxcount(_maxcount), incrtime(_incrtime), ExtendedCost(_ExtendedCost) {}
@@ -338,9 +338,10 @@ struct VendorItem
     //helpers
     bool IsGoldRequired(ItemTemplate const* pProto) const { return pProto->Flags2 & ITEM_FLAGS_EXTRA_EXT_COST_REQUIRES_GOLD || !ExtendedCost; }
 };
+
 typedef std::vector<VendorItem*> VendorItemList;
 
-struct VendorItemData
+struct WH_GAME_API VendorItemData
 {
     VendorItemList m_items;
 
@@ -367,7 +368,7 @@ struct VendorItemData
     }
 };
 
-struct VendorItemCount
+struct WH_GAME_API VendorItemCount
 {
     VendorItemCount(uint32 _item, uint32 _count);
 
@@ -378,7 +379,7 @@ struct VendorItemCount
 
 typedef std::list<VendorItemCount> VendorItemCounts;
 
-struct TrainerSpell
+struct WH_GAME_API TrainerSpell
 {
     TrainerSpell() : spell(0), spellCost(0), reqSkill(0), reqSkillValue(0), reqLevel(0)
     {
@@ -399,7 +400,7 @@ struct TrainerSpell
 
 typedef std::unordered_map<uint32 /*spellid*/, TrainerSpell> TrainerSpellMap;
 
-struct TrainerSpellData
+struct WH_GAME_API TrainerSpellData
 {
     TrainerSpellData() : trainerType(0) {}
     ~TrainerSpellData() { spellList.clear(); }
@@ -417,7 +418,7 @@ typedef std::map<uint32, time_t> CreatureSpellCooldowns;
 
 #define MAX_VENDOR_ITEMS 150                                // Limitation in 3.x.x item count in SMSG_LIST_INVENTORY
 
-class Creature : public Unit, public GridObject<Creature>, public MovableMapObject
+class WH_GAME_API Creature : public Unit, public GridObject<Creature>, public MovableMapObject
 {
     public:
 
@@ -779,7 +780,7 @@ class Creature : public Unit, public GridObject<Creature>, public MovableMapObje
         Spell const* _focusSpell;   ///> Locks the target during spell cast for proper facing
 };
 
-class AssistDelayEvent : public BasicEvent
+class WH_GAME_API AssistDelayEvent : public BasicEvent
 {
     public:
         AssistDelayEvent(uint64 victim, Unit& owner) : BasicEvent(), m_victim(victim), m_owner(owner) { }
@@ -794,7 +795,7 @@ class AssistDelayEvent : public BasicEvent
         Unit&             m_owner;
 };
 
-class ForcedDespawnDelayEvent : public BasicEvent
+class WH_GAME_API ForcedDespawnDelayEvent : public BasicEvent
 {
     public:
         ForcedDespawnDelayEvent(Creature& owner) : BasicEvent(), m_owner(owner) { }

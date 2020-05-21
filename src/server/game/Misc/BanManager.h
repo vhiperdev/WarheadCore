@@ -20,7 +20,7 @@
 
 #include "Common.h"
 
- /// Ban function return codes
+/// Ban function return codes
 enum BanReturn
 {
     BAN_SUCCESS,
@@ -29,7 +29,7 @@ enum BanReturn
     BAN_LONGER_EXISTS
 };
 
-class BanManager
+class WH_GAME_API BanManager
 {
 public:
 

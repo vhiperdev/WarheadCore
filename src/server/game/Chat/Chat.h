@@ -33,7 +33,7 @@ class WorldObject;
 
 struct GameTele;
 
-class ChatCommand
+class WH_GAME_API ChatCommand
 {
     typedef bool(*pHandler)(ChatHandler*, char const*);
 
@@ -49,7 +49,7 @@ class ChatCommand
         std::vector<ChatCommand> ChildCommands;
 };
 
-class ChatHandler
+class WH_GAME_API ChatHandler
 {
     public:
         WorldSession* GetSession() { return m_session; }
@@ -143,7 +143,7 @@ class ChatHandler
         bool sentErrorMessage;
 };
 
-class CliHandler : public ChatHandler
+class WH_GAME_API CliHandler : public ChatHandler
 {
     public:
         typedef void Print(void*, char const*);

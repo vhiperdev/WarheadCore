@@ -1367,7 +1367,7 @@ class WorldPacket;
 #pragma pack(push, 1)
 #endif
 
-struct OpcodeHandler
+struct WH_GAME_API OpcodeHandler
 {
     char const* name;
     SessionStatus status;
@@ -1375,7 +1375,7 @@ struct OpcodeHandler
     void (WorldSession::*handler)(WorldPacket& recvPacket);
 };
 
-extern OpcodeHandler opcodeTable[NUM_MSG_TYPES];
+WH_GAME_API extern OpcodeHandler opcodeTable[NUM_MSG_TYPES];
 
 #if defined(__GNUC__)
 #pragma pack()

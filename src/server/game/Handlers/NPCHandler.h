@@ -18,7 +18,9 @@
 #ifndef __NPCHANDLER_H
 #define __NPCHANDLER_H
 
-struct QEmote
+#include "Define.h"
+
+struct WH_GAME_API QEmote
 {
     uint32 _Emote;
     uint32 _Delay;
@@ -26,7 +28,7 @@ struct QEmote
 
 #define MAX_GOSSIP_TEXT_EMOTES 3
 
-struct GossipTextOption
+struct WH_GAME_API GossipTextOption
 {
     std::string Text_0;
     std::string Text_1;
@@ -38,7 +40,7 @@ struct GossipTextOption
 
 #define MAX_GOSSIP_TEXT_OPTIONS 8
 
-struct GossipText
+struct WH_GAME_API GossipText
 {
     GossipTextOption Options[MAX_GOSSIP_TEXT_OPTIONS];
 };

@@ -21,7 +21,7 @@
 #include "Common.h"
 #include "SharedDefines.h"
 
-struct GraveyardStruct
+struct WH_GAME_API GraveyardStruct
 {
     uint32 ID;
     uint32 Map;
@@ -32,7 +32,7 @@ struct GraveyardStruct
     std::wstring wnameLow;
 };
 
-struct GraveyardData
+struct WH_GAME_API GraveyardData
 {
     uint32 safeLocId;
     TeamId teamId;
@@ -42,7 +42,7 @@ typedef std::multimap<uint32, GraveyardData> WGGraveyardContainer;
 typedef std::pair<WGGraveyardContainer::const_iterator, WGGraveyardContainer::const_iterator> GraveyardMapBounds;
 typedef std::pair<WGGraveyardContainer::iterator, WGGraveyardContainer::iterator> GraveyardMapBoundsNonConst;
 
-class Graveyard
+class WH_GAME_API Graveyard
 {
 public:
     static Graveyard* instance();

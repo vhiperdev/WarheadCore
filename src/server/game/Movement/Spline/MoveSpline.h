@@ -23,7 +23,7 @@
 
 namespace Movement
 {
-    struct Location : public Vector3
+    struct WH_GAME_API Location : public Vector3
     {
         Location() : orientation(0) {}
         Location(float x, float y, float z, float o) : Vector3(x, y, z), orientation(o) {}
@@ -36,7 +36,7 @@ namespace Movement
     // MoveSpline represents smooth catmullrom or linear curve and point that moves belong it
     // curve can be cyclic - in this case movement will be cyclic
     // point can have vertical acceleration motion componemt(used in fall, parabolic movement)
-    class MoveSpline
+    class WH_GAME_API MoveSpline
     {
     public:
         typedef Spline<int32> MySpline;

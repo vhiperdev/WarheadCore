@@ -24,7 +24,7 @@
 
 namespace Movement {
 
-class SplineBase
+class WH_GAME_API SplineBase
 {
 public:
     typedef int index_type;

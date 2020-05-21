@@ -209,7 +209,7 @@ enum Actions
     AREA_TRIGGER_ALLIANCE_KEEP          = 5536
 };
 
-struct ICNpc
+struct WH_GAME_API ICNpc
 {
     uint32 type;
     uint32 entry;
@@ -855,7 +855,7 @@ const float BG_IC_SpiritGuidePos[MAX_NODE_TYPES+2][4] =
 };
 
 // I.E: Hangar, Quarry, Graveyards .. etc
-struct ICNodePoint
+struct WH_GAME_API ICNodePoint
 {
     uint32 gameobject_type; // with this we will get the GameObject of that point
     uint32 gameobject_entry; // what gamoebject entry is active here.
@@ -887,7 +887,7 @@ enum HonorRewards
     WINNER_HONOR_AMOUNT = 500
 };
 
-struct BattlegroundICScore : public BattlegroundScore
+struct WH_GAME_API BattlegroundICScore : public BattlegroundScore
 {
     BattlegroundICScore(Player* player) : BattlegroundScore(player), BasesAssaulted(0), BasesDefended(0) { }
     ~BattlegroundICScore() { }
@@ -898,7 +898,7 @@ struct BattlegroundICScore : public BattlegroundScore
     uint32 GetAttr2() const final override { return BasesDefended; }
 };
 
-class BattlegroundIC : public Battleground
+class WH_GAME_API BattlegroundIC : public Battleground
 {
     public:
         BattlegroundIC();

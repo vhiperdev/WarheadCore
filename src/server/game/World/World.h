@@ -39,7 +39,7 @@ class Player;
 class WorldSocket;
 class SystemMgr;
 
-extern uint32 realmID;
+WH_GAME_API extern uint32 realmID;
 
 // ServerMessages.dbc
 enum ServerMessageType
@@ -160,7 +160,7 @@ enum WorldStates
 };
 
 /// Storage class for commands issued for delayed execution
-struct CliCommandHolder
+struct WH_GAME_API CliCommandHolder
 {
     typedef void Print(void*, const char*);
     typedef void CommandFinished(void*, bool success);
@@ -185,7 +185,7 @@ struct CliCommandHolder
 typedef std::unordered_map<uint32, WorldSession*> SessionMap;
 
 // xinef: global storage
-struct GlobalPlayerData
+struct WH_GAME_API GlobalPlayerData
 {
     uint32 guidLow;
     uint32 accountId;
@@ -218,7 +218,7 @@ struct PetitionData
 };
 
 /// The World
-class World
+class WH_GAME_API World
 {
     public:
         World();

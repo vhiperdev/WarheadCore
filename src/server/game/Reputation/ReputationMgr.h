@@ -45,7 +45,8 @@ enum FactionFlags
 };
 
 typedef uint32 RepListID;
-struct FactionState
+
+struct WH_GAME_API FactionState
 {
     uint32 ID;
     RepListID ReputationListID;
@@ -60,7 +61,7 @@ typedef std::map<uint32, ReputationRank> ForcedReactions;
 
 class Player;
 
-class ReputationMgr
+class WH_GAME_API ReputationMgr
 {
     public:                                                 // constructors and global modifiers
         explicit ReputationMgr(Player* owner) : _player(owner),

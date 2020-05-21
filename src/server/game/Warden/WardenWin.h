@@ -30,7 +30,7 @@
 #pragma pack(push,1)
 #endif
 
-struct WardenInitModuleRequest
+struct WH_GAME_API WardenInitModuleRequest
 {
     uint8 Command1;
     uint16 Size1;
@@ -69,7 +69,7 @@ struct WardenInitModuleRequest
 class WorldSession;
 class Warden;
 
-class WardenWin : public Warden
+class WH_GAME_API WardenWin : public Warden
 {
     public:
         WardenWin();

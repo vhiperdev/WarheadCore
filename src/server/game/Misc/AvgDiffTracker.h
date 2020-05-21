@@ -22,7 +22,7 @@
 
 #define AVG_DIFF_COUNT 500
 
-class AvgDiffTracker
+class WH_GAME_API AvgDiffTracker
 {
 public:
     AvgDiffTracker() : total(0), index(0), average(0) { memset(&tab, 0, sizeof(tab)); max[0] = 0; max[1] = 0; }
@@ -83,8 +83,8 @@ private:
     uint32 average;
 };
 
-extern AvgDiffTracker avgDiffTracker;
-extern AvgDiffTracker lfgDiffTracker;
-extern AvgDiffTracker devDiffTracker;
+WH_GAME_API extern AvgDiffTracker avgDiffTracker;
+WH_GAME_API extern AvgDiffTracker lfgDiffTracker;
+WH_GAME_API extern AvgDiffTracker devDiffTracker;
 
 #endif

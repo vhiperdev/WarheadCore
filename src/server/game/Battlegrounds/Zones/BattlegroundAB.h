@@ -223,7 +223,7 @@ const float BG_AB_SpiritGuidePos[BG_AB_ALL_NODES_COUNT][4] =
     {714.61f, 646.15f, -10.87f, 4.34f}                      // horde starting base
 };
 
-struct BattlegroundABScore : public BattlegroundScore
+struct WH_GAME_API BattlegroundABScore : public BattlegroundScore
 {
     explicit BattlegroundABScore(Player* player) : BattlegroundScore(player), BasesAssaulted(0), BasesDefended(0) { }
     ~BattlegroundABScore() override = default;
@@ -234,7 +234,7 @@ struct BattlegroundABScore : public BattlegroundScore
     uint32 GetAttr2() const final { return BasesDefended; }
 };
 
-class BattlegroundAB : public Battleground
+class WH_GAME_API BattlegroundAB : public Battleground
 {
     public:
         BattlegroundAB();

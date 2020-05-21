@@ -37,7 +37,7 @@ enum LfgCompatibility
 };
 
 /// Stores player or group queue info
-struct LfgQueueData
+struct WH_GAME_API LfgQueueData
 {
     LfgQueueData();
 
@@ -56,7 +56,7 @@ struct LfgQueueData
     Lfg5Guids bestCompatible;                              ///< Best compatible combination of people queued
 };
 
-struct LfgWaitTime
+struct WH_GAME_API LfgWaitTime
 {
     LfgWaitTime(): time(-1), number(0) {}
     int32 time;                                            ///< Wait time
@@ -70,7 +70,7 @@ typedef std::list<Lfg5Guids> LfgCompatibleContainer;
 /**
     Stores all data related to queue
 */
-class LFGQueue
+class WH_GAME_API LFGQueue
 {
     public:
 

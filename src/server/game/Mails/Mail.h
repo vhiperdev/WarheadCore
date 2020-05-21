@@ -77,7 +77,7 @@ enum MailShowFlags
     MAIL_SHOW_RETURN  = 0x0010,
 };
 
-class MailSender
+class WH_GAME_API MailSender
 {
     public:                                                 // Constructors
         MailSender(MailMessageType messageType, uint32 sender_guidlow_or_entry, MailStationery stationery = MAIL_STATIONERY_DEFAULT)
@@ -99,7 +99,7 @@ class MailSender
         MailStationery m_stationery;
 };
 
-class MailReceiver
+class WH_GAME_API MailReceiver
 {
     public:                                                 // Constructors
         explicit MailReceiver(uint32 receiver_lowguid) : m_receiver(NULL), m_receiver_lowguid(receiver_lowguid) {}
@@ -113,7 +113,7 @@ class MailReceiver
         uint32  m_receiver_lowguid;
 };
 
-class MailDraft
+class WH_GAME_API MailDraft
 {
     typedef std::map<uint32, Item*> MailItemMap;
 
@@ -154,14 +154,15 @@ class MailDraft
         uint32 m_COD;
 };
 
-struct MailItemInfo
+struct WH_GAME_API MailItemInfo
 {
     uint32 item_guid;
     uint32 item_template;
 };
+
 typedef std::vector<MailItemInfo> MailItemInfoVec;
 
-struct Mail
+struct WH_GAME_API Mail
 {
     uint32 messageID;
     uint8 messageType;

@@ -20,7 +20,7 @@
 
 #include "Common.h"
 
-struct VisibilitySettingData
+struct WH_GAME_API VisibilitySettingData
 {
     uint32 visibilityNotifyDelay;
     uint32 aiNotifyDelay;
@@ -44,7 +44,7 @@ const VisibilitySettingData VisibilitySettings[VISIBILITY_SETTINGS_MAX_INTERVAL_
     { {1200, 550, 20.0f}, {1200, 550, 25.0f}, {1200, 550, 25.0f}, {1100, 550, 16.0f}, {300, 350, 1.0f} } // 3000+
 };
 
-class DynamicVisibilityMgr
+class WH_GAME_API DynamicVisibilityMgr
 {
 public:
     static void Update(uint32 sessionCount);

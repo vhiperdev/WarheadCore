@@ -126,8 +126,9 @@ enum SpellValueMod
     SPELLVALUE_FORCED_CRIT_RESULT
 };
 
-typedef std::pair<SpellValueMod, int32>     CustomSpellValueMod;
-class CustomSpellValues : public std::vector<CustomSpellValueMod>
+typedef std::pair<SpellValueMod, int32> CustomSpellValueMod;
+
+class WH_GAME_API CustomSpellValues : public std::vector<CustomSpellValueMod>
 {
     public:
         void AddSpellMod(SpellValueMod mod, int32 value)
@@ -338,7 +339,7 @@ enum SpellImmuneBlockType
     SPELL_BLOCK_TYPE_POSITIVE   = 1,
 };
 
-struct SpellImmune
+struct WH_GAME_API SpellImmune
 {
     uint32 spellId;
     uint32 type             : 16;
@@ -526,8 +527,8 @@ enum UnitMoveType
 
 #define MAX_MOVE_TYPE     9
 
-extern float baseMoveSpeed[MAX_MOVE_TYPE];
-extern float playerBaseMoveSpeed[MAX_MOVE_TYPE];
+WH_GAME_API extern float baseMoveSpeed[MAX_MOVE_TYPE];
+WH_GAME_API extern float playerBaseMoveSpeed[MAX_MOVE_TYPE];
 
 enum WeaponAttackType
 {
@@ -823,7 +824,7 @@ enum DiminishingLevels
     DIMINISHING_LEVEL_TAUNT_IMMUNE  = 4,
 };
 
-struct DiminishingReturn
+struct WH_GAME_API DiminishingReturn
 {
     DiminishingReturn(DiminishingGroup group, uint32 t, uint32 count)
         : DRGroup(group), stack(0), hitTime(t), hitCount(count)
@@ -841,7 +842,7 @@ enum MeleeHitOutcome
     MELEE_HIT_GLANCING, MELEE_HIT_CRIT, MELEE_HIT_CRUSHING, MELEE_HIT_NORMAL
 };
 
-class DispelInfo
+class WH_GAME_API DispelInfo
 {
 public:
     explicit DispelInfo(Unit* dispeller, uint32 dispellerSpellId, uint8 chargesRemoved) :
@@ -860,7 +861,7 @@ private:
     uint8 _chargesRemoved;
 };
 
-struct CleanDamage
+struct WH_GAME_API CleanDamage
 {
     CleanDamage(uint32 mitigated, uint32 absorbed, WeaponAttackType _attackType, MeleeHitOutcome _hitOutCome) :
     absorbed_damage(absorbed), mitigated_damage(mitigated), attackType(_attackType), hitOutCome(_hitOutCome) {}
@@ -874,7 +875,7 @@ struct CleanDamage
 
 struct CalcDamageInfo;
 
-class DamageInfo
+class WH_GAME_API DamageInfo
 {
 private:
     Unit* const m_attacker;
@@ -908,7 +909,7 @@ public:
     uint32 GetBlock() const { return m_block; };
 };
 
-class HealInfo
+class WH_GAME_API HealInfo
 {
 private:
     Unit* const m_healer;
@@ -938,7 +939,7 @@ public:
     SpellSchoolMask GetSchoolMask() const { return m_schoolMask; };
 };
 
-class ProcEventInfo
+class WH_GAME_API ProcEventInfo
 {
 private:
     Unit* const _actor;
@@ -972,7 +973,7 @@ public:
 
 // Struct for use in Unit::CalculateMeleeDamage
 // Need create structure like in SMSG_ATTACKERSTATEUPDATE opcode
-struct CalcDamageInfo
+struct WH_GAME_API CalcDamageInfo
 {
     Unit  *attacker;             // Attacker
     Unit  *target;               // Target for damage
@@ -993,7 +994,7 @@ struct CalcDamageInfo
 };
 
 // Spell damage info structure based on structure sending in SMSG_SPELLNONMELEEDAMAGELOG opcode
-struct SpellNonMeleeDamage
+struct WH_GAME_API SpellNonMeleeDamage
 {
     SpellNonMeleeDamage(Unit* _attacker, Unit* _target, uint32 _SpellID, uint32 _schoolMask)
         : target(_target), attacker(_attacker), SpellID(_SpellID), damage(0), overkill(0), schoolMask(_schoolMask),
@@ -1016,7 +1017,7 @@ struct SpellNonMeleeDamage
     uint32 cleanDamage;
 };
 
-struct SpellPeriodicAuraLogInfo
+struct WH_GAME_API SpellPeriodicAuraLogInfo
 {
     SpellPeriodicAuraLogInfo(AuraEffect const* _auraEff, uint32 _damage, uint32 _overDamage, uint32 _absorb, uint32 _resist, float _multiplier, bool _critical)
         : auraEff(_auraEff), damage(_damage), overDamage(_overDamage), absorb(_absorb), resist(_resist), multiplier(_multiplier), critical(_critical){}
@@ -1033,7 +1034,7 @@ struct SpellPeriodicAuraLogInfo
 void createProcFlags(const SpellInfo* spellInfo, WeaponAttackType attackType, bool positive, uint32& procAttacker, uint32& procVictim);
 uint32 createProcExtendMask(SpellNonMeleeDamage* damageInfo, SpellMissInfo missCondition);
 
-struct RedirectThreatInfo
+struct WH_GAME_API RedirectThreatInfo
 {
     RedirectThreatInfo() : _targetGUID(0), _threatPct(0) { }
     uint64 _targetGUID;
@@ -1057,7 +1058,7 @@ struct RedirectThreatInfo
 
 #define MAX_DECLINED_NAME_CASES 5
 
-struct DeclinedName
+struct WH_GAME_API DeclinedName
 {
     std::string name[MAX_DECLINED_NAME_CASES];
 };
@@ -1073,7 +1074,7 @@ enum CurrentSpellTypes
 #define CURRENT_FIRST_NON_MELEE_SPELL 1
 #define CURRENT_MAX_SPELL             4
 
-struct GlobalCooldown
+struct WH_GAME_API GlobalCooldown
 {
     explicit GlobalCooldown(uint32 _dur = 0, uint32 _time = 0) : duration(_dur), cast_time(_time) {}
 
@@ -1083,7 +1084,7 @@ struct GlobalCooldown
 
 typedef std::unordered_map<uint32 /*category*/, GlobalCooldown> GlobalCooldownList;
 
-class GlobalCooldownMgr                                     // Shared by Player and CharmInfo
+class WH_GAME_API GlobalCooldownMgr                                     // Shared by Player and CharmInfo
 {
 public:
     GlobalCooldownMgr() {}
@@ -1126,7 +1127,7 @@ enum CommandStates
 #define UNIT_ACTION_BUTTON_TYPE(X)   ((uint32(X) & 0xFF000000) >> 24)
 #define MAKE_UNIT_ACTION_BUTTON(A, T) (uint32(A) | (uint32(T) << 24))
 
-struct UnitActionBarEntry
+struct WH_GAME_API UnitActionBarEntry
 {
     UnitActionBarEntry() : packedData(uint32(ACT_DISABLED) << 24) {}
 
@@ -1179,7 +1180,7 @@ enum ActionBarIndex
 
 #define MAX_UNIT_ACTION_BAR_INDEX (ACTION_BAR_INDEX_END-ACTION_BAR_INDEX_START)
 
-struct CharmInfo
+struct WH_GAME_API CharmInfo
 {
     public:
         explicit CharmInfo(Unit* unit);
@@ -1309,7 +1310,7 @@ typedef std::unordered_map<uint32, uint32> PacketCooldowns;
 struct SpellProcEventEntry;                                 // used only privately
 
 // pussywizard:
-class MMapTargetData
+class WH_GAME_API MMapTargetData
 {
 public:
     MMapTargetData() {}
@@ -1334,7 +1335,7 @@ public:
     Position _posTarget;
 };
 
-class SafeUnitPointer
+class WH_GAME_API SafeUnitPointer
 {
 public:
     explicit SafeUnitPointer(Unit* defVal) :  ptr(defVal), defaultValue(defVal) {}
@@ -1351,7 +1352,7 @@ private:
     Unit* defaultValue;
 };
 
-class Unit : public WorldObject
+class WH_GAME_API Unit : public WorldObject
 {
     public:
         typedef std::unordered_set<Unit*> AttackerSet;
@@ -2633,7 +2634,7 @@ namespace warhead
     };
 }
 
-class ConflagrateAuraStateDelayEvent : public BasicEvent
+class WH_GAME_API ConflagrateAuraStateDelayEvent : public BasicEvent
 {
     public:
         ConflagrateAuraStateDelayEvent(uint64 ownerGUID, uint64 casterGUID) : BasicEvent(), m_owner(ownerGUID), m_caster(casterGUID) { }
@@ -2644,7 +2645,7 @@ class ConflagrateAuraStateDelayEvent : public BasicEvent
         uint64 m_caster;
 };
 
-class RedirectSpellEvent : public BasicEvent
+class WH_GAME_API RedirectSpellEvent : public BasicEvent
 {
     public:
         RedirectSpellEvent(Unit& self, uint64 auraOwnerGUID, AuraEffect* auraEffect) : _self(self), _auraOwnerGUID(auraOwnerGUID), _auraEffect(auraEffect) { }
@@ -2656,7 +2657,7 @@ class RedirectSpellEvent : public BasicEvent
         AuraEffect* _auraEffect;
 };
 
-class VehicleDespawnEvent : public BasicEvent
+class WH_GAME_API VehicleDespawnEvent : public BasicEvent
 {
     public:
         VehicleDespawnEvent(Unit& self, uint32 duration) : _self(self), _duration(duration) { }

@@ -22,7 +22,7 @@
 
 #define DEFAULT_MAX_PLAYER_DISTANCE 50
 
-struct Escort_Waypoint
+struct WH_GAME_API Escort_Waypoint
 {
     Escort_Waypoint(uint32 _id, float _x, float _y, float _z, uint32 _w)
     {
@@ -48,7 +48,7 @@ enum eEscortState
     STATE_ESCORT_PAUSED     = 0x004                         //will not proceed with waypoints before state is removed
 };
 
-struct npc_escortAI : public ScriptedAI
+struct WH_GAME_API npc_escortAI : public ScriptedAI
 {
     public:
         explicit npc_escortAI(Creature* creature);
@@ -137,5 +137,6 @@ struct npc_escortAI : public ScriptedAI
         bool ScriptWP;
         bool HasImmuneToNPCFlags;
 };
+
 #endif
 

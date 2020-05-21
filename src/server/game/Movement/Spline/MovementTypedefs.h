@@ -70,8 +70,8 @@ namespace Movement
 
     typedef counter<uint32, 0xFFFFFFFF> UInt32Counter;
 
-    extern double gravity;
-    extern UInt32Counter splineIdGen;
+    WH_GAME_API extern double gravity;
+    WH_GAME_API extern UInt32Counter splineIdGen;
 }
 
 #endif // TRINITYSERVER_TYPEDEFS_H

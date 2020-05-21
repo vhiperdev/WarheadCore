@@ -36,13 +36,11 @@ typedef std::set<WGWorkshop*> Workshop;
 typedef std::set<Group*> GroupSet;
 //typedef std::set<WintergraspCapturePoint *> CapturePointSet; unused ?
 
-
 const uint32 VehNumWorldState[2] = { 3680, 3490 };
 const uint32 MaxVehNumWorldState[2] = { 3681, 3491 };
 const uint32 ClockWorldState[2] = { 3781, 4354 };
 const uint32 WintergraspFaction[3] = { 1, 2, 35 };
 float const WintergraspStalkerPos[4]    = { 4948.985f, 2937.789f, 550.5172f, 1.815142f };
-
 
 enum WintergraspSpells
 {
@@ -131,7 +129,7 @@ enum WintergraspAreaIds
  *####### Graveyards ######
  *#########################*/
 
-class BfGraveyardWG : public BfGraveyard
+class WH_GAME_API BfGraveyardWG : public BfGraveyard
 {
     public:
         BfGraveyardWG(BattlefieldWG *Bf);
@@ -221,7 +219,7 @@ enum WintergraspNpcs
     NPC_QUEST_PVP_KILL_VEHICLE                      = 31093,
 };
 
-struct BfWGCoordGY
+struct WH_GAME_API BfWGCoordGY
 {
     float x;
     float y;
@@ -233,12 +231,15 @@ struct BfWGCoordGY
     TeamId startcontrol;
 };
 
-const uint32 WGQuest[2][6] = {
+const uint32 WGQuest[2][6] = 
+{
     { 13186, 13181, 13222, 13538, 13177, 13179 },
     { 13185, 13183, 13223, 13539, 13178, 13180 },
 };
+
 // 7 in sql, 7 in header
-const BfWGCoordGY WGGraveYard[BATTLEFIELD_WG_GRAVEYARD_MAX] = {
+const BfWGCoordGY WGGraveYard[BATTLEFIELD_WG_GRAVEYARD_MAX] = 
+{
     { 5104.750f, 2300.940f, 368.579f, 0.733038f, 1329, BATTLEFIELD_WG_GY_WORKSHOP_NE, BATTLEFIELD_WG_GOSSIPTEXT_GY_NE, TEAM_NEUTRAL },
     { 5099.120f, 3466.036f, 368.484f, 5.317802f, 1330, BATTLEFIELD_WG_GY_WORKSHOP_NW, BATTLEFIELD_WG_GOSSIPTEXT_GY_NW, TEAM_NEUTRAL },
     { 4314.648f, 2408.522f, 392.642f, 6.268125f, 1333, BATTLEFIELD_WG_GY_WORKSHOP_SE, BATTLEFIELD_WG_GOSSIPTEXT_GY_SE, TEAM_NEUTRAL },
@@ -252,7 +253,7 @@ const BfWGCoordGY WGGraveYard[BATTLEFIELD_WG_GRAVEYARD_MAX] = {
  *  WintergraspCapturePoint  *
  * ######################### */
 
-class WintergraspCapturePoint : public BfCapturePoint
+class WH_GAME_API WintergraspCapturePoint : public BfCapturePoint
 {
     public:
         WintergraspCapturePoint(BattlefieldWG* battlefield, TeamId teamInControl);
@@ -270,7 +271,7 @@ class WintergraspCapturePoint : public BfCapturePoint
  * WinterGrasp Battlefield   *
  * ######################### */
 
-class BattlefieldWG : public Battlefield
+class WH_GAME_API BattlefieldWG : public Battlefield
 {
     public:
         ~BattlefieldWG();
@@ -577,7 +578,7 @@ enum WintergraspGameObject
     GO_WINTERGRASP_FLAMEWATCH_TOWER              = 190358,
 };
 
-struct WintergraspObjectPositionData
+struct WH_GAME_API WintergraspObjectPositionData
 {
     float x;
     float y;
@@ -591,7 +592,7 @@ struct WintergraspObjectPositionData
 // ************ Destructible (Wall,Tower..) ************
 // *****************************************************
 
-struct WintergraspBuildingSpawnData
+struct WH_GAME_API WintergraspBuildingSpawnData
 {
     uint32 entry;
     uint32 WorldState;
@@ -604,7 +605,8 @@ struct WintergraspBuildingSpawnData
     uint32 destroyText;
 };
 
-const WintergraspBuildingSpawnData WGGameObjectBuilding[WG_MAX_OBJ] = {
+const WintergraspBuildingSpawnData WGGameObjectBuilding[WG_MAX_OBJ] = 
+{
     // Wall (Not spawned in db)
     // Entry  WS    X        Y        Z        O         type                          NameID
     { 190219, 3749, 5371.46f, 3047.47f, 407.571f, 3.14159f, BATTLEFIELD_WG_OBJECTTYPE_WALL, 0, 0 },
@@ -651,7 +653,8 @@ const WintergraspBuildingSpawnData WGGameObjectBuilding[WG_MAX_OBJ] = {
     { 191810, 3773, 5397.11f, 2841.54f, 425.899f, 3.14159f, BATTLEFIELD_WG_OBJECTTYPE_DOOR_LAST, 0, 0 },
 };
 
-const Position WGTurret[WG_MAX_TURRET] = {
+const Position WGTurret[WG_MAX_TURRET] = 
+{
     { 5391.19f, 3060.8f,  419.616f, 1.69557f },
     { 5266.75f, 2976.5f,  421.067f, 3.20354f },
     { 5234.86f, 2948.8f,  420.88f,  1.61311f },
@@ -748,7 +751,7 @@ const WintergraspObjectPositionData WGOutsideNPC[WG_MAX_OUTSIDE_NPC] =
     { 5080.40f, 2199.00f, 359.489f, 2.967f, 0, BATTLEFIELD_WG_NPC_SENIOR_DEMOLITIONIST_LEGOSO },
 };
 
-struct WintergraspTeleporterData
+struct WH_GAME_API WintergraspTeleporterData
 {
     uint32 entry;
     float x;
@@ -779,7 +782,7 @@ const WintergraspTeleporterData WGPortalDefenderData[WG_MAX_TELEPORTER] =
 // **********Tower Element(GameObject,Creature)*************
 // *********************************************************
 
-struct WintergraspTowerData
+struct WH_GAME_API WintergraspTowerData
 {
     uint32 towerEntry;                  // Gameobject id of tower
     uint8 nbObject;                     // Number of gameobjects spawned on this point
@@ -795,7 +798,8 @@ struct WintergraspTowerData
 uint8 const WG_MAX_ATTACKTOWERS = 3;
 // 192414 : 0 in sql, 1 in header
 // 192278 : 0 in sql, 3 in header
-const WintergraspTowerData AttackTowers[WG_MAX_ATTACKTOWERS] = {
+const WintergraspTowerData AttackTowers[WG_MAX_ATTACKTOWERS] = 
+{
     // West tower
     {
         190356,
@@ -899,7 +903,7 @@ const WintergraspTowerData AttackTowers[WG_MAX_ATTACKTOWERS] = {
     },
 };
 
-struct WintergraspTowerCannonData
+struct WH_GAME_API WintergraspTowerCannonData
 {
     uint32 towerEntry;
     uint8 nbTowerCannonBottom;
@@ -1053,7 +1057,7 @@ const WintergraspTowerCannonData TowerCannon[WG_MAX_TOWER_CANNON] =
 
 uint8 const WG_MAX_WORKSHOP = 6;
 
-struct WGWorkshopData
+struct WH_GAME_API WGWorkshopData
 {
     uint8 id;
     uint32 worldstate;
@@ -1081,7 +1085,7 @@ const WGWorkshopData WorkshopsData[WG_MAX_WORKSHOP] =
 // *         Structs using for Building,Graveyard,Workshop            *
 // ********************************************************************
 // Structure for different buildings that can be destroyed during battle
-struct BfWGGameObjectBuilding
+struct WH_GAME_API BfWGGameObjectBuilding
 {
     BfWGGameObjectBuilding(BattlefieldWG *WG)
     {
@@ -1444,7 +1448,7 @@ struct BfWGGameObjectBuilding
     }
 };
 
-struct WGWorkshop
+struct WH_GAME_API WGWorkshop
 {
     // pointer to the battlefield that the workshop belongs to
     BattlefieldWG* bf;

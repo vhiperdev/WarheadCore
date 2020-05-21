@@ -1220,6 +1220,7 @@ bool WorldObject::IsInRange3d(float x, float y, float z, float minRange, float m
     return distsq < maxdist * maxdist;
 }
 
+
 bool WorldObject::IsInBetween(const WorldObject* obj1, const WorldObject* obj2, float size) const
 {
     if (!obj1 || !obj2)

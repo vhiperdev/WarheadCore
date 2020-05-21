@@ -33,7 +33,7 @@ enum CreatureTextRange
     TEXT_RANGE_WORLD    = 4
 };
 
-struct CreatureTextEntry
+struct WH_GAME_API CreatureTextEntry
 {
     uint32 entry;
     uint8 group;
@@ -49,12 +49,12 @@ struct CreatureTextEntry
     uint32 BroadcastTextId;
 };
 
-struct CreatureTextLocale
+struct WH_GAME_API CreatureTextLocale
 {
     StringVector Text;
 };
 
-struct CreatureTextId
+struct WH_GAME_API CreatureTextId
 {
     CreatureTextId(uint32 e, uint32 g, uint32 i) : entry(e), textGroup(g), textId(i)
     {
@@ -81,7 +81,7 @@ typedef std::vector<uint8> CreatureTextRepeatIds;
 typedef std::unordered_map<uint8, CreatureTextRepeatIds> CreatureTextRepeatGroup;
 typedef std::unordered_map<uint64, CreatureTextRepeatGroup> CreatureTextRepeatMap;//guid based
 
-class CreatureTextMgr
+class WH_GAME_API CreatureTextMgr
 {
     CreatureTextMgr() { }
 

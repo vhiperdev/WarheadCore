@@ -32,7 +32,7 @@ enum WaypointMoveType
     WAYPOINT_MOVE_TYPE_MAX
 };
 
-struct WaypointData
+struct WH_GAME_API WaypointData
 {
     uint32 id;
     float x, y, z, orientation;
@@ -45,7 +45,7 @@ struct WaypointData
 typedef std::vector<WaypointData*> WaypointPath;
 typedef std::unordered_map<uint32, WaypointPath> WaypointPathContainer;
 
-class WaypointMgr
+class WH_GAME_API WaypointMgr
 {
     public:
         static WaypointMgr* instance();

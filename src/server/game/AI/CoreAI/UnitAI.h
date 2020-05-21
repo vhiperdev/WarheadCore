@@ -40,7 +40,7 @@ enum SelectAggroTarget
 };
 
 // default predicate function to select target based on distance, player and/or aura criteria
-struct DefaultTargetSelector : public warhead::unary_function<Unit*, bool>
+struct WH_GAME_API DefaultTargetSelector : public acore::unary_function<Unit*, bool>
 {
     const Unit* me;
     float m_dist;
@@ -90,7 +90,7 @@ struct DefaultTargetSelector : public warhead::unary_function<Unit*, bool>
 
 // Target selector for spell casts checking range, auras and attributes
 // TODO: Add more checks from Spell::CheckCast
-struct SpellTargetSelector : public warhead::unary_function<Unit*, bool>
+struct WH_GAME_API SpellTargetSelector : public acore::unary_function<Unit*, bool>
 {
     public:
         SpellTargetSelector(Unit* caster, uint32 spellId);
@@ -104,7 +104,7 @@ struct SpellTargetSelector : public warhead::unary_function<Unit*, bool>
 // Very simple target selector, will just skip main target
 // NOTE: When passing to UnitAI::SelectTarget remember to use 0 as position for random selection
 //       because tank will not be in the temporary list
-struct NonTankTargetSelector : public warhead::unary_function<Unit*, bool>
+struct WH_GAME_API NonTankTargetSelector : public acore::unary_function<Unit*, bool>
 {
     public:
         NonTankTargetSelector(Creature* source, bool playerOnly = true) : _source(source), _playerOnly(playerOnly) { }
@@ -116,7 +116,7 @@ struct NonTankTargetSelector : public warhead::unary_function<Unit*, bool>
 };
 
 // Simple selector for units using mana
-struct PowerUsersSelector : public warhead::unary_function<Unit*, bool>
+struct WH_GAME_API PowerUsersSelector : public acore::unary_function<Unit*, bool>
 {
     Unit const* _me;
     Powers const _power;
@@ -147,7 +147,7 @@ struct PowerUsersSelector : public warhead::unary_function<Unit*, bool>
     }
 };
 
-struct FarthestTargetSelector : public warhead::unary_function<Unit*, bool>
+struct WH_GAME_API FarthestTargetSelector : public acore::unary_function<Unit*, bool>
 {
     FarthestTargetSelector(Unit const* unit, float dist, bool playerOnly, bool inLos) : _me(unit), _dist(dist), _playerOnly(playerOnly), _inLos(inLos) {}
 
@@ -175,7 +175,7 @@ private:
     bool _inLos;
 };
 
-class UnitAI
+class WH_GAME_API UnitAI
 {
     protected:
         Unit* const me;
@@ -321,7 +321,7 @@ class UnitAI
         virtual void sOnGameEvent(bool /*start*/, uint16 /*eventId*/) {}
 };
 
-class PlayerAI : public UnitAI
+class WH_GAME_API PlayerAI : public UnitAI
 {
     protected:
         Player* const me;
@@ -331,7 +331,7 @@ class PlayerAI : public UnitAI
         void OnCharmed(bool apply);
 };
 
-class SimpleCharmedAI : public PlayerAI
+class WH_GAME_API SimpleCharmedAI : public PlayerAI
 {
     public:
         void UpdateAI(uint32 diff);

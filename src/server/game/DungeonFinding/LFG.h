@@ -110,7 +110,7 @@ typedef std::list<uint64> LfgGuidList;
 typedef std::map<uint64, uint8> LfgRolesMap;
 typedef std::map<uint64, uint64> LfgGroupsMap;
 
-class Lfg5Guids
+class WH_GAME_API Lfg5Guids
 {
 public:
     uint64 guid[5];
@@ -202,9 +202,9 @@ public:
     }
 };
 
-std::string ConcatenateDungeons(LfgDungeonSet const& dungeons);
-std::string GetRolesString(uint8 roles);
-std::string GetStateString(LfgState state);
+WH_GAME_API std::string ConcatenateDungeons(LfgDungeonSet const& dungeons);
+WH_GAME_API std::string GetRolesString(uint8 roles);
+WH_GAME_API std::string GetStateString(LfgState state);
 
 
 } // namespace lfg

@@ -36,7 +36,7 @@ typedef void(*goEventFlag)(Player*, GameObject*, Battleground*);
 #define MAX_GAMEOBJECT_QUEST_ITEMS 6
 
 // from `gameobject_template`
-struct GameObjectTemplate
+struct WH_GAME_API GameObjectTemplate
 {
     uint32  entry;
     uint32  type;
@@ -560,7 +560,7 @@ struct GameObjectTemplate
 };
 
 // From `gameobject_template_addon`
-struct GameObjectTemplateAddon
+struct WH_GAME_API GameObjectTemplateAddon
 {
     uint32  entry;
     uint32  faction;
@@ -603,7 +603,7 @@ union GameObjectValue
 };
 
 // `gameobject_addon` table
-struct GameObjectAddon
+struct WH_GAME_API GameObjectAddon
 {
     InvisibilityType invisibilityType;
     uint32 InvisibilityValue;
@@ -622,7 +622,7 @@ enum GOState
 #define MAX_GO_STATE              3
 
 // from `gameobject`
-struct GameObjectData
+struct WH_GAME_API GameObjectData
 {
     explicit GameObjectData() : id(0), mapid(0), phaseMask(0), posX(0.0f), posY(0.0f), posZ(0.0f), orientation(0.0f), spawntimesecs(0),
                                 animprogress(0), go_state(GO_STATE_ACTIVE), spawnMask(0), artKit(0), dbData(true) { }
@@ -663,7 +663,7 @@ class GameObjectModel;
 // 5 sec for bobber catch
 #define FISHING_BOBBER_READY_TIME 5
 
-class GameObject : public WorldObject, public GridObject<GameObject>, public MovableMapObject
+class WH_GAME_API GameObject : public WorldObject, public GridObject<GameObject>, public MovableMapObject
 {
     public:
         explicit GameObject();
@@ -927,4 +927,5 @@ class GameObject : public WorldObject, public GridObject<GameObject>, public Mov
         }
         GameObjectAI* m_AI;
 };
+
 #endif

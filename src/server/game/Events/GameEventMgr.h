@@ -33,7 +33,7 @@ enum GameEventState
     GAMEEVENT_INTERNAL = 5, // never handled in update
 };
 
-struct GameEventFinishCondition
+struct WH_GAME_API GameEventFinishCondition
 {
     float reqNum;  // required number // use float, since some events use percent
     float done;    // done number
@@ -41,7 +41,7 @@ struct GameEventFinishCondition
     uint32 done_world_state; // done resource count world state update id
 };
 
-struct GameEventQuestToEventConditionNum
+struct WH_GAME_API GameEventQuestToEventConditionNum
 {
     uint16 event_id;
     uint32 condition;
@@ -50,7 +50,7 @@ struct GameEventQuestToEventConditionNum
 
 typedef std::map<uint32 /*condition id*/, GameEventFinishCondition> GameEventConditionMap;
 
-struct GameEventData
+struct WH_GAME_API GameEventData
 {
     GameEventData() : start(1), end(0), nextstart(0), occurence(0), length(0), holiday_id(HOLIDAY_NONE), state(GAMEEVENT_NORMAL) { }
     time_t start;           // occurs after this time
@@ -69,7 +69,7 @@ struct GameEventData
     bool isValid() const { return length > 0 || state > GAMEEVENT_NORMAL; }
 };
 
-struct ModelEquip
+struct WH_GAME_API ModelEquip
 {
     uint32 modelid;
     uint32 modelid_prev;
@@ -77,7 +77,7 @@ struct ModelEquip
     uint8 equipement_id_prev;
 };
 
-struct NPCVendorEntry
+struct WH_GAME_API NPCVendorEntry
 {
     uint32 entry;                                           // creature entry
     uint32 item;                                            // item id
@@ -90,7 +90,7 @@ class Player;
 class Creature;
 class Quest;
 
-class GameEventMgr
+class WH_GAME_API GameEventMgr
 {
     private:
         GameEventMgr();
@@ -180,8 +180,8 @@ class GameEventMgr
 
 #define sGameEventMgr GameEventMgr::instance()
 
-bool IsHolidayActive(HolidayIds id);
-bool IsEventActive(uint16 event_id);
+WH_GAME_API bool IsHolidayActive(HolidayIds id);
+WH_GAME_API bool IsEventActive(uint16 event_id);
 
 #endif
 

@@ -43,7 +43,7 @@ enum SocialFlag
     SOCIAL_FLAG_UNK         = 0x08                           // Unknown - does not appear to be RaF
 };
 
-struct FriendInfo
+struct WH_GAME_API FriendInfo
 {
     FriendStatus Status;
     uint8 Flags;
@@ -97,7 +97,7 @@ enum FriendsResult
 #define SOCIALMGR_FRIEND_LIMIT  50
 #define SOCIALMGR_IGNORE_LIMIT  50
 
-class PlayerSocial
+class WH_GAME_API PlayerSocial
 {
     friend class SocialMgr;
     public:
@@ -120,7 +120,7 @@ class PlayerSocial
         uint32 m_playerGUID;
 };
 
-class SocialMgr
+class WH_GAME_API SocialMgr
 {
     private:
         SocialMgr();

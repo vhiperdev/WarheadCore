@@ -22,7 +22,7 @@
 
 // to evenly distribute saving players to db
 
-class SavingSystemMgr
+class WH_GAME_API SavingSystemMgr
 {
 public:
     static void Update(uint32 diff);

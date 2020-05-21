@@ -61,7 +61,7 @@ enum MailAuctionAnswers
     AUCTION_SALE_PENDING        = 6
 };
 
-struct AuctionEntry
+struct WH_GAME_API AuctionEntry
 {
     uint32 Id;
     uint32 auctioneer;                                      // creature low guid
@@ -94,7 +94,7 @@ struct AuctionEntry
 };
 
 //this class is used as auctionhouse instance
-class AuctionHouseObject
+class WH_GAME_API AuctionHouseObject
 {
   public:
     // Initialize storage
@@ -138,7 +138,7 @@ class AuctionHouseObject
     AuctionEntryMap::const_iterator next;
 };
 
-class AuctionHouseMgr
+class WH_GAME_API AuctionHouseMgr
 {
     private:
         AuctionHouseMgr();

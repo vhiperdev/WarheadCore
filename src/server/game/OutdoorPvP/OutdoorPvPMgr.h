@@ -28,14 +28,14 @@ class Creature;
 class ZoneScript;
 struct GossipMenuItems;
 
-struct OutdoorPvPData
+struct WH_GAME_API OutdoorPvPData
 {
     OutdoorPvPTypes TypeId;
     uint32 ScriptId;
 };
 
 // class to handle player enter / leave / areatrigger / GO use events
-class OutdoorPvPMgr
+class WH_GAME_API OutdoorPvPMgr
 {
     private:
         OutdoorPvPMgr();

@@ -28,7 +28,7 @@ enum SummonerType
 };
 
 /// Stores data for temp summons
-struct TempSummonData
+struct WH_GAME_API TempSummonData
 {
     uint32 entry;        ///< Entry of summoned creature
     Position pos;        ///< Position, where should be creature spawned
@@ -36,7 +36,7 @@ struct TempSummonData
     uint32 time;         ///< Despawn time, usable only with certain temp summon types
 };
 
-class TempSummon : public Creature
+class WH_GAME_API TempSummon : public Creature
 {
     public:
         explicit TempSummon(SummonPropertiesEntry const* properties, uint64 owner, bool isWorldObject);
@@ -62,7 +62,7 @@ class TempSummon : public Creature
         uint64 m_summonerGUID;
 };
 
-class Minion : public TempSummon
+class WH_GAME_API Minion : public TempSummon
 {
     public:
         Minion(SummonPropertiesEntry const* properties, uint64 owner, bool isWorldObject);
@@ -79,7 +79,7 @@ class Minion : public TempSummon
         float m_followAngle;
 };
 
-class Guardian : public Minion
+class WH_GAME_API Guardian : public Minion
 {
     public:
         Guardian(SummonPropertiesEntry const* properties, uint64 owner, bool isWorldObject);
@@ -96,7 +96,7 @@ class Guardian : public Minion
         void UpdateDamagePhysical(WeaponAttackType attType);
 };
 
-class Puppet : public Minion
+class WH_GAME_API Puppet : public Minion
 {
     public:
         Puppet(SummonPropertiesEntry const* properties, uint64 owner);
@@ -109,7 +109,7 @@ class Puppet : public Minion
         const uint64 m_owner;
 };
 
-class ForcedUnsummonDelayEvent : public BasicEvent
+class WH_GAME_API ForcedUnsummonDelayEvent : public BasicEvent
 {
 public:
     ForcedUnsummonDelayEvent(TempSummon& owner) : BasicEvent(), m_owner(owner) { }
@@ -118,4 +118,5 @@ public:
 private:
     TempSummon& m_owner;
 };
+
 #endif

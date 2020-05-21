@@ -27,7 +27,7 @@ namespace lfg
     Stores all lfg data needed about the player.
 */
 
-class LfgPlayerData
+class WH_GAME_API LfgPlayerData
 {
     public:
         LfgPlayerData();
