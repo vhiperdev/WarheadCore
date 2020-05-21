@@ -20,7 +20,7 @@ CollectSourceFiles(
 # Group sources
 GroupSources(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_definitions(-DACORE_API_EXPORT_DATABASE)
+add_definitions(-DWARHEAD_API_EXPORT_DATABASE)
 
 add_library(database
   ${PRIVATE_SOURCES})

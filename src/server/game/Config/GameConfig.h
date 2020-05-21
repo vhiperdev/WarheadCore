@@ -29,7 +29,7 @@ enum GameIntConfigs
     INT_CONFIG_VALUE_COUNT
 };
 
-class GameConfig
+class WH_GAME_API GameConfig
 {
 public:
     static GameConfig* instance();

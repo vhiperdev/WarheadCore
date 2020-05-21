@@ -28,7 +28,7 @@ endif ()
 # Group sources
 GroupSources(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_definitions(-DACORE_API_EXPORT_GAME)
+add_definitions(-DWARHEAD_API_EXPORT_GAME)
 
 add_library(game-interface INTERFACE)
 

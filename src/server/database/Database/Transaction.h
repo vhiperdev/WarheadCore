@@ -24,7 +24,7 @@
 class PreparedStatement;
 
 /*! Transactions, high level class. */
-class Transaction
+class WH_DATABASE_API Transaction
 {
     friend class TransactionTask;
     friend class MySQLConnection;

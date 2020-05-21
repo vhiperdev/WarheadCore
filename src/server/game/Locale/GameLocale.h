@@ -22,48 +22,48 @@
 #include "Player.h"
 #include <vector>
 
-struct AcoreString
+struct WH_GAME_API AcoreString
 {
     std::vector<std::string> Content;
 };
 
 // Default locales
-struct AchievementRewardLocale
+struct WH_GAME_API AchievementRewardLocale
 {
     std::vector<std::string> Subject;
     std::vector<std::string> Text;
 };
 
-struct CreatureLocale
+struct WH_GAME_API CreatureLocale
 {
     std::vector<std::string> Name;
     std::vector<std::string> Title;
 };
 
-struct GameObjectLocale
+struct WH_GAME_API GameObjectLocale
 {
     std::vector<std::string> Name;
     std::vector<std::string> CastBarCaption;
 };
 
-struct GossipMenuItemsLocale
+struct WH_GAME_API GossipMenuItemsLocale
 {
     std::vector<std::string> OptionText;
     std::vector<std::string> BoxText;
 };
 
-struct ItemLocale
+struct WH_GAME_API ItemLocale
 {
     std::vector<std::string> Name;
     std::vector<std::string> Description;
 };
 
-struct ItemSetNameLocale
+struct WH_GAME_API ItemSetNameLocale
 {
     std::vector<std::string> Name;
 };
 
-struct NpcTextLocale
+struct WH_GAME_API NpcTextLocale
 {
     NpcTextLocale() { Text_0.resize(8); Text_1.resize(8); }
 
@@ -71,17 +71,17 @@ struct NpcTextLocale
     std::vector<std::vector<std::string>> Text_1;
 };
 
-struct PageTextLocale
+struct WH_GAME_API PageTextLocale
 {
     std::vector<std::string> Text;
 };
 
-struct PointOfInterestLocale
+struct WH_GAME_API PointOfInterestLocale
 {
     std::vector<std::string> Name;
 };
 
-struct QuestLocale
+struct WH_GAME_API QuestLocale
 {
     QuestLocale() { ObjectiveText.resize(4); }
 
@@ -95,17 +95,17 @@ struct QuestLocale
     std::vector<std::vector<std::string>> ObjectiveText;
 };
 
-struct QuestRequestItemsLocale
+struct WH_GAME_API QuestRequestItemsLocale
 {
     std::vector<std::string> CompletionText;
 };
 
-struct QuestOfferRewardLocale
+struct WH_GAME_API QuestOfferRewardLocale
 {
     std::vector<std::string> RewardText;
 };
 
-struct BroadcastText
+struct WH_GAME_API BroadcastText
 {
     BroadcastText() : Id(0), Language(0), EmoteId0(0), EmoteId1(0), EmoteId2(0),
         EmoteDelay0(0), EmoteDelay1(0), EmoteDelay2(0), SoundId(0), Unk1(0), Unk2(0)
@@ -146,7 +146,7 @@ struct BroadcastText
 };
 
 // New strings and locales
-struct RaceString
+struct WH_GAME_API RaceString
 {
     RaceString()
     {
@@ -177,7 +177,7 @@ struct RaceString
     }
 };
 
-struct ClassString
+struct WH_GAME_API ClassString
 {
     ClassString()
     {
@@ -208,7 +208,7 @@ struct ClassString
     }
 };
 
-struct ModuleString
+struct WH_GAME_API ModuleString
 {
     ModuleString()
     {
@@ -229,7 +229,7 @@ struct ModuleString
     }
 };
 
-class GameLocale
+class WH_GAME_API GameLocale
 {
 private:
     GameLocale();

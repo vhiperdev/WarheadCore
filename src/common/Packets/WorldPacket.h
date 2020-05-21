@@ -21,7 +21,7 @@
 #include "Common.h"
 #include "ByteBuffer.h"
 
-class WH_COMMON_API WorldPacket : public ByteBuffer
+class WorldPacket : public ByteBuffer
 {
     public:
                                                             // just container for later use

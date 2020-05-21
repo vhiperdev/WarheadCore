@@ -40,7 +40,7 @@ enum SelectAggroTarget
 };
 
 // default predicate function to select target based on distance, player and/or aura criteria
-struct WH_GAME_API DefaultTargetSelector : public acore::unary_function<Unit*, bool>
+struct WH_GAME_API DefaultTargetSelector : public warhead::unary_function<Unit*, bool>
 {
     const Unit* me;
     float m_dist;
@@ -90,7 +90,7 @@ struct WH_GAME_API DefaultTargetSelector : public acore::unary_function<Unit*, b
 
 // Target selector for spell casts checking range, auras and attributes
 // TODO: Add more checks from Spell::CheckCast
-struct WH_GAME_API SpellTargetSelector : public acore::unary_function<Unit*, bool>
+struct WH_GAME_API SpellTargetSelector : public warhead::unary_function<Unit*, bool>
 {
     public:
         SpellTargetSelector(Unit* caster, uint32 spellId);
@@ -104,7 +104,7 @@ struct WH_GAME_API SpellTargetSelector : public acore::unary_function<Unit*, boo
 // Very simple target selector, will just skip main target
 // NOTE: When passing to UnitAI::SelectTarget remember to use 0 as position for random selection
 //       because tank will not be in the temporary list
-struct WH_GAME_API NonTankTargetSelector : public acore::unary_function<Unit*, bool>
+struct WH_GAME_API NonTankTargetSelector : public warhead::unary_function<Unit*, bool>
 {
     public:
         NonTankTargetSelector(Creature* source, bool playerOnly = true) : _source(source), _playerOnly(playerOnly) { }
@@ -116,7 +116,7 @@ struct WH_GAME_API NonTankTargetSelector : public acore::unary_function<Unit*, b
 };
 
 // Simple selector for units using mana
-struct WH_GAME_API PowerUsersSelector : public acore::unary_function<Unit*, bool>
+struct WH_GAME_API PowerUsersSelector : public warhead::unary_function<Unit*, bool>
 {
     Unit const* _me;
     Powers const _power;
@@ -147,7 +147,7 @@ struct WH_GAME_API PowerUsersSelector : public acore::unary_function<Unit*, bool
     }
 };
 
-struct WH_GAME_API FarthestTargetSelector : public acore::unary_function<Unit*, bool>
+struct WH_GAME_API FarthestTargetSelector : public warhead::unary_function<Unit*, bool>
 {
     FarthestTargetSelector(Unit const* unit, float dist, bool playerOnly, bool inLos) : _me(unit), _dist(dist), _playerOnly(playerOnly), _inLos(inLos) {}
 

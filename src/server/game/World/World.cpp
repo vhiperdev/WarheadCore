@@ -106,7 +106,7 @@ WH_GAME_API float World::m_MaxVisibleDistanceOnContinents = DEFAULT_VISIBILITY_D
 WH_GAME_API float World::m_MaxVisibleDistanceInInstances  = DEFAULT_VISIBILITY_INSTANCE;
 WH_GAME_API float World::m_MaxVisibleDistanceInBGArenas   = DEFAULT_VISIBILITY_BGARENAS;
 
-//uint32 realmID; ///< Id of the realm
+uint32 realmID; ///< Id of the realm
 
 /// World constructor
 World::World()
