@@ -451,7 +451,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket & recvData)
                     if (!sEluna->OnChat(GetPlayer(), type, lang, msg, guild))
                         return;
 #endif
-                    sScriptMgr->OnPlayerChat(GetPlayer(), type, lang, msg, group);
+                    sScriptMgr->OnPlayerChat(GetPlayer(), type, lang, msg, guild);
                 }
             }
         } break;

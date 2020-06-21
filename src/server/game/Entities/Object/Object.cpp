@@ -949,12 +949,11 @@ void WorldObject::Update(uint32 time_diff)
     elunaEvents->Update(time_diff);
 }
 #endif
-f
+
 void WorldObject::SetWorldObject(bool on)
 {
     if (!IsInWorld())
         return;
-
     GetMap()->AddObjectToSwitchList(this, on);
 }
 

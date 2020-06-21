@@ -6064,6 +6064,11 @@ void AuraEffect::HandlePeriodicTriggerSpellWithValueAuraTick(Unit* target, Unit*
     }
     else 
     {
+#ifdef ELUNA
+    Creature* c = target->ToCreature();
+    if (c && caster)
+        sEluna->OnDummyEffect(caster, GetId(), SpellEffIndex(GetEffIndex()), target->ToCreature());
+#endif
 #if defined(ENABLE_EXTRAS) && defined(ENABLE_EXTRA_LOGS)
         LOG_DEBUG("spells.aura", "AuraEffect::HandlePeriodicTriggerSpellWithValueAuraTick: Spell %u has non-existent spell %u in EffectTriggered[%d] and is therefor not triggered.", GetId(), triggerSpellId, GetEffIndex());
 #endif
@@ -6815,14 +6820,5 @@ void AuraEffect::HandleRaidProcFromChargeWithValueAuraProc(AuraApplication* aurA
             }
         }
     }
-    else {
-#ifdef ELUNA
-        Creature* c = target->ToCreature();
-        if (c && caster)
-            sEluna->OnDummyEffect(caster, GetId(), SpellEffIndex(GetEffIndex()), target->ToCreature());
-#endif
-#if defined(ENABLE_EXTRAS) && defined(ENABLE_EXTRA_LOGS)
-    LOG_DEBUG("spells.aura", "AuraEffect::HandleRaidProcFromChargeWithValueAuraProc: Triggering spell %u from aura %u proc", triggerSpellId, GetId());
-#endif
     target->CastCustomSpell(target, triggerSpellId, &value, NULL, NULL, true, NULL, this, GetCasterGUID());
 }

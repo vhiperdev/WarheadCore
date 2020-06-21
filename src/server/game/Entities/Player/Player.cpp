@@ -2865,9 +2865,6 @@ bool Player::CanInteractWithQuestGiver(Object* questGiver)
     switch (questGiver->GetTypeId())
     {
         case TYPEID_UNIT:
-#ifdef ELUNA
-            sEluna->OnQuestAccept(this, questGiver->ToCreature(), quest);
-#endif
             return GetNPCIfCanInteractWith(questGiver->GetGUID(), UNIT_NPC_FLAG_QUESTGIVER) != NULL;
         case TYPEID_GAMEOBJECT:
             return GetGameObjectIfCanInteractWith(questGiver->GetGUID(), GAMEOBJECT_TYPE_QUESTGIVER) != NULL;
@@ -12371,6 +12368,11 @@ InventoryResult Player::CanUseItem(ItemTemplate const* proto) const
 
         return EQUIP_ERR_OK;
     }
+#ifdef ELUNA
+    InventoryResult eres = sEluna->OnCanUseItem(this, proto->ItemId);
+    if (eres != EQUIP_ERR_OK)
+        return eres;
+#endif
 
     return EQUIP_ERR_ITEM_NOT_FOUND;
 }
@@ -12481,12 +12483,6 @@ InventoryResult Player::CanUseAmmo(uint32 item) const
 
         return EQUIP_ERR_OK;
     }
-#ifdef ELUNA
-    InventoryResult eres = sEluna->OnCanUseItem(this, proto->ItemId);
-    if (eres != EQUIP_ERR_OK)
-        return eres;
-#endif
-
     return EQUIP_ERR_ITEM_NOT_FOUND;
 }
 
@@ -15609,6 +15605,9 @@ void Player::AddQuestAndCheckCompletion(Quest const* quest, Object* questGiver)
     switch (questGiver->GetTypeId())
     {
         case TYPEID_UNIT:
+#ifdef ELUNA
+            sEluna->OnQuestAccept(this, questGiver->ToCreature(), quest);
+#endif
             sScriptMgr->OnQuestAccept(this, (questGiver->ToCreature()), quest);
             questGiver->ToCreature()->AI()->sQuestAccept(this, quest);
             break;
