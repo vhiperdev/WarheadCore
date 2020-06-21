@@ -39,7 +39,7 @@
 #include "LuaEngine.h"
 #endif
 
-namespace acore
+namespace warhead
 {
     class BattlegroundChatBuilder
     {

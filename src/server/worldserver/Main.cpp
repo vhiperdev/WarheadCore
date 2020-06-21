@@ -39,7 +39,7 @@
 #include "LuaEngine.h"
 #endif
 
-#if AC_PLATFORM == AC_PLATFORM_WINDOWS
+#if WH_PLATFORM == WH_PLATFORM_WINDOWS
 #include "ServiceWin32.h"
 char serviceName[] = "worldserver";
 char serviceLongName[] = "AzerothCore world service";
