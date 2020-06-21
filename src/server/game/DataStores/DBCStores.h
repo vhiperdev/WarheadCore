@@ -10,6 +10,7 @@
 #include "Common.h"
 #include "DBCStore.h"
 #include "DBCStructure.h"
+
 #include <list>
 
 typedef std::list<uint32> SimpleFactionsList;
