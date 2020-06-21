@@ -70,6 +70,10 @@
 #include "Transport.h"
 #include "GameTime.h"
 
+#ifdef ELUNA
+#include "LuaEngine.h"
+#endif
+
 pEffect SpellEffects[TOTAL_SPELL_EFFECTS]=
 {
     &Spell::EffectNULL,                                     //  0
@@ -4166,6 +4170,14 @@ void Spell::EffectScriptEffect(SpellEffIndex effIndex)
     LOG_DEBUG("spells.aura", "Spell ScriptStart spellid %u in EffectScriptEffect(%u)", m_spellInfo->Id, effIndex);
 #endif
     m_caster->GetMap()->ScriptsStart(sSpellScripts, uint32(m_spellInfo->Id | (effIndex << 24)), m_caster, unitTarget);
+#ifdef ELUNA
+    if (gameObjTarget)
+        sEluna->OnDummyEffect(m_caster, m_spellInfo->Id, effIndex, gameObjTarget);
+    else if (unitTarget && unitTarget->GetTypeId() == TYPEID_UNIT)
+        sEluna->OnDummyEffect(m_caster, m_spellInfo->Id, effIndex, unitTarget->ToCreature());
+    else if (itemTarget)
+        sEluna->OnDummyEffect(m_caster, m_spellInfo->Id, effIndex, itemTarget);
+#endif
 }
 
 void Spell::EffectSanctuary(SpellEffIndex /*effIndex*/)

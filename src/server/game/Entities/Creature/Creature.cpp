@@ -55,6 +55,10 @@
 #include "GameLocale.h"
 #include "Transport.h"
 
+#ifdef ELUNA
+#include "LuaEngine.h"
+#endif
+
 VendorItemCount::VendorItemCount(uint32 _item, uint32 _count)
     : itemId(_item), count(_count), lastIncrementTime(GameTime::GetGameTime()) { }
 
@@ -227,6 +231,9 @@ void Creature::AddToWorld()
         AIM_Initialize();
         if (IsVehicle())
             GetVehicleKit()->Install();
+#ifdef ELUNA
+        sEluna->OnAddToWorld(this);
+#endif
     }
 }
 
@@ -234,6 +241,9 @@ void Creature::RemoveFromWorld()
 { 
     if (IsInWorld())
     {
+#ifdef ELUNA
+        sEluna->OnRemoveFromWorld(this);
+#endif
         if (GetZoneScript())
             GetZoneScript()->OnCreatureRemove(this);
         if (m_formation)

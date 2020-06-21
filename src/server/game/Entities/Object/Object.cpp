@@ -55,6 +55,11 @@
 #include "GameConfig.h"
 #include "GameLocale.h"
 
+#ifdef ELUNA
+#include "LuaEngine.h"
+#include "ElunaEventMgr.h"
+#endif
+
 uint32 GuidHigh2TypeId(uint32 guid_hi)
 {
     switch (guid_hi)
@@ -90,6 +95,11 @@ Object::Object() : m_PackGUID(sizeof(uint64)+1)
 
 WorldObject::~WorldObject()
 {
+#ifdef ELUNA
+    delete elunaEvents;
+    elunaEvents = NULL;
+#endif
+
     // this may happen because there are many !create/delete
     if (IsWorldObject() && m_currMap)
     {
@@ -922,6 +932,9 @@ void MovementInfo::OutDebug()
 }
 
 WorldObject::WorldObject(bool isWorldObject) : WorldLocation(),
+#ifdef ELUNA
+elunaEvents(NULL),
+#endif
 LastUsedScriptID(0), m_name(""), m_isActive(false), m_isVisibilityDistanceOverride(false), m_isWorldObject(isWorldObject), m_zoneScript(NULL),
 m_transport(NULL), m_currMap(NULL), m_InstanceId(0),
 m_phaseMask(PHASEMASK_NORMAL), m_useCombinedPhases(true), m_notifyflags(0), m_executed_notifies(0)
@@ -930,6 +943,13 @@ m_phaseMask(PHASEMASK_NORMAL), m_useCombinedPhases(true), m_notifyflags(0), m_ex
     m_serverSideVisibilityDetect.SetValue(SERVERSIDE_VISIBILITY_GHOST, GHOST_VISIBILITY_ALIVE);
 }
 
+#ifdef ELUNA
+void WorldObject::Update(uint32 time_diff)
+{
+    elunaEvents->Update(time_diff);
+}
+#endif
+f
 void WorldObject::SetWorldObject(bool on)
 {
     if (!IsInWorld())
@@ -1887,6 +1907,12 @@ void WorldObject::SetMap(Map* map)
     m_mapId = map->GetId();
     m_InstanceId = map->GetInstanceId();
 
+#ifdef ELUNA
+    delete elunaEvents;
+    // On multithread replace this with a pointer to map's Eluna pointer stored in a map
+    elunaEvents = new ElunaEventProcessor(&Eluna::GEluna, this);
+#endif
+
     if (IsWorldObject())
         m_currMap->AddWorldObject(this);
 }
@@ -1897,6 +1923,11 @@ void WorldObject::ResetMap()
     ASSERT(!IsInWorld());
     if (IsWorldObject())
         m_currMap->RemoveWorldObject(this);
+
+#ifdef ELUNA
+    delete elunaEvents;
+    elunaEvents = NULL;
+#endif
 
     m_currMap = NULL;
     //maybe not for corpse

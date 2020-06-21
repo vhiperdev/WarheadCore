@@ -41,6 +41,10 @@
 #include "InstanceScript.h"
 #include "GameTime.h"
 
+#ifdef ELUNA
+#include "LuaEngine.h"
+#endif
+
 class Aura;
 //
 // EFFECT HANDLER NOTES
@@ -6811,7 +6815,12 @@ void AuraEffect::HandleRaidProcFromChargeWithValueAuraProc(AuraApplication* aurA
             }
         }
     }
-
+    else {
+#ifdef ELUNA
+        Creature* c = target->ToCreature();
+        if (c && caster)
+            sEluna->OnDummyEffect(caster, GetId(), SpellEffIndex(GetEffIndex()), target->ToCreature());
+#endif
 #if defined(ENABLE_EXTRAS) && defined(ENABLE_EXTRA_LOGS)
     LOG_DEBUG("spells.aura", "AuraEffect::HandleRaidProcFromChargeWithValueAuraProc: Triggering spell %u from aura %u proc", triggerSpellId, GetId());
 #endif

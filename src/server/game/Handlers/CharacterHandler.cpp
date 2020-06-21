@@ -53,6 +53,10 @@
 #include "GameTime.h"
 #include "GameConfig.h"
 
+#ifdef ELUNA
+#include "LuaEngine.h"
+#endif
+
 class LoginQueryHolder : public SQLQueryHolder
 {
     private:

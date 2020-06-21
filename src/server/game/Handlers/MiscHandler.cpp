@@ -57,6 +57,10 @@
 #include "GameTime.h"
 #include "GameConfig.h"
 
+#ifdef ELUNA
+#include "LuaEngine.h"
+#endif
+
 void WorldSession::HandleRepopRequestOpcode(WorldPacket & recv_data)
 {
 #if defined(ENABLE_EXTRAS) && defined(ENABLE_EXTRA_LOGS)
@@ -83,6 +87,10 @@ void WorldSession::HandleRepopRequestOpcode(WorldPacket & recv_data)
 #endif
         GetPlayer()->KillPlayer();
     }
+
+#ifdef ELUNA
+    sEluna->OnRepop(GetPlayer());
+#endif
 
     //this is spirit release confirm?
     GetPlayer()->RemovePet(NULL, PET_SAVE_NOT_IN_SLOT, true);

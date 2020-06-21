@@ -46,6 +46,10 @@
 #include "GameTime.h"
 #include "GameConfig.h"
 
+#ifdef ELUNA
+#include "LuaEngine.h"
+#endif
+
 #if defined(__GNUC__)
 #pragma pack(1)
 #else

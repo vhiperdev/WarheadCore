@@ -39,6 +39,10 @@
 #include "AvgDiffTracker.h"
 #include "GameConfig.h"
 
+#ifdef ELUNA
+#include "LuaEngine.h"
+#endif
+
 MapManager::MapManager()
     : _nextInstanceId(0), _scheduledScripts(0)
 {
