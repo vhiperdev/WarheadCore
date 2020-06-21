@@ -1,5 +1,18 @@
 /*
- * Copyright (C) 2016+     AzerothCore <www.azerothcore.org>
+ * This file is part of the WarheadCore Project. See AUTHORS file for Copyright information
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "GameLocale.h"
@@ -59,7 +72,7 @@ bool GameLocale::LoadAcoreStrings()
 
     _acoreStringStore.clear(); // for reload case
 
-    QueryResult result = WorldDatabase.PQuery("SELECT entry, content_default, content_loc1, content_loc2, content_loc3, content_loc4, content_loc5, content_loc6, content_loc7, content_loc8 FROM acore_string");
+    QueryResult result = WorldDatabase.PQuery("SELECT entry, content_default, locale_koKR, locale_frFR, locale_deDE, locale_zhCN, locale_zhTW, locale_esES, locale_esMX, locale_ruRU FROM acore_string");
     if (!result)
     {
         sLog->outString(">> Loaded 0 acore strings. DB table `acore_strings` is empty.");
@@ -109,7 +122,7 @@ char const* GameLocale::GetAcoreString(uint32 entry, LocaleConstant locale) cons
         return as->Content[DEFAULT_LOCALE].c_str();
     }
 
-    sLog->outErrorDb("Azeroth string entry %u not found in DB.", entry);
+    sLog->outErrorDb("Warhead string entry %u not found in DB.", entry);
 
     return "<error>";
 }
@@ -829,7 +842,7 @@ void GameLocale::AddModuleString(std::string const& moduleName, ModuleStringCont
 {
     if (data.empty())
     {
-        LOG_ERROR("ModuleStringContainer& data for module (%s) is empty!", moduleName.c_str());
+        LOG_ERROR("server", "ModuleStringContainer& data for module (%s) is empty!", moduleName.c_str());
         return;
     }
 

@@ -1,6 +1,19 @@
 /*
- * Originally written by Xinef - Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license: https://github.com/azerothcore/azerothcore-wotlk/blob/master/LICENSE-AGPL3
-*/
+ * This file is part of the WarheadCore Project. See AUTHORS file for Copyright information
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 
 #include "ObjectMgr.h"
@@ -19,7 +32,7 @@ enum Spells
     // Algalon the Observer
     SPELL_ARRIVAL                       = 64997,
     SPELL_RIDE_THE_LIGHTNING            = 64986,
-    SPELL_SUMMON_AZEROTH                = 64994,
+    SPELL_SUMMON_Warhead                = 64994,
     SPELL_REORIGINATION                 = 64996,
     SPELL_SUPERMASSIVE_FAIL             = 65311,
     SPELL_QUANTUM_STRIKE                = 64395,
@@ -471,7 +484,7 @@ class boss_algalon_the_observer : public CreatureScript
                 }
                 else
                 {
-                    summons.DespawnEntry(NPC_AZEROTH);
+                    summons.DespawnEntry(NPC_Warhead);
                     _firstPull = false;
                     Talk(SAY_ALGALON_START_TIMER);
                     introDelay = 22000;
@@ -520,7 +533,7 @@ class boss_algalon_the_observer : public CreatureScript
                 summons.Summon(summon);
                 switch (summon->GetEntry())
                 {
-                    case NPC_AZEROTH:
+                    case NPC_Warhead:
                         me->CastSpell(summon, SPELL_REORIGINATION, true);
                         break;
                     case NPC_BLACK_HOLE:
@@ -614,7 +627,7 @@ class boss_algalon_the_observer : public CreatureScript
                         events.PopEvent();
                         break;
                     case EVENT_INTRO_2:
-                        me->CastSpell((Unit*)NULL, SPELL_SUMMON_AZEROTH, true);
+                        me->CastSpell((Unit*)NULL, SPELL_SUMMON_Warhead, true);
                         Talk(SAY_ALGALON_INTRO_2);
                         events.PopEvent();
                         break;

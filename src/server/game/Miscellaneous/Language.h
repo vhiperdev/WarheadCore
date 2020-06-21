@@ -1,8 +1,18 @@
 /*
- * Copyright (C) MaNGOS, TrinityCore, AzerothCore
+ * This file is part of the WarheadCore Project. See AUTHORS file for Copyright information
  *
- * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __ACORE_LANGUAGE_H
@@ -75,23 +85,23 @@ enum AcoreStrings
     LANG_CONNECTED_PLAYERS              = 60,
     LANG_ACCOUNT_ADDON                  = 61,
     LANG_IMPROPER_VALUE                 = 62,
-    LANG_RBAC_WRONG_PARAMETER_ID        = 63,
-    LANG_RBAC_WRONG_PARAMETER_REALM     = 64,
-    LANG_RBAC_LIST_HEADER_GRANTED       = 65,
-    LANG_RBAC_LIST_HEADER_DENIED        = 66,
-    LANG_RBAC_LIST_HEADER_BY_SEC_LEVEL  = 67,
-    LANG_RBAC_LIST_PERMISSIONS_HEADER   = 68,
-    LANG_RBAC_LIST_PERMS_LINKED_HEADER  = 69,
-    LANG_RBAC_LIST_EMPTY                = 70,
-    LANG_RBAC_LIST_ELEMENT              = 71,
-    LANG_RBAC_PERM_GRANTED_IN_LIST      = 72,
-    LANG_RBAC_PERM_GRANTED_IN_DENIED_LIST = 73,
-    LANG_RBAC_PERM_GRANTED              = 74,
-    LANG_RBAC_PERM_DENIED_IN_LIST       = 75,
-    LANG_RBAC_PERM_DENIED_IN_GRANTED_LIST = 76,
-    LANG_RBAC_PERM_DENIED               = 77,
-    LANG_RBAC_PERM_REVOKED              = 78,
-    LANG_RBAC_PERM_REVOKED_NOT_IN_LIST  = 79,
+    LANG_RBWH_WRONG_PARAMETER_ID        = 63,
+    LANG_RBWH_WRONG_PARAMETER_REALM     = 64,
+    LANG_RBWH_LIST_HEADER_GRANTED       = 65,
+    LANG_RBWH_LIST_HEADER_DENIED        = 66,
+    LANG_RBWH_LIST_HEADER_BY_SEC_LEVEL  = 67,
+    LANG_RBWH_LIST_PERMISSIONS_HEADER   = 68,
+    LANG_RBWH_LIST_PERMS_LINKED_HEADER  = 69,
+    LANG_RBWH_LIST_EMPTY                = 70,
+    LANG_RBWH_LIST_ELEMENT              = 71,
+    LANG_RBWH_PERM_GRANTED_IN_LIST      = 72,
+    LANG_RBWH_PERM_GRANTED_IN_DENIED_LIST = 73,
+    LANG_RBWH_PERM_GRANTED              = 74,
+    LANG_RBWH_PERM_DENIED_IN_LIST       = 75,
+    LANG_RBWH_PERM_DENIED_IN_GRANTED_LIST = 76,
+    LANG_RBWH_PERM_DENIED               = 77,
+    LANG_RBWH_PERM_REVOKED              = 78,
+    LANG_RBWH_PERM_REVOKED_NOT_IN_LIST  = 79,
     LANG_PVPSTATS                       = 80,
     LANG_PVPSTATS_DISABLED              = 81,
     // Free 82 - 95
@@ -842,7 +852,7 @@ enum AcoreStrings
     LANG_COMMAND_EMAIL_OUTPUT           = 878,
     //                                  = 879, see LANG_PINFO_CHR_REGMAILS
     LANG_ACCOUNT_SEC_TYPE               = 880,
-    LANG_RBAC_EMAIL_REQUIRED            = 881,
+    LANG_RBWH_EMAIL_REQUIRED            = 881,
     // Room for in-game strings           882-999 not used
 
     // Level 4 (CLI only commands)
@@ -1314,6 +1324,12 @@ enum AcoreStrings
     LANG_INSTANT_FLIGHT_ON                        = 30078,
     LANG_INSTANT_FLIGHT_OFF                       = 30079,
 
-    LANG_DEBUG_OPCODE_FILE_MISSING                = 30080
+    LANG_DEBUG_OPCODE_FILE_MISSING                = 30080,
+
+    LANG_REMOVEITEM_FAILURE                       = 30081,
+    LANG_REMOVEITEM_ERROR                         = 30082,
+
+    LANG_BG_SHARE_QUEST_ERROR                     = 30083,
+    LANG_BG_READY_CHECK_ERROR                     = 30084
 };
 #endif

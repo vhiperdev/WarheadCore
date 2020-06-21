@@ -1,6 +1,18 @@
 /*
- * Copyright (C) since 2020 Andrei Guluaev (Winfidonarleyan/Kargatum) https://github.com/Winfidonarleyan
- * Licence MIT https://opensource.org/MIT
+ * This file is part of the WarheadCore Project. See AUTHORS file for Copyright information
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Log.h"
@@ -192,9 +204,9 @@ private:
         MailItemsVector ListItemPairs;
         ListItemPairs.push_back(MailItemsPair(levelReward->ItemID, levelReward->ItemCount));
 
-        Subject = acore::StringFormat("Reward for level up to %u", Level);
-        Text = acore::StringFormat("You increased level to %u and get a reward!", Level);
-        SelfMessage = acore::StringFormat("You increased level to %u and get a reward!", Level);
+        Subject = warhead::StringFormat("Reward for level up to %u", Level);
+        Text = warhead::StringFormat("You increased level to %u and get a reward!", Level);
+        SelfMessage = warhead::StringFormat("You increased level to %u and get a reward!", Level);
 
         handler.PSendSysMessage("%s", SelfMessage.c_str());
         SendMailItems(player, Subject, Text, levelReward->Money, ListItemPairs);

@@ -1,7 +1,18 @@
 /*
- * Copyright (C) 2016+     AzerothCore <www.azerothcore.org>
- * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
+ * This file is part of the WarheadCore Project. See AUTHORS file for Copyright information
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /** \file
@@ -82,10 +93,6 @@
 #include "GameConfig.h"
 #include "GameLocale.h"
 #include <VMapManager2.h>
-
-#ifdef ELUNA
-#include "LuaEngine.h"
-#endif
 
 ACE_Atomic_Op<ACE_Thread_Mutex, bool> World::m_stopEvent = false;
 uint8 World::m_ExitCode = SHUTDOWN_EXIT_CODE;
@@ -411,15 +418,6 @@ void World::LoadConfigSettings(bool reload)
         LOG_ERROR("config", "World settings reload fail: can't read settings.");
         return;
     }
-
-#ifdef ELUNA
-    ///- Initialize Lua Engine
-    if (!reload)
-    {
-        sLog->outString("Initialize Eluna Lua Engine...");
-        Eluna::Initialize();
-    }
-#endif
 
     sScriptMgr->OnBeforeConfigLoad(reload);
 
@@ -792,7 +790,7 @@ void World::LoadConfigSettings(bool reload)
     if (dataPath.empty() || (dataPath.at(dataPath.length()-1) != '/' && dataPath.at(dataPath.length()-1) != '\\'))
         dataPath.push_back('/');
 
-#if AC_PLATFORM == AC_PLATFORM_UNIX || AC_PLATFORM == AC_PLATFORM_APPLE
+#if WH_PLATFORM == WH_PLATFORM_UNIX || WH_PLATFORM == WH_PLATFORM_APPLE
     if (dataPath[0] == '~')
     {
         const char* home = getenv("HOME");
@@ -1489,13 +1487,6 @@ void World::SetInitialWorldSettings()
     mgr = ChannelMgr::forTeam(TEAM_HORDE);
     mgr->LoadChannels();
 
-#ifdef ELUNA
-    ///- Run eluna scripts.
-    // in multithread foreach: run scripts
-    sEluna->RunScripts();
-    sEluna->OnConfigLoad(false,false); // Must be done after Eluna is initialized and scripts have run.
-#endif
-
     if (sGameConfig->GetBoolConfig("PreloadAllNonInstancedMapGrids"))
     {
         sLog->outString("Loading all grids for all non-instanced maps...");
@@ -1532,7 +1523,7 @@ void World::SetInitialWorldSettings()
 
     if (sConfigMgr->isDryRun()) 
     {
-        sLog->outString("AzerothCore dry run completed, terminating.");
+        sLog->outString("WarheadCore dry run completed, terminating.");
         exit(0);
     }
 }
@@ -1860,7 +1851,7 @@ void World::SendGlobalGMMessage(WorldPacket* packet, WorldSession* self, TeamId 
     }
 }
 
-namespace acore
+namespace warhead
 {
     class WorldWorldTextBuilder
     {
@@ -1903,7 +1894,7 @@ namespace acore
             uint32 i_textId;
             va_list* i_args;
     };
-}                                                           // namespace acore
+}                                                           // namespace warhead
 
 /// Send a System Message to all players (except self if mentioned)
 void World::SendWorldText(uint32 string_id, ...)
@@ -1911,8 +1902,8 @@ void World::SendWorldText(uint32 string_id, ...)
     va_list ap;
     va_start(ap, string_id);
 
-    acore::WorldWorldTextBuilder wt_builder(string_id, &ap);
-    acore::LocalizedPacketListDo<acore::WorldWorldTextBuilder> wt_do(wt_builder);
+    warhead::WorldWorldTextBuilder wt_builder(string_id, &ap);
+    warhead::LocalizedPacketListDo<warhead::WorldWorldTextBuilder> wt_do(wt_builder);
     for (SessionMap::const_iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
     {
         if (!itr->second || !itr->second->GetPlayer() || !itr->second->GetPlayer()->IsInWorld())
@@ -1930,8 +1921,8 @@ void World::SendGMText(uint32 string_id, ...)
     va_list ap;
     va_start(ap, string_id);
 
-    acore::WorldWorldTextBuilder wt_builder(string_id, &ap);
-    acore::LocalizedPacketListDo<acore::WorldWorldTextBuilder> wt_do(wt_builder);
+    warhead::WorldWorldTextBuilder wt_builder(string_id, &ap);
+    warhead::LocalizedPacketListDo<warhead::WorldWorldTextBuilder> wt_do(wt_builder);
     for (SessionMap::iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
     {
         if (!itr->second || !itr->second->GetPlayer() || !itr->second->GetPlayer()->IsInWorld())

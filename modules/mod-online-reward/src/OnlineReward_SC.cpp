@@ -1,6 +1,18 @@
 /*
- * Copyright (C) since 2020 Andrei Guluaev (Winfidonarleyan/Kargatum) https://github.com/Winfidonarleyan
- * Licence MIT https://opensource.org/MIT
+ * This file is part of the WarheadCore Project. See AUTHORS file for Copyright information
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Log.h"
@@ -211,9 +223,9 @@ private:
                 MailItemsVector ListItemPairs;
                 ListItemPairs.push_back(MailItemsPair(ItemID, Count));
 
-                Subject = acore::StringFormat("Reward for online %s", PlayedTimeSecStr.c_str());
-                Text = acore::StringFormat("Привет, %s!\nВы играете на нашем сервере уже более %s. Пожалуйста примите подарок", player->GetName().c_str(), PlayedTimeSecStr.c_str());
-                SelfMessage = acore::StringFormat("You were rewarded for online (%s). You can get the award at the post office.", PlayedTimeSecStr.c_str());
+                Subject = warhead::StringFormat("Reward for online %s", PlayedTimeSecStr.c_str());
+                Text = warhead::StringFormat("Привет, %s!\nВы играете на нашем сервере уже более %s. Пожалуйста примите подарок", player->GetName().c_str(), PlayedTimeSecStr.c_str());
+                SelfMessage = warhead::StringFormat("You were rewarded for online (%s). You can get the award at the post office.", PlayedTimeSecStr.c_str());
 
                 handler.PSendSysMessage("%s", SelfMessage.c_str());
                 SendMailItems(player, Subject, Text, 0, ListItemPairs);
@@ -306,9 +318,9 @@ private:
                 MailItemsVector ListItemPairs;
                 ListItemPairs.push_back(MailItemsPair(CONF_GET_INT("OnlineReward.PerTime.ItemID"), CONF_GET_INT("OnlineReward.PerTime.ItemCount")));
 
-                Subject = acore::StringFormat("Reward for online %s", PlayedTimeSecStr.c_str());
-                Text = acore::StringFormat("Привет, %s!\nВы играете на нашем сервере уже более %s. Пожалуйста примите подарок", player->GetName().c_str(), PlayedTimeSecStr.c_str());
-                SelfMessage = acore::StringFormat("You were rewarded for online (%s). You can get the award at the post office.", PlayedTimeSecStr.c_str());
+                Subject = warhead::StringFormat("Reward for online %s", PlayedTimeSecStr.c_str());
+                Text = warhead::StringFormat("Привет, %s!\nВы играете на нашем сервере уже более %s. Пожалуйста примите подарок", player->GetName().c_str(), PlayedTimeSecStr.c_str());
+                SelfMessage = warhead::StringFormat("You were rewarded for online (%s). You can get the award at the post office.", PlayedTimeSecStr.c_str());
 
                 handler.PSendSysMessage("%s", SelfMessage.c_str());
                 SendMailItems(player, Subject, Text, 0, ListItemPairs);

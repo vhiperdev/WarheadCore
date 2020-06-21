@@ -1,7 +1,18 @@
 /*
- * Copyright (C) 2016+     AzerothCore <www.azerothcore.org>
- * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
+ * This file is part of the WarheadCore Project. See AUTHORS file for Copyright information
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -40,11 +51,11 @@
 #define _ACORE_REALM_CONFIG  "authserver.conf"
 #endif
 
-#if AC_PLATFORM == AC_PLATFORM_WINDOWS
+#if WH_PLATFORM == WH_PLATFORM_WINDOWS
 #include "ServiceWin32.h"
 char serviceName[] = "authserver";
-char serviceLongName[] = "AzerothCore auth service";
-char serviceDescription[] = "AzerothCore World of Warcraft emulator auth service";
+char serviceLongName[] = "WarheadCore auth service";
+char serviceDescription[] = "WarheadCore World of Warcraft emulator auth service";
 /*
  * -1 - not in service mode
  *  0 - stopped
@@ -59,7 +70,7 @@ void StopDB();
 bool stopEvent = false;                                     // Setting it to true stops the server
 
 /// Handle authserver's termination signals
-class AuthServerSignalHandler : public acore::SignalHandler
+class AuthServerSignalHandler : public warhead::SignalHandler
 {
 public:
     virtual void HandleSignal(int sigNum)
@@ -86,7 +97,7 @@ void usage(const char* prog)
 extern int main(int argc, char** argv)
 {
     // Command line parsing to get the configuration file name
-    char const* configFile = _ACORE_REALM_CONFIG;
+    std::string configFile = sConfigMgr->GetConfigPath() + std::string(_ACORE_REALM_CONFIG);
     int count = 1;
 
     while (count < argc)
@@ -113,7 +124,7 @@ extern int main(int argc, char** argv)
     // Init all logs
     sLog->Initialize();
 
-    acore::Logo::Show("authserver", configFile,
+    warhead::Logo::Show("authserver", configFile.c_str(),
         [](char const* text)
         {
             LOG_INFO("server.authserver", "%s", text);

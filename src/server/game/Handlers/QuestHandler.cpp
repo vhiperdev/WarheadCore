@@ -1,7 +1,18 @@
 /*
- * Copyright (C) 2016+     AzerothCore <www.azerothcore.org>
- * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
+ * This file is part of the WarheadCore Project. See AUTHORS file for Copyright information
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Common.h"
@@ -19,11 +30,8 @@
 #include "BattlegroundAV.h"
 #include "ScriptMgr.h"
 #include "GameObjectAI.h"
+#include "Language.h"
 #include "GameConfig.h"
-
-#ifdef ELUNA
-#include "LuaEngine.h"
-#endif
 
 void WorldSession::HandleQuestgiverStatusQueryOpcode(WorldPacket & recvData)
 {
@@ -92,11 +100,6 @@ void WorldSession::HandleQuestgiverHelloOpcode(WorldPacket & recvData)
     // Stop the npc if moving
     //if (!creature->GetTransport()) // pussywizard: reverted with new spline (old: without this check, npc would stay in place and the transport would continue moving, so the npc falls off. NPCs on transports don't have waypoints, so stopmoving is not needed)
         creature->StopMoving();
-
-#ifdef ELUNA
-        if (sEluna->OnGossipHello(_player, creature))
-            return;
-#endif
 
     if (sScriptMgr->OnGossipHello(_player, creature))
         return;
@@ -422,9 +425,7 @@ void WorldSession::HandleQuestLogRemoveQuest(WorldPacket& recvData)
             _player->AbandonQuest(questId); // remove all quest items player received before abandoning quest.
             _player->RemoveActiveQuest(questId);
             _player->RemoveTimedAchievement(ACHIEVEMENT_TIMED_TYPE_QUEST, questId);
-#ifdef ELUNA
-            sEluna->OnQuestAbandon(_player, questId);
-#endif
+
 #if defined(ENABLE_EXTRAS) && defined(ENABLE_EXTRA_LOGS)
             sLog->outDetail("Player %u abandoned quest %u", _player->GetGUIDLow(), questId);
 #endif
@@ -584,6 +585,13 @@ void WorldSession::HandlePushQuestToParty(WorldPacket& recvPacket)
                 if (!player->SatisfyQuestLog(false))
                 {
                     _player->SendPushToPartyResponse(player, QUEST_PARTY_MSG_LOG_FULL);
+                    continue;
+                }
+
+                // Check if Quest Share in BG is enabled
+                if (sGameConfig->GetBoolConfig("Battleground.DisableQuestShareInBG") && _player->InBattleground())
+                {
+                    _player->GetSession()->SendNotification(LANG_BG_SHARE_QUEST_ERROR);
                     continue;
                 }
 

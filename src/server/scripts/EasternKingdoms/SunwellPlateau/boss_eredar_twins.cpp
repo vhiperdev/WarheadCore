@@ -1,5 +1,18 @@
 /*
- * Originally written by Xinef - Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license: https://github.com/azerothcore/azerothcore-wotlk/blob/master/LICENSE-AGPL3
+ * This file is part of the WarheadCore Project. See AUTHORS file for Copyright information
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ScriptMgr.h"
@@ -10,11 +23,11 @@
 enum Quotes
 {
     YELL_INTRO_SAC              = 0,
-    YELL_SAC_DEAD               = 4,
+    YELL_SWH_DEAD               = 4,
     EMOTE_SHADOW_NOVA           = 5,
     YELL_ENRAGE                 = 6,
     YELL_SISTER_ALYTHESS_DEAD   = 7,
-    YELL_SAC_KILL               = 8,
+    YELL_SWH_KILL               = 8,
     YELL_SHADOW_NOVA            = 9,
 
     YELL_INTRO_ALY              = 0,
@@ -127,7 +140,7 @@ public:
         void KilledUnit(Unit* victim)
         {
             if (victim->GetTypeId() == TYPEID_PLAYER && urand(0,1))
-                Talk(YELL_SAC_KILL);
+                Talk(YELL_SWH_KILL);
         }
 
         void JustDied(Unit* /*killer*/)
@@ -137,7 +150,7 @@ public:
 
             if (sisterDied)
             {
-                Talk(YELL_SAC_DEAD);
+                Talk(YELL_SWH_DEAD);
                 instance->SetBossState(DATA_EREDAR_TWINS, DONE);
             }
             else if (Creature* alythess = ObjectAccessor::GetCreature(*me, instance->GetData64(NPC_GRAND_WARLOCK_ALYTHESS)))
@@ -275,7 +288,7 @@ public:
         void KilledUnit(Unit* victim)
         {
             if (victim->GetTypeId() == TYPEID_PLAYER && urand(0,1))
-                Talk(YELL_SAC_KILL);
+                Talk(YELL_SWH_KILL);
         }
 
         void JustDied(Unit* /*killer*/)
@@ -285,7 +298,7 @@ public:
 
             if (sisterDied)
             {
-                Talk(YELL_SAC_DEAD);
+                Talk(YELL_SWH_DEAD);
                 instance->SetBossState(DATA_EREDAR_TWINS, DONE);
             }
             else if (Creature* scorlash = ObjectAccessor::GetCreature(*me, instance->GetData64(NPC_LADY_SACROLASH)))
