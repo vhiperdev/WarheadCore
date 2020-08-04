@@ -143,8 +143,8 @@ void ScriptMgr::LoadDatabase()
 
     CheckIfScriptsInDatabaseExist();
 
-    sLog->outString(">> Loaded %u C++ scripts in %u ms", GetScriptCount(), GetMSTimeDiffToNow(oldMSTime));
-    sLog->outString();
+    LOG_INFO("server", ">> Loaded %u C++ scripts in %u ms", GetScriptCount(), GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("server", "");
 
     ASSERT(_script_loader_callback,
            "Script loader callback wasn't registered!");
@@ -184,7 +184,7 @@ void ScriptMgr::CheckIfScriptsInDatabaseExist()
             !ScriptRegistry<BGScript>::GetScriptById(sid) &&
             !ScriptRegistry<SpellSC>::GetScriptById(sid) &&
             !ScriptRegistry<GroupScript>::GetScriptById(sid))
-            sLog->outErrorDb("Script named '%s' is assigned in database, but has no code!", itr.c_str());
+            LOG_ERROR("sql.sql", "Script named '%s' is assigned in database, but has no code!", itr.c_str());
     }
 }
 
@@ -1468,6 +1468,11 @@ void ScriptMgr::OnBeforeLoadPetFromDB(Player* player, uint32& petentry, uint32& 
 void ScriptMgr::OnAccountLogin(uint32 accountId)
 {
     FOREACH_SCRIPT(AccountScript)->OnAccountLogin(accountId);
+}
+
+void ScriptMgr::OnAccountLogout(uint32 accountId)
+{
+    FOREACH_SCRIPT(AccountScript)->OnAccountLogout(accountId);
 }
 
 void ScriptMgr::OnFailedAccountLogin(uint32 accountId)

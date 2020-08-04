@@ -23,6 +23,7 @@
 #include "AccountMgr.h"
 #include "GameTime.h"
 #include "GameLocale.h"
+#include "MuteManager.h"
 #include <vector>
 
 enum LocaleStrings
@@ -47,13 +48,13 @@ public:
 
         messages.clear();
 
-        LOG_INFO("module", "Loading forbidden words...");
+        LOG_INFO("modules", "Loading forbidden words...");
 
         QueryResult result = WorldDatabase.PQuery("SELECT message FROM `anti_ad_messages`");
         if (!result)
         {
-            sLog->outString(">> Loading 0 word. DB table `anti_ad_messages` is empty.");
-            sLog->outString();
+            LOG_INFO("modules", ">> Loading 0 word. DB table `anti_ad_messages` is empty.");
+            LOG_INFO("modules", "");
             return;
         }
 
@@ -64,8 +65,8 @@ public:
 
         } while (result->NextRow());
 
-        sLog->outString(">> Loaded forbidden words %u in %u ms", static_cast<uint32>(messages.size()), GetMSTimeDiffToNow(oldMSTime));
-        sLog->outString();
+        LOG_INFO("modules", ">> Loaded forbidden words %u in %u ms", static_cast<uint32>(messages.size()), GetMSTimeDiffToNow(oldMSTime));
+        LOG_INFO("modules", "");
     }
 
     bool IsBadMessage(std::string& msg)
@@ -129,7 +130,7 @@ private:
 
         uint32 muteTime = CONF_GET_INT("AntiAD.Mute.Time");
 
-        player->GetSession()->m_muteTime = time(nullptr) + muteTime * MINUTE;
+        sMute->MutePlayer(player->GetName(), muteTime, "Console", "Advertisment");
 
         if (CONF_GET_BOOL("AntiAD.SelfMessage.Enable"))
             sGameLocale->SendPlayerMessage(player, "mod-anti-ad", ANTIAD_SEND_SELF, muteTime);

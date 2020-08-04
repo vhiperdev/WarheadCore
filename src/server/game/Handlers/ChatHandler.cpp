@@ -39,6 +39,7 @@
 #include "AccountMgr.h"
 #include "GameTime.h"
 #include "GameConfig.h"
+#include "MuteManager.h"
 
 void WorldSession::HandleMessagechatOpcode(WorldPacket & recvData)
 {
@@ -50,7 +51,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket & recvData)
 
     if (type >= MAX_CHAT_MSG_TYPE)
     {
-        sLog->outError("CHAT: Wrong message type received: %u", type);
+        LOG_ERROR("server", "CHAT: Wrong message type received: %u", type);
         recvData.rfinish();
         return;
     }
@@ -270,10 +271,9 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket & recvData)
         if (ChatHandler(this).ParseCommands(msg.c_str()))
             return;
 
-        if (!_player->CanSpeak())
+        if (!sMute->CanSpeak(GetAccountId()))
         {
-            std::string timeStr = secsToTimeString(m_muteTime - GameTime::GetGameTime());
-            SendNotification(GetAcoreString(LANG_WAIT_BEFORE_SPEAKING), timeStr.c_str());
+            SendNotification(GetAcoreString(LANG_WAIT_BEFORE_SPEAKING), sMute->GetMuteTimeString(GetAccountId()).c_str());
             return;
         }
 
@@ -281,7 +281,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket & recvData)
         {
             if (sGameConfig->GetIntConfig("ChatStrictLinkChecking.Severity") && !ChatHandler(this).isValidChatMessage(msg.c_str()))
             {
-                //sLog->outError("Player %s (GUID: %u) sent a chatmessage with an invalid link: %s", GetPlayer()->GetName().c_str(),
+                //LOG_ERROR("server", "Player %s (GUID: %u) sent a chatmessage with an invalid link: %s", GetPlayer()->GetName().c_str(),
                 //    GetPlayer()->GetGUIDLow(), msg.c_str());
 
                 if (sGameConfig->GetIntConfig("ChatStrictLinkChecking.Kick"))
@@ -584,7 +584,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket & recvData)
             break;
         }
         default:
-            sLog->outError("CHAT: unknown message type %u, lang: %u", type, lang);
+            LOG_ERROR("server", "CHAT: unknown message type %u, lang: %u", type, lang);
             break;
     }
 }
@@ -647,10 +647,9 @@ void WorldSession::HandleTextEmoteOpcode(WorldPacket & recvData)
 
     GetPlayer()->UpdateSpeakTime();
 
-    if (!GetPlayer()->CanSpeak())
+    if (!sMute->CanSpeak(GetAccountId()))
     {
-        std::string timeStr = secsToTimeString(m_muteTime - GameTime::GetGameTime());
-        SendNotification(GetAcoreString(LANG_WAIT_BEFORE_SPEAKING), timeStr.c_str());
+        SendNotification(GetAcoreString(LANG_WAIT_BEFORE_SPEAKING), sMute->GetMuteTimeString(GetAccountId()).c_str());
         return;
     }
 

@@ -44,6 +44,7 @@
 #include "DatabaseLoader.h"
 #include "ScriptLoader.h"
 #include "GameConfig.h"
+#include "Metric.h"
 #include <ace/Sig_Handler.h>
 
 #if WH_PLATFORM == WH_PLATFORM_WINDOWS
@@ -70,7 +71,7 @@ int m_ServiceStatus = -1;
 #define _ACORE_CORE_CONFIG  "worldserver.conf"
 #endif
 
-#define WORLD_SLEEP_CONST 10
+#define WORLD_SLEEP_CONST 50
 
 /// Print out the usage string for this program on the console.
 void usage(const char* prog)
@@ -105,7 +106,7 @@ public:
                 World::StopNow(SHUTDOWN_EXIT_CODE);
             break;
             /*case SIGSEGV:
-                sLog->outString("ZOMG! SIGSEGV handled!");
+                LOG_INFO("server", "ZOMG! SIGSEGV handled!");
                 World::StopNow(SHUTDOWN_EXIT_CODE);
                 break;*/
         }
@@ -127,7 +128,7 @@ public:
         if (!_delayTime)
             return;
 
-        sLog->outString("Starting up anti-freeze thread (%u seconds max stuck time)...", _delayTime / 1000);
+        LOG_INFO("server", "Starting up anti-freeze thread (%u seconds max stuck time)...", _delayTime / 1000);
 
         while (!World::IsStopped())
         {
@@ -139,14 +140,14 @@ public:
             }
             else if (getMSTimeDiff(_lastChange, curtime) > _delayTime)
             {
-                sLog->outString("World Thread hangs, kicking out server!");
+                LOG_INFO("server", "World Thread hangs, kicking out server!");
                 ABORT();
             }
 
             warhead::Thread::Sleep(1000);
         }
 
-        sLog->outString("Anti-freeze thread exiting without problems.");
+        LOG_INFO("server", "Anti-freeze thread exiting without problems.");
     }
 };
 
@@ -355,10 +356,10 @@ extern int main(int argc, char** argv)
     if (!pidFile.empty())
     {
         if (uint32 pid = CreatePIDFile(pidFile))
-            sLog->outString("Daemon PID: %u\n", pid);
+            LOG_INFO("server", "Daemon PID: %u\n", pid);
         else
         {
-            sLog->outString("Cannot create PID file %s.\n", pidFile.c_str());
+            LOG_INFO("server", "Cannot create PID file %s.\n", pidFile.c_str());
             return 1;
         }
     }
@@ -372,6 +373,13 @@ extern int main(int argc, char** argv)
 
     // set server offline (not connectable)
     LoginDatabase.DirectPExecute("UPDATE realmlist SET flag = (flag & ~%u) | %u WHERE id = '%d'", REALM_FLAG_OFFLINE, REALM_FLAG_INVALID, realmID);
+
+    sMetric->Initialize("WarheadCore", []()
+    {
+        WH_METRIC_VALUE("online_players", sWorld->GetPlayerCount());
+    });
+
+    WH_METRIC_EVENT("events", "Worldserver started", "");
 
     ///- Initialize the World
     sScriptMgr->SetScriptLoader(AddScripts);
@@ -436,20 +444,20 @@ extern int main(int argc, char** argv)
             ULONG_PTR currentAffinity = affinity & appAff;            // remove non accessible processors
 
             if (!currentAffinity)
-                sLog->outError("Processors marked in UseProcessors bitmask (hex) %x are not accessible for the worldserver. Accessible processors bitmask (hex): %x", affinity, appAff);
+                LOG_ERROR("server", "Processors marked in UseProcessors bitmask (hex) %x are not accessible for the worldserver. Accessible processors bitmask (hex): %x", affinity, appAff);
             else if (SetProcessAffinityMask(hProcess, currentAffinity))
-                sLog->outString("Using processors (bitmask, hex): %x", currentAffinity);
+                LOG_INFO("server", "Using processors (bitmask, hex): %x", currentAffinity);
             else
-                sLog->outError("Can't set used processors (hex): %x", currentAffinity);
+                LOG_ERROR("server", "Can't set used processors (hex): %x", currentAffinity);
         }
     }
 
     if (highPriority)
     {
         if (SetPriorityClass(hProcess, HIGH_PRIORITY_CLASS))
-            sLog->outString("worldserver process priority class set to HIGH");
+            LOG_INFO("server", "worldserver process priority class set to HIGH");
         else
-            sLog->outError("Can't set worldserver process priority class.");
+            LOG_ERROR("server", "Can't set worldserver process priority class.");
     }
 
 #else // Linux
@@ -464,21 +472,21 @@ extern int main(int argc, char** argv)
                 CPU_SET(i, &mask);
 
         if (sched_setaffinity(0, sizeof(mask), &mask))
-            sLog->outError("Can't set used processors (hex): %x, error: %s", affinity, strerror(errno));
+            LOG_ERROR("server", "Can't set used processors (hex): %x, error: %s", affinity, strerror(errno));
         else
         {
             CPU_ZERO(&mask);
             sched_getaffinity(0, sizeof(mask), &mask);
-            sLog->outString("Using processors (bitmask, hex): %lx", *(__cpu_mask*)(&mask));
+            LOG_INFO("server", "Using processors (bitmask, hex): %lx", *(__cpu_mask*)(&mask));
         }
     }
 
     if (highPriority)
     {
         if (setpriority(PRIO_PROCESS, 0, PROCESS_HIGH_PRIORITY))
-            sLog->outError("Can't set worldserver process priority class, error: %s", strerror(errno));
+            LOG_ERROR("server", "Can't set worldserver process priority class, error: %s", strerror(errno));
         else
-            sLog->outString("worldserver process priority class set to %i", getpriority(PRIO_PROCESS, 0));
+            LOG_INFO("server", "worldserver process priority class set to %i", getpriority(PRIO_PROCESS, 0));
     }
 
 #endif
@@ -504,14 +512,14 @@ extern int main(int argc, char** argv)
     std::string bindIp = sConfigMgr->GetStringDefault("BindIP", "0.0.0.0");
     if (sWorldSocketMgr->StartNetwork(worldPort, bindIp.c_str()) == -1)
     {
-        sLog->outError("Failed to start network");
+        LOG_ERROR("server", "Failed to start network");
         World::StopNow(ERROR_EXIT_CODE); // go down and shutdown the server        
     }
 
     // set server online (allow connecting now)
     LoginDatabase.DirectPExecute("UPDATE realmlist SET flag = flag & ~%u, population = 0 WHERE id = '%u'", REALM_FLAG_INVALID, realmID);
 
-    sLog->outString("%s (worldserver-daemon) ready...", GitRevision::GetFullVersion());
+    LOG_INFO("server", "%s (worldserver-daemon) ready...", GitRevision::GetFullVersion());
 
     // when the main thread closes the singletons get unloaded
     // since worldrunnable uses them, it will crash if unloaded after master
@@ -540,7 +548,7 @@ extern int main(int argc, char** argv)
 
     _StopDB();
 
-    sLog->outString("Halting process...");
+    LOG_INFO("server", "Halting process...");
 
     if (cliThread)
     {
@@ -619,7 +627,7 @@ bool _StartDB()
     realmID = sConfigMgr->GetIntDefault("RealmID", 0);
     if (!realmID)
     {
-        sLog->outError("Realm ID not defined in configuration file");
+        LOG_ERROR("server", "Realm ID not defined in configuration file");
         return false;
     }
     else if (realmID > 255)
@@ -629,7 +637,7 @@ bool _StartDB()
          * with a size of uint8 we can "only" store up to 255 realms
          * anything further the client will behave anormaly
         */
-        sLog->outError("Realm ID must range from 1 to 255");
+        LOG_ERROR("server", "Realm ID must range from 1 to 255");
         return false;
     }
 

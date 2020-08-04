@@ -110,7 +110,7 @@ void WorldSession::HandlePetitionBuyOpcode(WorldPacket & recvData)
     else
     {
         // TODO: find correct opcode
-        if (_player->getLevel() < sGameConfig->GetIntConfig("MaxPlayerLevel"))
+        if (!_player->IsMaxLevel())
         {
             SendNotification(LANG_ARENA_ONE_TOOLOW, sGameConfig->GetIntConfig("MaxPlayerLevel"));
             return;
@@ -439,7 +439,7 @@ void WorldSession::HandlePetitionSignOpcode(WorldPacket & recvData)
     Petition const* petition = sPetitionMgr->GetPetition(GUID_LOPART(petitionGuid));
     if (!petition)
     {
-        sLog->outError("Petition %u is not found for player %u %s", GUID_LOPART(petitionGuid), GetPlayer()->GetGUIDLow(), GetPlayer()->GetName().c_str());
+        LOG_ERROR("server", "Petition %u is not found for player %u %s", GUID_LOPART(petitionGuid), GetPlayer()->GetGUIDLow(), GetPlayer()->GetName().c_str());
         return;
     }
 
@@ -466,7 +466,7 @@ void WorldSession::HandlePetitionSignOpcode(WorldPacket & recvData)
 
     if (type != GUILD_CHARTER_TYPE)
     {
-        if (_player->getLevel() < sGameConfig->GetIntConfig("MaxPlayerLevel"))
+        if (!_player->IsMaxLevel())
         {
             SendArenaTeamCommandResult(ERR_ARENA_TEAM_CREATE_S, "", _player->GetName().c_str(), ERR_ARENA_TEAM_TARGET_TOO_LOW_S);
             return;
@@ -626,7 +626,7 @@ void WorldSession::HandleOfferPetitionOpcode(WorldPacket & recvData)
 
     if (petition->petitionType != GUILD_CHARTER_TYPE)
     {
-        if (player->getLevel() < sGameConfig->GetIntConfig("MaxPlayerLevel"))
+        if (!player->IsMaxLevel())
         {
             // player is too low level to join an arena team
             SendArenaTeamCommandResult(ERR_ARENA_TEAM_CREATE_S, player->GetName().c_str(), "", ERR_ARENA_TEAM_TARGET_TOO_LOW_S);
@@ -708,7 +708,7 @@ void WorldSession::HandleTurnInPetitionOpcode(WorldPacket & recvData)
     Petition const* petition = sPetitionMgr->GetPetition(GUID_LOPART(petitionGuid));
     if (!petition)
     {
-        sLog->outError("Player %s (guid: %u) tried to turn in petition (guid: %u) that is not present in the database", _player->GetName().c_str(), _player->GetGUIDLow(), GUID_LOPART(petitionGuid));
+        LOG_ERROR("server", "Player %s (guid: %u) tried to turn in petition (guid: %u) that is not present in the database", _player->GetName().c_str(), _player->GetGUIDLow(), GUID_LOPART(petitionGuid));
         return;
     }
 
