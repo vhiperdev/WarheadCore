@@ -301,6 +301,7 @@ void GameConfig::LoadBoolConfigs(bool reload /*= false*/)
     // AddBoolConfig("ShowKickInWorld"); //not used
     AddBoolConfig("ShowBanInWorld");
     AddBoolConfig("ShowMuteInWorld");
+    AddBoolConfig("Mute.AddAfterLogin.Enable");
 
     AddBoolConfig("Warden.Enabled");
     AddBoolConfig("AutoBroadcast.On");
@@ -335,6 +336,10 @@ void GameConfig::LoadBoolConfigs(bool reload /*= false*/)
     AddBoolConfig("EnableLogDB");
 
     AddBoolConfig("SetAllCreaturesWithWaypointMovementActive");
+
+    // Debug
+    AddBoolConfig("Debug.Battleground");
+    AddBoolConfig("Debug.Arena");
 
     LOG_INFO("config", "> Loaded %u bool configs", static_cast<uint32>(_boolConfigs.size()));
 }
@@ -499,6 +504,8 @@ void GameConfig::LoadIntConfigs(bool reload /*= false*/)
 
     AddIntConfig("Battleground.PrematureFinishTimer", 5 * MINUTE * IN_MILLISECONDS);
     AddIntConfig("Battleground.InvitationType");
+    AddIntConfig("Battleground.ReportAFK.Timer", 4);
+    AddIntConfig("Battleground.ReportAFK", 3);
     AddIntConfig("Battleground.PremadeGroupWaitForMatch", 30 * MINUTE * IN_MILLISECONDS);
 
     AddIntConfig("Arena.MaxRatingDifference", 150);

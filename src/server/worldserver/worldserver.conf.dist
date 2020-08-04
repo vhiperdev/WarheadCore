@@ -27,8 +27,11 @@
 #    CHARACTER DELETE OPTIONS
 #    ITEM DELETE OPTIONS
 #    CUSTOM SERVER OPTIONS
+#    PACKET SPOOF PROTECTION SETTINGS
+#    DEBUG
 #    UPDATE SETTINGS
 #    LOGGING SYSTEM SETTINGS
+#    METRIC SETTINGS
 #
 ###################################################################################################
 
@@ -2422,6 +2425,20 @@ Battleground.TrackDeserters.Enable = 1
 Battleground.InvitationType = 0
 
 #
+#    Battleground.ReportAFK.Timer
+#         Description: After a few minutes that battle started you can report the player.
+#         Default:     4
+
+Battleground.ReportAFK.Timer = 4
+
+#
+#    Battleground.ReportAFK
+#        Description: Number of reports needed to kick someone AFK from Battleground.
+#        Range:       1-9
+#        Default:     3
+
+Battleground.ReportAFK = 3
+
 #    Battleground.DisableQuestShareInBG
 #        Description: Disables the ability to share quests while in a Battleground.
 #        Default:     0 - (Disabled)
@@ -2930,6 +2947,14 @@ ShowKickInWorld = 0
 ShowMuteInWorld = 0
 
 #
+#     Mute.AddAfterLogin.Enable
+#        Description: Add mute time after login player.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+Mute.AddAfterLogin.Enable = 1
+
+#
 #     ShowBanInWorld
 #        Description: Determines whether a message is broadcast to the entire server when a
 #                     player gets banned.
@@ -2937,23 +2962,6 @@ ShowMuteInWorld = 0
 #                     1 - (Enabled)
 
 ShowBanInWorld = 0
-
-#
-#     RecordUpdateTimeDiffInterval
-#        Description: Time (in milliseconds) update time diff is written to the log file.
-#                     Update diff can be used as a performance indicator. Diff < 300: good
-#                     performance. Diff > 600 bad performance, may be caused by high CPU usage.
-#        Default:     60000 - (Enabled, 1 minute)
-#                     0     - (Disabled)
-
-RecordUpdateTimeDiffInterval = 60000
-
-#
-#     MinRecordUpdateTimeDiff
-#        Description: Only record update time diff which is greater than this value.
-#        Default:     100
-
-MinRecordUpdateTimeDiff = 100
 
 #
 #     PlayerStart.String
@@ -3174,14 +3182,13 @@ ICC.Buff.Alliance = 73828
 ###################################################################################################
 
 ###################################################################################################
-#
-# Packet Spoof Protection Settings
+# PACKET SPOOF PROTECTION SETTINGS
 #
 # These settings determine which action to take when harmful packet spoofing is detected.
 #
 #    PacketSpoof.Policy
 #        Description: Determines the course of action when packet spoofing is detected.
-#        Values:     0 - Log only (LOG_FILTER_NETWORKIO)
+#        Values:     0 - Log only
 #                    1 - Log + kick
 #                    2 - Log + kick + ban
 
@@ -3205,6 +3212,27 @@ PacketSpoof.BanMode = 0
 #
 
 PacketSpoof.BanDuration = 86400
+
+#
+###################################################################################################
+
+###################################################################################################
+# DEBUG
+#
+#    Debug.Battleground
+#        Description: Enable or disable Battleground 1v0 mode. (If enabled, the in-game command is disabled.)
+#        Default: 0 - (Disabled)
+#                 1 - (Enabled)
+
+Debug.Battleground = 0
+
+#
+#    Debug.Arena
+#        Description: Enable or disable Arena 1v1 mode. (If enabled, the in-game command is disabled.)
+#        Default: 0 - (Disabled)
+#                 1 - (Enabled)
+
+Debug.Arena = 0
 
 #
 ###################################################################################################
@@ -3394,6 +3422,7 @@ LogChannel.Console = 1,local,%t,lightRed lightRed red brown magenta cyan lightMa
 LogChannel.Server = 2,local,%Y-%m-%d %H:%M:%S %t,Server.log,false,daily,false
 LogChannel.GM = 2,local,%Y-%m-%d %H:%M:%S %t,gm_%s.log,false,daily,false
 LogChannel.DBErrors = 2,local,%Y-%m-%d %H:%M:%S %t,DBErrors.log,false,daily,false
+LogChannel.Modules = 2,local,%Y-%m-%d %H:%M:%S %t,Modules.log,false,daily,false
 
 #
 #  Logger config values: Given a logger "name"
@@ -3422,7 +3451,7 @@ Logger.commands.gm = 6,GM
 Logger.sql = 4,DBErrors
 Logger.sql.updates = 6,Server
 Logger.mmaps= 6,Server
-Logger.module= 6,Server
+Logger.modules = 6,Modules
 
 #Logger.achievement=6,Server
 #Logger.addon=6,Server
@@ -3480,4 +3509,43 @@ Logger.module= 6,Server
 #Logger.sql.dev=6,Server
 #Logger.sql.driver=6,Server
 #Logger.warden=6,Server
+###################################################################################################
+
+###################################################################################################
+# METRIC SETTINGS
+#
+# These settings control the statistics sent to the metric database (currently InfluxDB)
+#
+#    Metric.Enable
+#        Description: Enables statistics sent to the metric database.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Metric.Enable = 0
+
+#
+#    Metric.Interval
+#        Description: Interval between every batch of data sent in seconds
+#        Default:     10 seconds
+#
+
+Metric.Interval = 10
+
+#
+#    Metric.ConnectionInfo
+#        Description: Connection settings for metric database (currently InfluxDB).
+#        Example:     "hostname;port;database"
+#        Default:     "127.0.0.1;8086;worldserver"
+
+Metric.ConnectionInfo = "127.0.0.1;8086;worldserver"
+
+#
+#    Metric.OverallStatusInterval
+#        Description: Interval between every gathering of overall worldserver status data in seconds
+#        Default:     1 second
+#
+
+Metric.OverallStatusInterval = 1
+
+#
 ###################################################################################################

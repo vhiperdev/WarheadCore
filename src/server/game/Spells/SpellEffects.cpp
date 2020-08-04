@@ -1041,7 +1041,7 @@ void Spell::EffectForceCast(SpellEffIndex effIndex)
 
     if (!spellInfo)
     {
-        sLog->outError("Spell::EffectForceCast of spell %u: triggering unknown spell id %i", m_spellInfo->Id, triggered_spell_id);
+        LOG_ERROR("server", "Spell::EffectForceCast of spell %u: triggering unknown spell id %i", m_spellInfo->Id, triggered_spell_id);
         return;
     }
 
@@ -1090,7 +1090,7 @@ void Spell::EffectTriggerRitualOfSummoning(SpellEffIndex effIndex)
 
     if (!spellInfo)
     {
-        sLog->outError("EffectTriggerRitualOfSummoning of spell %u: triggering unknown spell id %i", m_spellInfo->Id, triggered_spell_id);
+        LOG_ERROR("server", "EffectTriggerRitualOfSummoning of spell %u: triggering unknown spell id %i", m_spellInfo->Id, triggered_spell_id);
         return;
     }
 
@@ -1193,7 +1193,7 @@ void Spell::EffectTeleportUnits(SpellEffIndex /*effIndex*/)
     // If not exist data for dest location - return
     if (!m_targets.HasDst())
     {
-        sLog->outError("Spell::EffectTeleportUnits - does not have destination for spell ID %u\n", m_spellInfo->Id);
+        LOG_ERROR("server", "Spell::EffectTeleportUnits - does not have destination for spell ID %u\n", m_spellInfo->Id);
         return;
     }
 
@@ -1225,7 +1225,7 @@ void Spell::EffectTeleportUnits(SpellEffIndex /*effIndex*/)
         unitTarget->ToPlayer()->TeleportTo(mapid, x, y, z, orientation, unitTarget == m_caster ? TELE_TO_SPELL : 0);
     else
     {
-        sLog->outError("Spell::EffectTeleportUnits - spellId %u attempted to teleport creature to a different map.", m_spellInfo->Id);
+        LOG_ERROR("server", "Spell::EffectTeleportUnits - spellId %u attempted to teleport creature to a different map.", m_spellInfo->Id);
         return;
     }
 
@@ -1551,7 +1551,7 @@ void Spell::EffectHeal(SpellEffIndex /*effIndex*/)
 
             if (!targetAura)
             {
-                sLog->outError("Target(GUID:" UI64FMTD ") has aurastate AURA_STATE_SWIFTMEND but no matching aura.", unitTarget->GetGUID());
+                LOG_ERROR("server", "Target(GUID:" UI64FMTD ") has aurastate AURA_STATE_SWIFTMEND but no matching aura.", unitTarget->GetGUID());
                 return;
             }
 
@@ -2029,7 +2029,7 @@ void Spell::SendLoot(uint64 guid, LootType loottype)
         if (!gameObjTarget->isSpawned() && !player->IsGameMaster())
         {
 #if defined(ENABLE_EXTRAS) && defined(ENABLE_EXTRA_LOGS)
-            sLog->outError("Possible hacking attempt: Player %s [guid: %u] tried to loot a gameobject [entry: %u id: %u] which is on respawn time without being in GM mode!", player->GetName().c_str(), player->GetGUIDLow(), gameObjTarget->GetEntry(), gameObjTarget->GetGUIDLow());
+            LOG_ERROR("server", "Possible hacking attempt: Player %s [guid: %u] tried to loot a gameobject [entry: %u id: %u] which is on respawn time without being in GM mode!", player->GetName().c_str(), player->GetGUIDLow(), gameObjTarget->GetEntry(), gameObjTarget->GetGUIDLow());
 #endif
             return;
         }
@@ -2340,7 +2340,7 @@ void Spell::EffectSummonType(SpellEffIndex effIndex)
     SummonPropertiesEntry const* properties = sSummonPropertiesStore.LookupEntry(m_spellInfo->Effects[effIndex].MiscValueB);
     if (!properties)
     {
-        sLog->outError("EffectSummonType: Unhandled summon type %u", m_spellInfo->Effects[effIndex].MiscValueB);
+        LOG_ERROR("server", "EffectSummonType: Unhandled summon type %u", m_spellInfo->Effects[effIndex].MiscValueB);
         return;
     }
 
@@ -2768,7 +2768,7 @@ void Spell::EffectTeleUnitsFaceCaster(SpellEffIndex  /*effIndex*/)
 
     if (!m_targets.HasDst())
     {
-        sLog->outError("Spell::EffectTeleUnitsFaceCaster - does not have destination for spell ID %u\n", m_spellInfo->Id);
+        LOG_ERROR("server", "Spell::EffectTeleUnitsFaceCaster - does not have destination for spell ID %u\n", m_spellInfo->Id);
         return;
     }
 
@@ -2929,7 +2929,7 @@ void Spell::EffectEnchantItemPrismatic(SpellEffIndex effIndex)
         }
         if (!add_socket)
         {
-            sLog->outError("Spell::EffectEnchantItemPrismatic: attempt apply enchant spell %u with SPELL_EFFECT_ENCHANT_ITEM_PRISMATIC (%u) but without ITEM_ENCHANTMENT_TYPE_PRISMATIC_SOCKET (%u), not suppoted yet.",
+            LOG_ERROR("server", "Spell::EffectEnchantItemPrismatic: attempt apply enchant spell %u with SPELL_EFFECT_ENCHANT_ITEM_PRISMATIC (%u) but without ITEM_ENCHANTMENT_TYPE_PRISMATIC_SOCKET (%u), not suppoted yet.",
                 m_spellInfo->Id, SPELL_EFFECT_ENCHANT_ITEM_PRISMATIC, ITEM_ENCHANTMENT_TYPE_PRISMATIC_SOCKET);
             return;
         }
@@ -2987,14 +2987,14 @@ void Spell::EffectEnchantItemTmp(SpellEffIndex effIndex)
             case 10: spell_id = 36758; break;               // 14%
             case 11: spell_id = 36760; break;               // 20%
             default:
-                sLog->outError("Spell::EffectEnchantItemTmp: Damage %u not handled in S'RW", damage);
+                LOG_ERROR("server", "Spell::EffectEnchantItemTmp: Damage %u not handled in S'RW", damage);
                 return;
         }
 
         SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spell_id);
         if (!spellInfo)
         {
-            sLog->outError("Spell::EffectEnchantItemTmp: unknown spell id %i", spell_id);
+            LOG_ERROR("server", "Spell::EffectEnchantItemTmp: unknown spell id %i", spell_id);
             return;
 
         }
@@ -3021,14 +3021,14 @@ void Spell::EffectEnchantItemTmp(SpellEffIndex effIndex)
 
     if (!enchant_id)
     {
-        sLog->outError("Spell %u Effect %u (SPELL_EFFECT_ENCHANT_ITEM_TEMPORARY) have 0 as enchanting id", m_spellInfo->Id, effIndex);
+        LOG_ERROR("server", "Spell %u Effect %u (SPELL_EFFECT_ENCHANT_ITEM_TEMPORARY) have 0 as enchanting id", m_spellInfo->Id, effIndex);
         return;
     }
 
     SpellItemEnchantmentEntry const* pEnchant = sSpellItemEnchantmentStore.LookupEntry(enchant_id);
     if (!pEnchant)
     {
-        sLog->outError("Spell %u Effect %u (SPELL_EFFECT_ENCHANT_ITEM_TEMPORARY) have not existed enchanting id %u ", m_spellInfo->Id, effIndex, enchant_id);
+        LOG_ERROR("server", "Spell %u Effect %u (SPELL_EFFECT_ENCHANT_ITEM_TEMPORARY) have not existed enchanting id %u ", m_spellInfo->Id, effIndex, enchant_id);
         return;
     }
 
@@ -4067,7 +4067,7 @@ void Spell::EffectScriptEffect(SpellEffIndex effIndex)
                         case 31893: spell_heal = 48084; break;
                         case 31883: spell_heal = 48085; break;
                         default:
-                            sLog->outError("Unknown Lightwell spell caster %u", m_caster->GetEntry());
+                            LOG_ERROR("server", "Unknown Lightwell spell caster %u", m_caster->GetEntry());
                             return;
                     }
 
@@ -5364,7 +5364,7 @@ void Spell::EffectTransmitted(SpellEffIndex effIndex)
 
     if (!goinfo)
     {
-        sLog->outErrorDb("Gameobject (Entry: %u) not exist and not created at spell (ID: %u) cast", name_id, m_spellInfo->Id);
+        LOG_ERROR("sql.sql", "Gameobject (Entry: %u) not exist and not created at spell (ID: %u) cast", name_id, m_spellInfo->Id);
         return;
     }
 
@@ -6063,7 +6063,7 @@ void Spell::EffectPlayMusic(SpellEffIndex effIndex)
 
     if (!sSoundEntriesStore.LookupEntry(soundid))
     {
-        sLog->outError("EffectPlayMusic: Sound (Id: %u) not exist in spell %u.", soundid, m_spellInfo->Id);
+        LOG_ERROR("server", "EffectPlayMusic: Sound (Id: %u) not exist in spell %u.", soundid, m_spellInfo->Id);
         return;
     }
 
@@ -6116,7 +6116,7 @@ void Spell::EffectPlaySound(SpellEffIndex effIndex)
 
     if (!sSoundEntriesStore.LookupEntry(soundId))
     {
-        sLog->outError("EffectPlayerSound: Sound (Id: %u) not exist in spell %u.", soundId, m_spellInfo->Id);
+        LOG_ERROR("server", "EffectPlayerSound: Sound (Id: %u) not exist in spell %u.", soundId, m_spellInfo->Id);
         return;
     }
 

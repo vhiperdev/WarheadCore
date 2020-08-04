@@ -107,7 +107,7 @@ std::string ConfigMgr::GetStringDefault(std::string const& name, const std::stri
     else
     {
         if (logUnused)
-            sLog->outError("-> Not found option '%s'. The default value is used (%s)", name.c_str(), def.c_str());
+            LOG_ERROR("server", "-> Not found option '%s'. The default value is used (%s)", name.c_str(), def.c_str());
 
         return def;
     }
@@ -120,7 +120,7 @@ bool ConfigMgr::GetBoolDefault(std::string const& name, bool def, bool logUnused
     if (!GetValueHelper(name.c_str(), val))
     {
         if (logUnused)
-            def ? sLog->outError("-> Not found option '%s'. The default value is used (Yes)", name.c_str()) : sLog->outError("-> Not found option '%s'. The default value is used (No)", name.c_str());
+            LOG_ERROR("server", "-> Not found option '%s'. The default value is used (%s)", name.c_str(), def ? "Yes" : "No");
 
         return def;
     }
@@ -137,7 +137,7 @@ int ConfigMgr::GetIntDefault(std::string const& name, int def, bool logUnused /*
     else
     {
         if (logUnused)
-            sLog->outError("-> Not found option '%s'. The default value is used (%i)", name.c_str(), def);
+            LOG_ERROR("server", "-> Not found option '%s'. The default value is used (%i)", name.c_str(), def);
 
         return def;
     }
@@ -152,7 +152,7 @@ float ConfigMgr::GetFloatDefault(std::string const& name, float def, bool logUnu
     else
     {
         if (logUnused)
-            sLog->outError("-> Not found option '%s'. The default value is used (%f)", name.c_str(), def);
+            LOG_ERROR("server", "-> Not found option '%s'. The default value is used (%f)", name.c_str(), def);
 
         return def;
     }
@@ -225,7 +225,6 @@ bool ConfigMgr::LoadAppConfigs(std::string const& applicationName /*= "worldserv
         SYS_LOG_ERROR("");
         SYS_LOG_ERROR("Load config error. Invalid or missing dist configuration file: %s", std::string(_initConfigFile + ".dist").c_str());
         SYS_LOG_ERROR("Verify that the file exists and has \'[%s]' written in the top of the file!", applicationName.c_str());
-
         return false;
     }
 
@@ -235,7 +234,6 @@ bool ConfigMgr::LoadAppConfigs(std::string const& applicationName /*= "worldserv
         SYS_LOG_ERROR("");
         SYS_LOG_ERROR("Load config error. Invalid or missing configuration file: %s", _initConfigFile.c_str());
         SYS_LOG_ERROR("Verify that the file exists and has \'[%s]' written in the top of the file!", applicationName.c_str());
-
         return false;
     }
 
@@ -268,9 +266,8 @@ bool ConfigMgr::LoadModulesConfigs()
         // Load .conf.dist config
         if (!sConfigMgr->LoadMore(ConfigFileDist))
         {
-            IsExistDistConfig = false;
-
             LOG_ERROR("config", "Invalid or missing dist configuration file: %s", ConfigFileDist.c_str());
+            IsExistDistConfig = false;
         }
 
         // Load .conf config
@@ -286,7 +283,7 @@ bool ConfigMgr::LoadModulesConfigs()
             moduleConfigFiles.insert(std::make_pair(moduleName, defaultConfig));
     }
 
-    // If module configs exist and not load all
+    // If module configs not exist - no load
     if (moduleConfigFiles.empty())
         return false;
 

@@ -21,7 +21,7 @@
 #include "VMapDefinitions.h"
 #include "Log.h"
 #include "Errors.h"
-
+#include "Metric.h"
 #include <string>
 #include <sstream>
 #include <iomanip>
@@ -348,7 +348,7 @@ namespace VMAP
         }
         if (!iTreeValues)
         {
-            sLog->outError("StaticMapTree::LoadMapTile() : tree has not been initialized [%u, %u]", tileX, tileY);
+            LOG_ERROR("server", "StaticMapTree::LoadMapTile() : tree has not been initialized [%u, %u]", tileX, tileY);
             return false;
         }
         bool result = true;
@@ -374,7 +374,7 @@ namespace VMAP
                     // acquire model instance
                     WorldModel* model = vm->acquireModelInstance(iBasePath, spawn.name);
                     if (!model)
-                        sLog->outError("StaticMapTree::LoadMapTile() : could not acquire WorldModel pointer [%u, %u]", tileX, tileY);
+                        LOG_ERROR("server", "StaticMapTree::LoadMapTile() : could not acquire WorldModel pointer [%u, %u]", tileX, tileY);
 
                     // update tree
                     uint32 referencedVal;
@@ -413,6 +413,10 @@ namespace VMAP
         }
         else
             iLoadedTiles[packTileID(tileX, tileY)] = false;
+        
+        WH_METRIC_EVENT("map_events", "LoadMapTile",
+            "Map: " + std::to_string(iMapID) + " TileX: " + std::to_string(tileX) + " TileY: " + std::to_string(tileY));
+
         return result;
     }
 
@@ -424,7 +428,7 @@ namespace VMAP
         loadedTileMap::iterator tile = iLoadedTiles.find(tileID);
         if (tile == iLoadedTiles.end())
         {
-            sLog->outError("StaticMapTree::UnloadMapTile() : trying to unload non-loaded tile - Map:%u X:%u Y:%u", iMapID, tileX, tileY);
+            LOG_ERROR("server", "StaticMapTree::UnloadMapTile() : trying to unload non-loaded tile - Map:%u X:%u Y:%u", iMapID, tileX, tileY);
             return;
         }
         if (tile->second) // file associated with tile
@@ -458,7 +462,7 @@ namespace VMAP
                         else
                         {
                             if (!iLoadedSpawns.count(referencedNode))
-                            sLog->outError("StaticMapTree::UnloadMapTile() : trying to unload non-referenced model '%s' (ID:%u)", spawn.name.c_str(), spawn.ID);
+                            LOG_ERROR("server", "StaticMapTree::UnloadMapTile() : trying to unload non-referenced model '%s' (ID:%u)", spawn.name.c_str(), spawn.ID);
                             else if (--iLoadedSpawns[referencedNode] == 0)
                             {
                                 iTreeValues[referencedNode].setUnloaded();
@@ -470,7 +474,11 @@ namespace VMAP
                 fclose(tf);
             }
         }
+        
         iLoadedTiles.erase(tile);
+
+        WH_METRIC_EVENT("map_events", "UnloadMapTile",
+            "Map: " + std::to_string(iMapID) + " TileX: " + std::to_string(tileX) + " TileY: " + std::to_string(tileY));
     }
 
     void StaticMapTree::getModelInstances(ModelInstance*& models, uint32& count)

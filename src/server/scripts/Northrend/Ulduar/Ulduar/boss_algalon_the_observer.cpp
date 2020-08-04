@@ -32,7 +32,7 @@ enum Spells
     // Algalon the Observer
     SPELL_ARRIVAL                       = 64997,
     SPELL_RIDE_THE_LIGHTNING            = 64986,
-    SPELL_SUMMON_Warhead                = 64994,
+    SPELL_SUMMON_AZEROTH                = 64994,
     SPELL_REORIGINATION                 = 64996,
     SPELL_SUPERMASSIVE_FAIL             = 65311,
     SPELL_QUANTUM_STRIKE                = 64395,
@@ -484,7 +484,7 @@ class boss_algalon_the_observer : public CreatureScript
                 }
                 else
                 {
-                    summons.DespawnEntry(NPC_Warhead);
+                    summons.DespawnEntry(NPC_AZEROTH);
                     _firstPull = false;
                     Talk(SAY_ALGALON_START_TIMER);
                     introDelay = 22000;
@@ -533,7 +533,7 @@ class boss_algalon_the_observer : public CreatureScript
                 summons.Summon(summon);
                 switch (summon->GetEntry())
                 {
-                    case NPC_Warhead:
+                    case NPC_AZEROTH:
                         me->CastSpell(summon, SPELL_REORIGINATION, true);
                         break;
                     case NPC_BLACK_HOLE:
@@ -619,7 +619,7 @@ class boss_algalon_the_observer : public CreatureScript
                 if (!(events.GetPhaseMask() & PHASE_MASK_NO_CAST_CHECK) && me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 
-                switch (events.ExecuteEvent())
+                switch (events.GetEvent())
                 {
                     case EVENT_INTRO_1:
                         me->RemoveAurasDueToSpell(SPELL_RIDE_THE_LIGHTNING);
@@ -627,7 +627,7 @@ class boss_algalon_the_observer : public CreatureScript
                         events.PopEvent();
                         break;
                     case EVENT_INTRO_2:
-                        me->CastSpell((Unit*)NULL, SPELL_SUMMON_Warhead, true);
+                        me->CastSpell((Unit*)NULL, SPELL_SUMMON_AZEROTH, true);
                         Talk(SAY_ALGALON_INTRO_2);
                         events.PopEvent();
                         break;
@@ -892,7 +892,7 @@ class npc_brann_bronzebeard_algalon : public CreatureScript
                 UpdateVictim();
                 events.Update(diff);
 
-                switch (events.ExecuteEvent())
+                switch (events.GetEvent())
                 {
                     case EVENT_BRANN_MOVE_INTRO:
                         events.PopEvent();
@@ -1031,7 +1031,7 @@ class npc_living_constellation : public CreatureScript
                     return;
 
                 events.Update(diff);
-                switch (events.ExecuteEvent())
+                switch (events.GetEvent())
                 {
                     case EVENT_ARCANE_BARRAGE:
                         me->CastCustomSpell(SPELL_ARCANE_BARRAGE, SPELLVALUE_MAX_TARGETS, 1, (Unit*)NULL, true);
@@ -1153,7 +1153,7 @@ class go_celestial_planetarium_access : public GameObjectScript
                     return;
 
                 events.Update(diff);
-                switch (events.ExecuteEvent())
+                switch (events.GetEvent())
                 {
                     case EVENT_DESPAWN_CONSOLE:
                         go->Delete();
