@@ -433,7 +433,7 @@ void World::LoadConfigSettings(bool reload)
     ///- Initialize Lua Engine
     if (!reload)
     {
-        sLog->outString("Initialize Eluna Lua Engine...");
+        LOG_ERROR("config","Initialize Eluna Lua Engine...");
         Eluna::Initialize();
     }
 #endif
